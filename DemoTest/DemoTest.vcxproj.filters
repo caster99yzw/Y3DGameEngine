@@ -5,21 +5,13 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Mathematics">
-      <UniqueIdentifier>{a6aa5c6f-8873-4cc5-934c-c562749dae36}</UniqueIdentifier>
+    <Filter Include="Src">
+      <UniqueIdentifier>{1336ca92-1a2f-4ee7-918e-863527f71537}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Y3DPI.cpp">
-      <Filter>Mathematics</Filter>
+    <ClCompile Include="Test.cpp">
+      <Filter>Src</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Y3DPI.h">
-      <Filter>Mathematics</Filter>
-    </ClInclude>
-    <ClInclude Include="Y3DVector.h">
-      <Filter>Mathematics</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
