@@ -98,7 +98,7 @@ namespace Y3D
 
 	// Convention that multiply by vector is one by one
 	template <class T>
-	constexpr Vector<T, 1> operator * (Vector<T, 1> const& llhs Vector<T, 1> const& rhs)
+	constexpr Vector<T, 1> operator * (Vector<T, 1> const& llhs, Vector<T, 1> const& rhs)
 	{ 
 		return Vector<T, 1>(lhs.x * rhs.x);
 	}
