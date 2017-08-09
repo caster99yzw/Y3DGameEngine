@@ -5,20 +5,22 @@
 
 namespace Y3D
 {
-	//template declaration 
-	template <class T, U32 Count>
+	//Template declaration 
+	template <class T, UINT32 Count>
 	class Y3DVector;
 
 	//////////////////////////////////////////////////////////////////////////
 	//
-	//template partial specialization Y3DVector 1
+	//Template partial specialization Y3DVector version 1
 	//
 	//////////////////////////////////////////////////////////////////////////
 
 	template <class T>
 	class Y3DVector<T, 1>
 	{
-		static constexpr U32 Count = 1;
+	public: // Static and Macro
+
+		static constexpr UINT32 Count = 1;
 		static Y3DVector const IDENTITY;
 
 	public: //	Constructions and Destructions
@@ -83,13 +85,13 @@ namespace Y3D
 			return *this;
 		}
 
-		constexpr T const& operator [] (U32 index) const
+		constexpr T const& operator [] (UINT32 index) const
 		{ 
 			assert(index < Count);
 			return v[index];
 		}
 
-		constexpr T& operator [] (U32 index)
+		constexpr T& operator [] (UINT32 index)
 		{ 
 			assert(index < Count);
 			return v[index]; 
@@ -116,26 +118,26 @@ namespace Y3D
 			return v; 
 		}
 
-		constexpr void Normalize() const
+		constexpr void Normalize()
 		{
 			static_assert(std::is_floating_point_v<T>, "Normalized() for floating point types only.");
-			T reciprocal = 1.f / rhs;
-			lhs.x *= reciprocal;
+			T reciprocal = 1.f / Magnitude();
+			x *= reciprocal;
 		}
 
 		constexpr void Clamp()
 		{
-			for (int i = 0; i < 1; i++)
+			for (UINT32 i = 0; i < 1; i++)
 			{
 				if (v[i] > 1.f - 1e-5f)
 				{
-					m[i] = 1.f;
-					break;
+					v[i] = 1.f;
+					continue;
 				}
 				else if (v[i] < -1.f + 1e-5f)
 				{
-					m[i] = -1.f;
-					break;
+					v[i] = -1.f;
+					continue;
 				}
 			}
 		}
@@ -158,7 +160,7 @@ namespace Y3D
 
 	// Convention that multiply by vector is one by one
 	template <class T>
-	constexpr Y3DVector<T, 1> operator * (Y3DVector<T, 1> const& llhs, Y3DVector<T, 1> const& rhs)
+	constexpr Y3DVector<T, 1> operator * (Y3DVector<T, 1> const& lhs, Y3DVector<T, 1> const& rhs)
 	{ 
 		return Y3DVector<T, 1>(lhs.x * rhs.x);
 	}
@@ -215,15 +217,17 @@ namespace Y3D
 
 	//////////////////////////////////////////////////////////////////////////
 	//
-	//template partial specialization Y3DVector 2
+	//Template partial specialization Y3DVector version 2
 	//
 	//////////////////////////////////////////////////////////////////////////
 
 	template <class T>
 	class Y3DVector<T, 2>
 	{
+	public: // Static and Macro
+
 		static Y3DVector const IDENTITY;
-		static constexpr U32 Count = 2;
+		static constexpr UINT32 Count = 2;
 
 	public: //	Constructions and Destructions
 
@@ -288,13 +292,13 @@ namespace Y3D
 			return *this;
 		}
 
-		constexpr T const& operator [] (U32 index) const
+		constexpr T const& operator [] (UINT32 index) const
 		{
 			assert(index < Count);
 			return v[index];
 		}
 
-		constexpr T& operator [] (U32 index)
+		constexpr T& operator [] (UINT32 index)
 		{
 			assert(index < Count);
 			return v[index];
@@ -302,7 +306,7 @@ namespace Y3D
 
 		constexpr Y3DVector operator - () const
 		{
-			return Y3DVector(-x);
+			return Y3DVector(-x, -y);
 		}
 
 		constexpr T Magnitude() const
@@ -321,26 +325,26 @@ namespace Y3D
 			return v;
 		}
 
-		constexpr void Normalize() const
+		constexpr void Normalize()
 		{
 			static_assert(std::is_floating_point_v<T>, "Normalized() for floating point types only.");
-			T reciprocal = 1.f / rhs;
-			lhs.x *= reciprocal; lhs.y *= reciprocal;
+			T reciprocal = 1.f / Magnitude();
+			x *= reciprocal; y *= reciprocal;
 		}
 
 		constexpr void Clamp()
 		{
-			for (int i = 0; i < Count; i++)
+			for (UINT32 i = 0; i < Count; i++)
 			{
 				if (v[i] > 1.f - 1e-5f)
 				{
-					m[i] = 1.f;
-					break;
+					v[i] = 1.f;
+					continue;
 				}
 				else if (v[i] < -1.f + 1e-5f)
 				{
-					m[i] = -1.f;
-					break;
+					v[i] = -1.f;
+					continue;
 				}
 			}
 		}
@@ -363,9 +367,9 @@ namespace Y3D
 
 	// Convention that multiply by vector is one by one
 	template <class T>
-	constexpr Y3DVector<T, 2> operator * (Y3DVector<T, 2> const& llhs, Y3DVector<T, 2> const& rhs)
+	constexpr Y3DVector<T, 2> operator * (Y3DVector<T, 2> const& lhs, Y3DVector<T, 2> const& rhs)
 	{
-		return Y3DVector<T, 2>(lhs.x * rhs.x, llhs.y * rhs.y);
+		return Y3DVector<T, 2>(lhs.x * rhs.x, lhs.y * rhs.y);
 	}
 
 	template <class T>
@@ -421,15 +425,17 @@ namespace Y3D
 
 	//////////////////////////////////////////////////////////////////////////
 	//
-	//template partial specialization Y3DVector 3
+	//Template partial specialization Y3DVector version 3
 	//
 	//////////////////////////////////////////////////////////////////////////
 
 	template <class T>
 	class Y3DVector<T, 3>
 	{
+	public: // Static and Macro
+
 		static Y3DVector const IDENTITY;
-		static constexpr U32 Count = 3;
+		static constexpr UINT32 Count = 3;
 
 	public: //	Constructions and Destructions
 
@@ -494,13 +500,13 @@ namespace Y3D
 			return *this;
 		}
 
-		constexpr T const& operator [] (U32 index) const
+		constexpr T const& operator [] (UINT32 index) const
 		{
 			assert(index < Count);
 			return v[index];
 		}
 
-		constexpr T& operator [] (U32 index)
+		constexpr T& operator [] (UINT32 index)
 		{
 			assert(index < Count);
 			return v[index];
@@ -508,7 +514,7 @@ namespace Y3D
 
 		constexpr Y3DVector operator - () const
 		{
-			return Y3DVector(-x);
+			return Y3DVector(-x, -y, -z);
 		}
 
 		constexpr T Magnitude() const
@@ -527,26 +533,26 @@ namespace Y3D
 			return v;
 		}
 
-		constexpr void Normalize() const
+		constexpr void Normalize() 
 		{
 			static_assert(std::is_floating_point_v<T>, "Normalized() for floating point types only.");
-			T reciprocal = 1.f / rhs;
-			lhs.x *= reciprocal; lhs.y *= reciprocal; lhs.z *= reciprocal;
+			T reciprocal = 1.f / Magnitude();
+			x *= reciprocal; y *= reciprocal; z *= reciprocal;
 		}
 
 		constexpr void Clamp()
 		{
-			for (int i = 0; i < Count; i++)
+			for (UINT32 i = 0; i < Count; i++)
 			{
 				if (v[i] > 1.f - 1e-5f)
 				{
-					m[i] = 1.f;
-					break;
+					v[i] = 1.f;
+					continue;
 				}
 				else if (v[i] < -1.f + 1e-5f)
 				{
-					m[i] = -1.f;
-					break;
+					v[i] = -1.f;
+					continue;
 				}
 			}
 		}
@@ -569,7 +575,7 @@ namespace Y3D
 
 	// Convention that multiply by vector is one by one
 	template <class T>
-	constexpr Y3DVector<T, 3> operator * (Y3DVector<T, 3> const& llhs, Y3DVector<T, 3> const& rhs)
+	constexpr Y3DVector<T, 3> operator * (Y3DVector<T, 3> const& lhs, Y3DVector<T, 3> const& rhs)
 	{
 		return Y3DVector<T, 3>(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z);
 	}
@@ -618,6 +624,15 @@ namespace Y3D
 		return (lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z);
 	}
 
+	// Only three-dimensional space has the cross manipulation
+	template <class T>
+	constexpr Y3DVector<T, 3> Cross(Y3DVector<T, 3> const& lhs, Y3DVector<T, 3> const& rhs)
+	{
+		return Y3DVector<T, 3>(lhs.y * rhs.z - lhs.z * rhs.y,
+			lhs.z * rhs.x - lhs.x * rhs.z,
+			lhs.x * rhs.y - lhs.y * rhs.x);
+	}
+
 	template <class T>
 	constexpr Y3DVector<T, 3> Lerp(Y3DVector<T, 3> const& lhs, Y3DVector<T, 3> const& rhs, float fraction)
 	{
@@ -628,15 +643,17 @@ namespace Y3D
 
 	//////////////////////////////////////////////////////////////////////////
 	//
-	//template partial specialization Y3DVector 4
+	//Template partial specialization Y3DVector version 4
 	//
 	//////////////////////////////////////////////////////////////////////////
 
 	template <class T>
 	class Y3DVector<T, 4>
 	{
+	public: // Static and Macro
+
 		static Y3DVector const IDENTITY;
-		static constexpr U32 Count = 4;
+		static constexpr UINT32 Count = 4;
 
 	public: //	Constructions and Destructions
 
@@ -701,13 +718,13 @@ namespace Y3D
 			return *this;
 		}
 
-		constexpr T const& operator [] (U32 index) const
+		constexpr T const& operator [] (UINT32 index) const
 		{
 			assert(index < Count);
 			return v[index];
 		}
 
-		constexpr T& operator [] (U32 index)
+		constexpr T& operator [] (UINT32 index)
 		{
 			assert(index < Count);
 			return v[index];
@@ -715,7 +732,7 @@ namespace Y3D
 
 		constexpr Y3DVector operator - () const
 		{
-			return Y3DVector(-x);
+			return Y3DVector(-x, -y, -z, -w);
 		}
 
 		constexpr T Magnitude() const
@@ -734,26 +751,26 @@ namespace Y3D
 			return v;
 		}
 
-		constexpr void Normalize() const
+		constexpr void Normalize()
 		{
 			static_assert(std::is_floating_point_v<T>, "Normalized() for floating point types only.");
-			T reciprocal = 1.f / rhs;
-			lhs.x *= reciprocal; lhs.y *= reciprocal; lhs.z *= reciprocal; lhs.z *= reciprocal;
+			T reciprocal = 1.f / Magnitude();
+			x *= reciprocal; y *= reciprocal; z *= reciprocal; w *= reciprocal;
 		}
 
 		constexpr void Clamp()
 		{
-			for (int i = 0; i < Count; i++)
+			for (UINT32 i = 0; i < Count; i++)
 			{
 				if (v[i] > 1.f - 1e-5f)
 				{
-					m[i] = 1.f;
-					break;
+					v[i] = 1.f;
+					continue;
 				}
 				else if (v[i] < -1.f + 1e-5f)
 				{
-					m[i] = -1.f;
-					break;
+					v[i] = -1.f;
+					continue;
 				}
 			}
 		}
@@ -776,7 +793,7 @@ namespace Y3D
 
 	// Convention that multiply by vector is one by one
 	template <class T>
-	constexpr Y3DVector<T, 4> operator * (Y3DVector<T, 4> const& llhs, Y3DVector<T, 4> const& rhs)
+	constexpr Y3DVector<T, 4> operator * (Y3DVector<T, 4> const& lhs, Y3DVector<T, 4> const& rhs)
 	{
 		return Y3DVector<T, 4>(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z, lhs.w * rhs.w);
 	}
@@ -833,4 +850,24 @@ namespace Y3D
 			lhs.z * (1 - fraction) + rhs.z * fraction,
 			lhs.w * (1 - fraction) + rhs.w * fraction);
 	}
+
+	using	V1F32 = Y3DVector<FLOAT32, 1>;
+	using	V2F32 = Y3DVector<FLOAT32, 2>;
+	using	V3F32 = Y3DVector<FLOAT32, 3>;
+	using	V4F32 = Y3DVector<FLOAT32, 4>;
+
+	using	V1F64 = Y3DVector<FLOAT64, 1>;
+	using	V2F64 = Y3DVector<FLOAT64, 2>;
+	using	V3F64 = Y3DVector<FLOAT64, 3>;
+	using	V4F64 = Y3DVector<FLOAT64, 4>;
+
+	using	V1I32 = Y3DVector<INT32, 1>;
+	using	V2I32 = Y3DVector<INT32, 2>;
+	using	V3I32 = Y3DVector<INT32, 3>;
+	using	V4I32 = Y3DVector<INT32, 4>;
+
+	using	V1U32 = Y3DVector<UINT32, 1>;
+	using	V2U32 = Y3DVector<UINT32, 2>;
+	using	V3U32 = Y3DVector<UINT32, 3>;
+	using	V4U32 = Y3DVector<UINT32, 4>;
 }
