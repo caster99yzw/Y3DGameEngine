@@ -124,9 +124,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Y3DPI.cpp" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClInclude Include="Y3DMacro.h" />
     <ClInclude Include="Y3DPI.h" />
     <ClInclude Include="Y3DQuaternion.h" />
     <ClInclude Include="Y3DTypes.h" />

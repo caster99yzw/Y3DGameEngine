@@ -120,8 +120,7 @@ namespace Y3D
 		constexpr void Normalize()
 		{
 			static_assert(std::is_floating_point_v<T>, "Normalized() for floating point types only.");
-			T reciprocal = 1.f / Magnitude();
-			x *= reciprocal;
+			*this /= Magnitude();
 		}
 
 		constexpr void Clamp()
@@ -145,50 +144,6 @@ namespace Y3D
 	template <class T>
 	Y3DVector<T, 1> const Y3DVector<T, 1>::IDENTITY = Y3DVector(static_cast<T>(0));
 
-	template <class T>
-	constexpr Y3DVector<T, 1> operator + (Y3DVector<T, 1> const& lhs, Y3DVector<T, 1> const& rhs)
-	{ 
-		return Y3DVector<T, 1>(lhs.x + rhs.x);
-	}
-
-	template <class T>
-	constexpr Y3DVector<T, 1> operator - (Y3DVector<T, 1> const& lhs, Y3DVector<T, 1> const& rhs)
-	{ 
-		return Y3DVector<T, 1>(lhs.x - rhs.x);
-	}
-
-	// Convention that multiply by vector is one by one
-	template <class T>
-	constexpr Y3DVector<T, 1> operator * (Y3DVector<T, 1> const& lhs, Y3DVector<T, 1> const& rhs)
-	{ 
-		return Y3DVector<T, 1>(lhs.x * rhs.x);
-	}
-
-	template <class T>
-	constexpr Y3DVector<T, 1> operator * (Y3DVector<T, 1> const& lhs, T const& rhs)
-	{
-		return Y3DVector<T, 1>(lhs.x * rhs);
-	}
-
-	template <class T>
-	constexpr Y3DVector<T, 1> operator * (T const& lhs, Y3DVector<T, 1> const& rhs)
-	{
-		return Y3DVector<T, 1>(lhs * rhs.x);
-	}
-	
-	// Convention that divide by vector is one by one
-	template <class T>
-	constexpr Y3DVector<T, 1> operator / (Y3DVector<T, 1> const& lhs, Y3DVector<T, 1> const& rhs)
-	{
-		return Y3DVector<T, 1>(lhs.x / rhs.x);
-	}
-
-	template <class T>
-	constexpr Y3DVector<T, 1> operator / (Y3DVector<T, 1> const& lhs, T const& rhs)
-	{
-		T reciprocal = 1.f / rhs;
-		return Y3DVector<T, 1>(lhs.x * reciprocal);
-	}
 
 	template <class T>
 	constexpr bool operator == (Y3DVector<T, 1> const& lhs, Y3DVector<T, 1> const& rhs)
@@ -281,7 +236,7 @@ namespace Y3D
 		constexpr Y3DVector<T, Count> const& operator /= (T const& rhs)
 		{
 			T reciprocal = 1.f / rhs;
-			x *= reciprocal; y *= reciprocal;
+			*this *= reciprocal;
 			return *this;
 		}
 
@@ -327,8 +282,7 @@ namespace Y3D
 		constexpr void Normalize()
 		{
 			static_assert(std::is_floating_point_v<T>, "Normalized() for floating point types only.");
-			T reciprocal = 1.f / Magnitude();
-			x *= reciprocal; y *= reciprocal;
+			*this /= Magnitude();
 		}
 
 		constexpr void Clamp()
@@ -351,51 +305,6 @@ namespace Y3D
 
 	template <class T>
 	Y3DVector<T, 2> const Y3DVector<T, 2>::IDENTITY = Y3DVector(static_cast<T>(0), static_cast<T>(0));
-
-	template <class T>
-	constexpr Y3DVector<T, 2> operator + (Y3DVector<T, 2> const& lhs, Y3DVector<T, 2> const& rhs)
-	{
-		return Y3DVector<T, 2>(lhs.x + rhs.x, lhs.y + rhs.y);
-	}
-
-	template <class T>
-	constexpr Y3DVector<T, 2> operator - (Y3DVector<T, 2> const& lhs, Y3DVector<T, 2> const& rhs)
-	{
-		return Y3DVector<T, 2>(lhs.x - rhs.x, lhs.y - rhs.y);
-	}
-
-	// Convention that multiply by vector is one by one
-	template <class T>
-	constexpr Y3DVector<T, 2> operator * (Y3DVector<T, 2> const& lhs, Y3DVector<T, 2> const& rhs)
-	{
-		return Y3DVector<T, 2>(lhs.x * rhs.x, lhs.y * rhs.y);
-	}
-
-	template <class T>
-	constexpr Y3DVector<T, 2> operator * (Y3DVector<T, 2> const& lhs, T const& rhs)
-	{
-		return Y3DVector<T, 2>(lhs.x * rhs, lhs.y * rhs);
-	}
-
-	template <class T>
-	constexpr Y3DVector<T, 2> operator * (T const& lhs, Y3DVector<T, 2> const& rhs)
-	{
-		return Y3DVector<T, 2>(lhs * rhs.x, lhs * rhs.y);
-	}
-
-	// Convention that divide by vector is one by one
-	template <class T>
-	constexpr Y3DVector<T, 2> operator / (Y3DVector<T, 2> const& lhs, Y3DVector<T, 2> const& rhs)
-	{
-		return Y3DVector<T, 2>(lhs.x / rhs.x, lhs.y / rhs.y);
-	}
-
-	template <class T>
-	constexpr Y3DVector<T, 2> operator / (Y3DVector<T, 2> const& lhs, T const& rhs)
-	{
-		T reciprocal = 1.f / rhs;
-		return Y3DVector<T, 2>(lhs.x * reciprocal, lhs.y * reciprocal);
-	}
 
 	template <class T>
 	constexpr bool operator == (Y3DVector<T, 2> const& lhs, Y3DVector<T, 2> const& rhs)
@@ -489,7 +398,7 @@ namespace Y3D
 		constexpr Y3DVector<T, Count> const& operator /= (T const& rhs)
 		{
 			T reciprocal = 1.f / rhs;
-			x *= reciprocal; y *= reciprocal; z *= reciprocal;
+			*this *= reciprocal;
 			return *this;
 		}
 
@@ -535,8 +444,7 @@ namespace Y3D
 		constexpr void Normalize() 
 		{
 			static_assert(std::is_floating_point_v<T>, "Normalized() for floating point types only.");
-			T reciprocal = 1.f / Magnitude();
-			x *= reciprocal; y *= reciprocal; z *= reciprocal;
+			*this /= Magnitude();
 		}
 
 		constexpr void Clamp()
@@ -559,51 +467,6 @@ namespace Y3D
 
 	template <class T>
 	Y3DVector<T, 3> const Y3DVector<T, 3>::IDENTITY = Y3DVector(static_cast<T>(0), static_cast<T>(0), static_cast<T>(0));
-
-	template <class T>
-	constexpr Y3DVector<T, 3> operator + (Y3DVector<T, 3> const& lhs, Y3DVector<T, 3> const& rhs)
-	{
-		return Y3DVector<T, 3>(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z);
-	}
-
-	template <class T>
-	constexpr Y3DVector<T, 3> operator - (Y3DVector<T, 3> const& lhs, Y3DVector<T, 3> const& rhs)
-	{
-		return Y3DVector<T, 3>(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z);
-	}
-
-	// Convention that multiply by vector is one by one
-	template <class T>
-	constexpr Y3DVector<T, 3> operator * (Y3DVector<T, 3> const& lhs, Y3DVector<T, 3> const& rhs)
-	{
-		return Y3DVector<T, 3>(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z);
-	}
-
-	template <class T>
-	constexpr Y3DVector<T, 3> operator * (Y3DVector<T, 3> const& lhs, T const& rhs)
-	{
-		return Y3DVector<T, 3>(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs);
-	}
-
-	template <class T>
-	constexpr Y3DVector<T, 3> operator * (T const& lhs, Y3DVector<T, 3> const& rhs)
-	{
-		return Y3DVector<T, 3>(lhs * rhs.x, lhs * rhs.y, lhs * rhs.z);
-	}
-
-	// Convention that divide by vector is one by one
-	template <class T>
-	constexpr Y3DVector<T, 3> operator / (Y3DVector<T, 3> const& lhs, Y3DVector<T, 3> const& rhs)
-	{
-		return Y3DVector<T, 3>(lhs.x / rhs.x, lhs.y / rhs.y, lhs.z / rhs.z);
-	}
-
-	template <class T>
-	constexpr Y3DVector<T, 3> operator / (Y3DVector<T, 3> const& lhs, T const& rhs)
-	{
-		T reciprocal = 1.f / rhs;
-		return Y3DVector<T, 3>(lhs.x * reciprocal, lhs.y * reciprocal, lhs.z * reciprocal);
-	}
 
 	template <class T>
 	constexpr bool operator == (Y3DVector<T, 3> const& lhs, Y3DVector<T, 3> const& rhs)
@@ -707,7 +570,7 @@ namespace Y3D
 		constexpr Y3DVector<T, Count> const& operator /= (T const& rhs)
 		{
 			T reciprocal = 1.f / rhs;
-			x *= reciprocal; y *= reciprocal; z *= reciprocal; w *= reciprocal;
+			*this *= reciprocal;
 			return *this;
 		}
 
@@ -753,8 +616,7 @@ namespace Y3D
 		constexpr void Normalize()
 		{
 			static_assert(std::is_floating_point_v<T>, "Normalized() for floating point types only.");
-			T reciprocal = 1.f / Magnitude();
-			x *= reciprocal; y *= reciprocal; z *= reciprocal; w *= reciprocal;
+			*this /= Magnitude();
 		}
 
 		constexpr void Clamp()
@@ -777,51 +639,6 @@ namespace Y3D
 
 	template <class T>
 	Y3DVector<T, 4> const Y3DVector<T, 4>::IDENTITY = Y3DVector(static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0));
-
-	template <class T>
-	constexpr Y3DVector<T, 4> operator + (Y3DVector<T, 4> const& lhs, Y3DVector<T, 4> const& rhs)
-	{
-		return Y3DVector<T, 4>(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z, lhs.w + rhs.w);
-	}
-
-	template <class T>
-	constexpr Y3DVector<T, 4> operator - (Y3DVector<T, 4> const& lhs, Y3DVector<T, 4> const& rhs)
-	{
-		return Y3DVector<T, 4>(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z, lhs.w - rhs.w);
-	}
-
-	// Convention that multiply by vector is one by one
-	template <class T>
-	constexpr Y3DVector<T, 4> operator * (Y3DVector<T, 4> const& lhs, Y3DVector<T, 4> const& rhs)
-	{
-		return Y3DVector<T, 4>(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z, lhs.w * rhs.w);
-	}
-
-	template <class T>
-	constexpr Y3DVector<T, 4> operator * (Y3DVector<T, 4> const& lhs, T const& rhs)
-	{
-		return Y3DVector<T, 4>(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs, lhs.w * rhs);
-	}
-
-	template <class T>
-	constexpr Y3DVector<T, 4> operator * (T const& lhs, Y3DVector<T, 4> const& rhs)
-	{
-		return Y3DVector<T, 4>(lhs * rhs.x, lhs * rhs.y, lhs * rhs.z, lhs * rhs.w);
-	}
-
-	// Convention that divide by vector is one by one
-	template <class T>
-	constexpr Y3DVector<T, 4> operator / (Y3DVector<T, 4> const& lhs, Y3DVector<T, 4> const& rhs)
-	{
-		return Y3DVector<T, 4>(lhs.x / rhs.x, lhs.y / rhs.y, lhs.z / rhs.z, lhs.w / rhs.w);
-	}
-
-	template <class T>
-	constexpr Y3DVector<T, 4> operator / (Y3DVector<T, 4> const& lhs, T const& rhs)
-	{
-		T reciprocal = 1.f / rhs;
-		return Y3DVector<T, 4>(lhs.x * reciprocal, lhs.y * reciprocal, lhs.z * reciprocal, lhs.w * reciprocal);
-	}
 
 	template <class T>
 	constexpr bool operator == (Y3DVector<T, 4> const& lhs, Y3DVector<T, 4> const& rhs)
@@ -848,6 +665,56 @@ namespace Y3D
 			lhs.y * (1 - fraction) + rhs.y * fraction,
 			lhs.z * (1 - fraction) + rhs.z * fraction,
 			lhs.w * (1 - fraction) + rhs.w * fraction);
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	//
+	// The Common non-member function of all template specialization
+	//
+	//////////////////////////////////////////////////////////////////////////
+
+	template <class T, UINT32 nCount>
+	constexpr Y3DVector<T, nCount> operator + (Y3DVector<T, nCount> const& lhs, Y3DVector<T, nCount> const& rhs)
+	{ 
+		return Y3DVector<T, nCount>(lhs) += rhs;
+	}
+
+	template <class T, UINT32 nCount>
+	constexpr Y3DVector<T, nCount> operator - (Y3DVector<T, nCount> const& lhs, Y3DVector<T, nCount> const& rhs)
+	{
+		return Y3DVector<T, nCount>(lhs) -= rhs;
+	}
+
+	// Convention that multiply by vector is one by one
+	template <class T, UINT32 nCount>
+	constexpr Y3DVector<T, nCount> operator * (Y3DVector<T, nCount> const& lhs, Y3DVector<T, nCount> const& rhs)
+	{
+		return Y3DVector<T, nCount>(lhs) *= rhs;
+	}
+
+	template <class T, UINT32 nCount>
+	constexpr Y3DVector<T, nCount> operator * (Y3DVector<T, nCount> const& lhs, T const& rhs)
+	{
+		return Y3DVector<T, nCount>(lhs) *= rhs;
+	}
+
+	template <class T, UINT32 nCount>
+	constexpr Y3DVector<T, nCount> operator * (T const& lhs, Y3DVector<T, nCount> const& rhs)
+	{
+		return Y3DVector<T, nCount>(rhs) *= lhs;
+	}
+	
+	// Convention that divide by vector is one by one
+	template <class T, UINT32 nCount>
+	constexpr Y3DVector<T, nCount> operator / (Y3DVector<T, nCount> const& lhs, Y3DVector<T, nCount> const& rhs)
+	{
+		return Y3DVector<T, nCount>(lhs) /= rhs;
+	}
+
+	template <class T, UINT32 nCount>
+	constexpr Y3DVector<T, nCount> operator / (Y3DVector<T, nCount> const& lhs, T const& rhs)
+	{
+		return Y3DVector<T, nCount>(lhs) /= rhs;
 	}
 
 	using	V1F32 = Y3DVector<FLOAT32, 1>;

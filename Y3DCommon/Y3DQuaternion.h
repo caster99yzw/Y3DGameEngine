@@ -93,47 +93,6 @@ namespace Y3D
 			return Quaternion(-w, -x, -y, -z);
 		}
 
-		inline friend Quaternion operator + (Quaternion const& lhs, Quaternion const& rhs)
-		{
-			return (Quaternion(lhs) += rhs);
-		}
-
-		inline friend Quaternion operator - (Quaternion const& lhs, Quaternion const& rhs)
-		{
-			return (Quaternion(lhs) -= rhs);
-		}
-
-		inline friend Quaternion operator * (Quaternion const& lhs, FLOAT32 rhs)
-		{
-			return (Quaternion(lhs) *= rhs);
-		}
-
-		inline friend Quaternion operator * (FLOAT32 lhs, Quaternion const& rhs)
-		{
-			return (Quaternion(rhs) *= lhs);
-		}
-
-		inline friend Quaternion operator / (Quaternion const& lhs, FLOAT32 rhs)
-		{
-			return (Quaternion(lhs) /= rhs);
-		}
-
-		// Quaternion Product
-		inline friend Quaternion operator * (Quaternion const& lhs, Quaternion const& rhs)
-		{
-			return (Quaternion(lhs) *= rhs);
-		}
-
-		inline friend bool operator == (Quaternion const& lhs, Quaternion const& rhs)
-		{
-			return (lhs.w == rhs.w && lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z);
-		}
-
-		inline friend bool operator != (Quaternion const& lhs, Quaternion const& rhs)
-		{
-			return (lhs.w != rhs.w || lhs.x != rhs.x || lhs.y != rhs.y || lhs.z != rhs.z);
-		}
-
 		inline FLOAT32 & W()
 		{
 			return w;
@@ -144,12 +103,12 @@ namespace Y3D
 			return w;
 		}
 
-		inline V3F32 & V()
+		inline V3F32 V()
 		{
 			return V3F32(x, y, z);
 		}
 
-		inline V3F32 const& V() const
+		inline V3F32 const V() const
 		{
 			return V3F32(x, y, z);
 		}
@@ -169,14 +128,15 @@ namespace Y3D
 			return Conjugate(*this);
 		}
 
-		inline FLOAT32 Angle(Quaternion quat);
-
 		inline FLOAT32 MagnitudeSquared() const;
 
 		// Rotate vec By using quaternion and its conjugate
 		V3F32 Rotate(V3F32 const& vec) const;
 		// Rotate vec directly By using quaternion definition
 		V3F32 RotateDirect(V3F32 const& vec) const;
+
+		// Before cos manipulation, we must guarantee all quaternion should be normalized
+		FLOAT32 Angle(Quaternion quat);
 
 		inline void Normalize()
 		{
@@ -189,6 +149,46 @@ namespace Y3D
 
 	Quaternion const Quaternion::IDENTITY = Quaternion(1.f, 0.f, 0.f, 0.f);
 
+	inline Quaternion operator + (Quaternion const& lhs, Quaternion const& rhs)
+	{
+		return (Quaternion(lhs) += rhs);
+	}
+
+	inline Quaternion operator - (Quaternion const& lhs, Quaternion const& rhs)
+	{
+		return (Quaternion(lhs) -= rhs);
+	}
+
+	inline Quaternion operator * (Quaternion const& lhs, FLOAT32 rhs)
+	{
+		return (Quaternion(lhs) *= rhs);
+	}
+
+	inline Quaternion operator * (FLOAT32 lhs, Quaternion const& rhs)
+	{
+		return (Quaternion(rhs) *= lhs);
+	}
+
+	inline Quaternion operator / (Quaternion const& lhs, FLOAT32 rhs)
+	{
+		return (Quaternion(lhs) /= rhs);
+	}
+
+	// Quaternion Product
+	inline Quaternion operator * (Quaternion const& lhs, Quaternion const& rhs)
+	{
+		return (Quaternion(lhs) *= rhs);
+	}
+
+	inline bool operator == (Quaternion const& lhs, Quaternion const& rhs)
+	{
+		return (lhs.w == rhs.w && lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z);
+	}
+
+	inline bool operator != (Quaternion const& lhs, Quaternion const& rhs)
+	{
+		return (lhs.w != rhs.w || lhs.x != rhs.x || lhs.y != rhs.y || lhs.z != rhs.z);
+	}
 
 	// q_ResulFLOAT32 = q * v * q*
 	V3F32 _RotateVector(Quaternion const& quat, V3F32 const& vec, Quaternion const& quatConjugate)
@@ -217,16 +217,15 @@ namespace Y3D
 	Quaternion Slerp(Quaternion const& lhs, Quaternion const& rhs, FLOAT32 fraction)
 	{
 		FLOAT32 fCos = Dot(lhs, rhs);
-		Quaternion quat = (fCos < 0.f) ? -rhs : rhs;
+		fCos = (fCos < 0.f) ? -fCos : fCos;		
 
-		if (std::abs(fCos) < 1 - 0.001f)
+		if (fCos < 0.9995f)
 		{
-			float fSin = std::sqrt(1 - fCos * fCos);
-			float fAngleInRadian = std::atan2(fSin, fCos);
-			float fInvSin = 1.f / fSin;
-			float fCoeff0 = std::sin((1.f - fraction) * fAngleInRadian) * fInvSin;
-			float fCoeff1 = std::sin(fraction * fAngleInRadian) * fInvSin;
-			return fCoeff0 * lhs + fCoeff1 * quat;
+			FLOAT32 theta_0 = ::acos(fCos);
+			FLOAT32 theta = theta_0 * fraction;  
+			Quaternion rhsNew = rhs - lhs * fCos;
+			rhsNew.Normalize();             
+			return (lhs * ::cos(theta) + rhsNew * ::sin(theta));
 		}
 		else
 		{

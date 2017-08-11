@@ -11,11 +11,9 @@
     <Filter Include="Utilities">
       <UniqueIdentifier>{0804c504-0739-4d87-b625-345a3907b9c4}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Y3DPI.cpp">
-      <Filter>Mathematics</Filter>
-    </ClCompile>
+    <Filter Include="View">
+      <UniqueIdentifier>{2e02a116-32b8-4ff2-a5a9-fa7e06eabcf5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Y3DPI.h">
@@ -29,6 +27,9 @@
     </ClInclude>
     <ClInclude Include="Y3DQuaternion.h">
       <Filter>Mathematics</Filter>
+    </ClInclude>
+    <ClInclude Include="Y3DMacro.h">
+      <Filter>Utilities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
