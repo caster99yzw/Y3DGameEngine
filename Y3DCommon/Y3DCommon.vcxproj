@@ -128,6 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Y3DPI.h" />
+    <ClInclude Include="Y3DQuaternion.h" />
     <ClInclude Include="Y3DTypes.h" />
     <ClInclude Include="Y3DVector.h" />
   </ItemGroup>

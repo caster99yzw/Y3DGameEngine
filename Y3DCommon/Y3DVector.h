@@ -26,9 +26,8 @@ namespace Y3D
 	public: //	Constructions and Destructions
 
 		constexpr Y3DVector() = default;
-		constexpr explicit Y3DVector(T & m) : x(m) {}
-		constexpr Y3DVector(T const& _x) : x(_x) {}
-		constexpr Y3DVector(Y3DVector const& rhs) : x(rhs.x) {}
+		constexpr Y3DVector(T const& _x) : v{ _x } {}
+		constexpr Y3DVector(Y3DVector const& rhs) : v{ rhs.x } {}
 
 	public: // Attributes
 
@@ -210,7 +209,7 @@ namespace Y3D
 	}
 
 	template <class T>
-	constexpr Y3DVector<T, 1> Lerp(Y3DVector<T, 1> const& lhs, Y3DVector<T, 1> const& rhs, float fraction)
+	constexpr Y3DVector<T, 1> Lerp(Y3DVector<T, 1> const& lhs, Y3DVector<T, 1> const& rhs, T const& fraction)
 	{
 		return Y3DVector<T, 1>(lhs.x * (1 - fraction) + rhs.x * fraction);
 	}
@@ -232,9 +231,9 @@ namespace Y3D
 	public: //	Constructions and Destructions
 
 		constexpr Y3DVector() = default;
-		constexpr explicit Y3DVector(T & m) : x(m), y(m) {}
-		constexpr Y3DVector(T const& _x, T const& _y) : x(_x), y(_y) {}
-		constexpr Y3DVector(Y3DVector const& rhs) : x(rhs.x), y(rhs.y) {}
+		constexpr explicit Y3DVector(T const& m) : v{ m, m } {}
+		constexpr Y3DVector(T const& _x, T const& _y) : v{ _x, _y } {}
+		constexpr Y3DVector(Y3DVector const& rhs) : v{ rhs.x, rhs.y } {}
 
 	public: // Attributes
 
@@ -417,7 +416,7 @@ namespace Y3D
 	}
 
 	template <class T>
-	constexpr Y3DVector<T, 2> Lerp(Y3DVector<T, 2> const& lhs, Y3DVector<T, 2> const& rhs, float fraction)
+	constexpr Y3DVector<T, 2> Lerp(Y3DVector<T, 2> const& lhs, Y3DVector<T, 2> const& rhs, T const& fraction)
 	{
 		return Y3DVector<T, 2>(lhs.x * (1 - fraction) + rhs.x * fraction,
 			lhs.y * (1 - fraction) + rhs.y * fraction);
@@ -440,9 +439,9 @@ namespace Y3D
 	public: //	Constructions and Destructions
 
 		constexpr Y3DVector() = default;
-		constexpr explicit Y3DVector(T & m) : x(m), y(m), z(m) {}
-		constexpr Y3DVector(T const& _x, T const& _y, T const& _z) : x(_x), y(_y), z(_z) {}
-		constexpr Y3DVector(Y3DVector const& rhs) : x(rhs.x), y(rhs.y), z(rhs.z) {}
+		constexpr explicit Y3DVector(T const& m) : v{ m, m, m } {}
+		constexpr Y3DVector(T const& _x, T const& _y, T const& _z) : v{ _x, _y, _z } {}
+		constexpr Y3DVector(Y3DVector const& rhs) : v{ rhs.x, rhs.y, rhs.z } {}
 
 	public: // Attributes
 
@@ -634,7 +633,7 @@ namespace Y3D
 	}
 
 	template <class T>
-	constexpr Y3DVector<T, 3> Lerp(Y3DVector<T, 3> const& lhs, Y3DVector<T, 3> const& rhs, float fraction)
+	constexpr Y3DVector<T, 3> Lerp(Y3DVector<T, 3> const& lhs, Y3DVector<T, 3> const& rhs, T const& fraction)
 	{
 		return Y3DVector<T, 3>(lhs.x * (1 - fraction) + rhs.x * fraction,
 			lhs.y * (1 - fraction) + rhs.y * fraction,
@@ -658,9 +657,9 @@ namespace Y3D
 	public: //	Constructions and Destructions
 
 		constexpr Y3DVector() = default;
-		constexpr explicit Y3DVector(T & m) : x(m), y(m), z(m), w(m) {}
-		constexpr Y3DVector(T const& _x, T const& _y, T const& _z, T const& _w) : x(_x), y(_y), z(_z), w(_w) {}
-		constexpr Y3DVector(Y3DVector const& rhs) : x(rhs.x), y(rhs.y), z(rhs.z), w(rhs.w) {}
+		constexpr explicit Y3DVector(T const& m) : v{m, m, m, m} {}
+		constexpr Y3DVector(T const& _x, T const& _y, T const& _z, T const& _w) : v{_x, _y, _z, _w} {}
+		constexpr Y3DVector(Y3DVector const& rhs) : v{rhs.x, rhs.y, rhs.z, rhs.w} {}
 
 	public: // Attributes
 
@@ -843,7 +842,7 @@ namespace Y3D
 	}
 
 	template <class T>
-	constexpr Y3DVector<T, 4> Lerp(Y3DVector<T, 4> const& lhs, Y3DVector<T, 4> const& rhs, float fraction)
+	constexpr Y3DVector<T, 4> Lerp(Y3DVector<T, 4> const& lhs, Y3DVector<T, 4> const& rhs, T const& fraction)
 	{
 		return Y3DVector<T, 4>(lhs.x * (1 - fraction) + rhs.x * fraction,
 			lhs.y * (1 - fraction) + rhs.y * fraction,

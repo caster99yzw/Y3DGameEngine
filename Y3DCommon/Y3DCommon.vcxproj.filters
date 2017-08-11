@@ -27,5 +27,8 @@
     <ClInclude Include="Y3DTypes.h">
       <Filter>Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="Y3DQuaternion.h">
+      <Filter>Mathematics</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
