@@ -72,7 +72,9 @@ namespace Y3D
 
 		constexpr _Matrix& operator = (_Matrix const& rhs)
 		{
-			M = rhs.M;
+			_11 = rhs._11; _21 = rhs._21; _31 = rhs._31;
+			_12 = rhs._12; _22 = rhs._22; _32 = rhs._32;
+			_13 = rhs._13; _23 = rhs._23; _33 = rhs._33;
 			return *this;
 		}
 
@@ -314,7 +316,10 @@ namespace Y3D
 
 		constexpr _Matrix& operator = (_Matrix const& rhs)
 		{
-			M = rhs.M;
+			_11 = rhs._11; _21 = rhs._21; _31 = rhs._31; _41 = rhs._41;
+			_12 = rhs._12; _22 = rhs._22; _32 = rhs._32; _42 = rhs._42;
+			_13 = rhs._13; _23 = rhs._23; _33 = rhs._33; _43 = rhs._43;
+			_14 = rhs._14; _24 = rhs._24; _34 = rhs._34; _44 = rhs._44;
 			return *this;
 		}
 
