@@ -6,8 +6,8 @@
 
 //////////////////////////////////////////////////////////////////////////
 //
-// Quaternion<T> is differenFLOAT32 from Y3DVector<T, 4>
-// The Order of Y3DVector<T, 4> is <x, y, z, w>
+// Quaternion<T> is differenFLOAT32 from _Vector<T, 4>
+// The Order of _Vector<T, 4> is <x, y, z, w>
 // The Order of Quaternion<T> is <w, x, y, z>
 //
 //////////////////////////////////////////////////////////////////////////
@@ -32,7 +32,7 @@ namespace Y3D
 		Quaternion() = default;
 		Quaternion(FLOAT32 const& _w, FLOAT32 const& _x, FLOAT32 const& _y, FLOAT32 const& _z) : q{ _w, _x, _y, _z } {}
 		Quaternion(Quaternion const& rhs) : q{ rhs.w, rhs.x, rhs.y, rhs.z } {}
-		Quaternion(FLOAT32 const& _w, V3F32 const& rhs) : q{ _w, rhs.x, rhs.y, rhs.z } {}
+		Quaternion(FLOAT32 const& _w, Vec3F32 const& rhs) : q{ _w, rhs.x, rhs.y, rhs.z } {}
 
 	public: // Attributes
 
@@ -103,14 +103,14 @@ namespace Y3D
 			return w;
 		}
 
-		inline V3F32 V()
+		inline Vec3F32 V()
 		{
-			return V3F32(x, y, z);
+			return Vec3F32(x, y, z);
 		}
 
-		inline V3F32 const V() const
+		inline Vec3F32 const V() const
 		{
-			return V3F32(x, y, z);
+			return Vec3F32(x, y, z);
 		}
 
 		inline FLOAT32 Magnitude() const
@@ -131,9 +131,9 @@ namespace Y3D
 		inline FLOAT32 MagnitudeSquared() const;
 
 		// Rotate vec By using quaternion and its conjugate
-		V3F32 Rotate(V3F32 const& vec) const;
+		Vec3F32 Rotate(Vec3F32 const& vec) const;
 		// Rotate vec directly By using quaternion definition
-		V3F32 RotateDirect(V3F32 const& vec) const;
+		Vec3F32 RotateDirect(Vec3F32 const& vec) const;
 
 		// Before cos manipulation, we must guarantee all quaternion should be normalized
 		FLOAT32 Angle(Quaternion quat);
@@ -191,15 +191,15 @@ namespace Y3D
 	}
 
 	// q_ResulFLOAT32 = q * v * q*
-	V3F32 _RotateVector(Quaternion const& quat, V3F32 const& vec, Quaternion const& quatConjugate)
+	Vec3F32 _Rotate_Vector(Quaternion const& quat, Vec3F32 const& vec, Quaternion const& quatConjugate)
 	{
 		Quaternion vQuat = Quaternion(0.f, vec);
 		vQuat = quat * vQuat * quatConjugate;
-		return V3F32(vQuat.x, vQuat.y, vQuat.z);
+		return Vec3F32(vQuat.x, vQuat.y, vQuat.z);
 	}
 
 	// q_ResulFLOAT32 = (quat.w^2 - ||quat.xyz||^2) * vec + 2 * Dot(quat.xyz, vec) * quat.xyz + 2 * quat.w * Cross(quat, vec)
-	V3F32 _RotateVector(Quaternion const& quat, V3F32 const& vec)
+	Vec3F32 _Rotate_Vector(Quaternion const& quat, Vec3F32 const& vec)
 	{
 		FLOAT32 a0 = quat.W() * quat.W() - quat.V().MagnitudeSquared();
 		FLOAT32 a1 = 2.f - Dot(quat.V(), vec);
@@ -268,15 +268,15 @@ namespace Y3D
 	}
 
 	// Rotate vec By using quaternion and its conjugate
-	V3F32 Quaternion::Rotate(V3F32 const& vec) const
+	Vec3F32 Quaternion::Rotate(Vec3F32 const& vec) const
 	{
 		Quaternion qConjugate = Conjugate(*this);
-		return _RotateVector(*this, vec, qConjugate);
+		return _Rotate_Vector(*this, vec, qConjugate);
 	}
 	 
 	// Rotate vec directly By using quaternion definition
-	V3F32 Quaternion::RotateDirect(V3F32 const& vec) const
+	Vec3F32 Quaternion::RotateDirect(Vec3F32 const& vec) const
 	{ 
-		return _RotateVector(*this, vec);
+		return _Rotate_Vector(*this, vec);
 	}
 }

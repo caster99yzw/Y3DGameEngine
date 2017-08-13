@@ -6,6 +6,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#define NULL_X nullptr 
+
 // Release Y3D objects
 #define Y3DRELEASE(p) \
 { \
@@ -13,7 +15,7 @@
 	{ \
 		(p)->Release(); \
 		delete (p); \
-		p = nullptr; \
+		p = NULL_X; \
 	} \
 }
 
@@ -23,7 +25,7 @@
 	if (p) \
 	{ \
 		(p)->Release(); \
-		p = nullptr; \
+		p = NULL_X; \
 	} \
 }
 
@@ -33,7 +35,7 @@
 	if (p) \
 	{ \
 		delete (p); \
-		p = nullptr; \
+		p = NULL_X; \
 	} \
 }
 
@@ -43,7 +45,7 @@
 	if (p) \
 	{ \
 		delete [](p); \
-		p = nullptr; \
+		p = NULL_X; \
 	} \
 }
 

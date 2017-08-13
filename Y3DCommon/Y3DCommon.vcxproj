@@ -124,11 +124,23 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CameraEntity.h" />
+    <ClInclude Include="Y3DCameraDesc.h" />
+    <ClInclude Include="Y3DCamera.h" />
     <ClInclude Include="Y3DMacro.h" />
+    <ClInclude Include="Y3DMatrix.h" />
+    <ClInclude Include="Y3DCameraOrtho.h" />
+    <ClInclude Include="Y3DCameraPerspective.h" />
     <ClInclude Include="Y3DPI.h" />
     <ClInclude Include="Y3DQuaternion.h" />
     <ClInclude Include="Y3DTypes.h" />
     <ClInclude Include="Y3DVector.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CameraEntity.cpp" />
+    <ClCompile Include="Y3DCamera.cpp" />
+    <ClCompile Include="Y3DCameraOrtho.cpp" />
+    <ClCompile Include="Y3DCameraPerspective.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,31 +5,66 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Mathematics">
-      <UniqueIdentifier>{a6aa5c6f-8873-4cc5-934c-c562749dae36}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Utilities">
       <UniqueIdentifier>{0804c504-0739-4d87-b625-345a3907b9c4}</UniqueIdentifier>
     </Filter>
     <Filter Include="View">
-      <UniqueIdentifier>{2e02a116-32b8-4ff2-a5a9-fa7e06eabcf5}</UniqueIdentifier>
+      <UniqueIdentifier>{dd1c9be4-4146-4e4f-9a61-fb1338f7fde8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mathematics">
+      <UniqueIdentifier>{d9220a1a-23de-4a66-8266-c256344e3149}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entity">
+      <UniqueIdentifier>{6039009e-06eb-46f5-82bb-54c09dc5dc3e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Y3DTypes.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Y3DMacro.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
     <ClInclude Include="Y3DPI.h">
+      <Filter>Mathematics</Filter>
+    </ClInclude>
+    <ClInclude Include="Y3DQuaternion.h">
       <Filter>Mathematics</Filter>
     </ClInclude>
     <ClInclude Include="Y3DVector.h">
       <Filter>Mathematics</Filter>
     </ClInclude>
-    <ClInclude Include="Y3DTypes.h">
-      <Filter>Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="Y3DQuaternion.h">
+    <ClInclude Include="Y3DMatrix.h">
       <Filter>Mathematics</Filter>
     </ClInclude>
-    <ClInclude Include="Y3DMacro.h">
-      <Filter>Utilities</Filter>
+    <ClInclude Include="Y3DCamera.h">
+      <Filter>View</Filter>
     </ClInclude>
+    <ClInclude Include="Y3DCameraOrtho.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="Y3DCameraPerspective.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="Y3DCameraDesc.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraEntity.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Y3DCameraOrtho.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="Y3DCameraPerspective.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="Y3DCamera.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraEntity.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
