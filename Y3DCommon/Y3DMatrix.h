@@ -587,6 +587,10 @@ namespace Y3D
 		return _Matrix<T, Row, Col>(lhs) / rhs;
 	}
 
+	using Mat3F32 = _Matrix<FLOAT32, 3, 3>;
+	using Mat3F64 = _Matrix<FLOAT64, 3, 3>;
+
 	using Mat4F32 = _Matrix<FLOAT32, 4, 4>;
+	using Mat4F64 = _Matrix<FLOAT64, 4, 4>;
 }
 

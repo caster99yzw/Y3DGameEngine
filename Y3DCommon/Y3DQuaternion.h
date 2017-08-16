@@ -151,43 +151,49 @@ namespace Y3D
 
 	inline Quaternion operator + (Quaternion const& lhs, Quaternion const& rhs)
 	{
-		return (Quaternion(lhs) += rhs);
+		return Quaternion(lhs) += rhs;
 	}
 
 	inline Quaternion operator - (Quaternion const& lhs, Quaternion const& rhs)
 	{
-		return (Quaternion(lhs) -= rhs);
+		return Quaternion(lhs) -= rhs;
 	}
 
 	inline Quaternion operator * (Quaternion const& lhs, FLOAT32 rhs)
 	{
-		return (Quaternion(lhs) *= rhs);
+		return Quaternion(lhs) *= rhs;
 	}
 
 	inline Quaternion operator * (FLOAT32 lhs, Quaternion const& rhs)
 	{
-		return (Quaternion(rhs) *= lhs);
+		return Quaternion(rhs) *= lhs;
 	}
 
 	inline Quaternion operator / (Quaternion const& lhs, FLOAT32 rhs)
 	{
-		return (Quaternion(lhs) /= rhs);
+		return Quaternion(lhs) /= rhs;
 	}
 
 	// Quaternion Product
 	inline Quaternion operator * (Quaternion const& lhs, Quaternion const& rhs)
 	{
-		return (Quaternion(lhs) *= rhs);
+		return Quaternion(lhs) *= rhs;
 	}
 
 	inline bool operator == (Quaternion const& lhs, Quaternion const& rhs)
 	{
-		return (lhs.w == rhs.w && lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z);
+		return lhs.w == rhs.w &&
+			lhs.x == rhs.x &&
+			lhs.y == rhs.y &&
+			lhs.z == rhs.z;
 	}
 
 	inline bool operator != (Quaternion const& lhs, Quaternion const& rhs)
 	{
-		return (lhs.w != rhs.w || lhs.x != rhs.x || lhs.y != rhs.y || lhs.z != rhs.z);
+		return lhs.w != rhs.w || 
+			lhs.x != rhs.x ||
+			lhs.y != rhs.y || 
+			lhs.z != rhs.z;
 	}
 
 	// q_ResulFLOAT32 = q * v * q*

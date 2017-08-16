@@ -52,6 +52,9 @@
     <ClInclude Include="CameraEntity.h">
       <Filter>Entity</Filter>
     </ClInclude>
+    <ClInclude Include="Y3DMathFun.h">
+      <Filter>Mathematics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Y3DCameraOrtho.cpp">

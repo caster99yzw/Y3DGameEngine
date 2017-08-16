@@ -128,6 +128,7 @@
     <ClInclude Include="Y3DCameraDesc.h" />
     <ClInclude Include="Y3DCamera.h" />
     <ClInclude Include="Y3DMacro.h" />
+    <ClInclude Include="Y3DMathFun.h" />
     <ClInclude Include="Y3DMatrix.h" />
     <ClInclude Include="Y3DCameraOrtho.h" />
     <ClInclude Include="Y3DCameraPerspective.h" />

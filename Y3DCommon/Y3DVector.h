@@ -2,6 +2,7 @@
 
 #include <xtr1common>
 #include "Y3DTypes.h"
+#include "Y3DMathFun.h"
 
 namespace Y3D
 {
@@ -48,37 +49,37 @@ namespace Y3D
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator += (_Vector<T, Count> const& rhs)
+		constexpr _Vector const& operator += (_Vector const& rhs)
 		{
 			x += rhs.x;
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator -= (_Vector<T, Count> const& rhs)
+		constexpr _Vector const& operator -= (_Vector const& rhs)
 		{
 			x -= rhs.x;
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator *= (T const& rhs)
+		constexpr _Vector const& operator *= (T const& rhs)
 		{
 			x *= rhs;
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator *= (_Vector<T, Count> const& rhs)
+		constexpr _Vector const& operator *= (_Vector const& rhs)
 		{
 			x *= rhs.x;
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator /= (T const& rhs)
+		constexpr _Vector const& operator /= (T const& rhs)
 		{
 			x /= rhs;
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator /= (_Vector<T, Count> const& rhs)
+		constexpr _Vector const& operator /= (_Vector const& rhs)
 		{
 			x /= rhs.x;
 			return *this;
@@ -104,7 +105,7 @@ namespace Y3D
 		constexpr T Magnitude() const 
 		{ 
 			static_assert(std::is_floating_point_v<T>, "Magnitude() for floating point types only."); 
-			return std::sqrt(MagnitudeSquared());
+			return Sqrt(MagnitudeSquared());
 		}
 
 		constexpr T MagnitudeSquared() const 
@@ -123,11 +124,11 @@ namespace Y3D
 			*this /= Magnitude();
 		}
 
-		constexpr _Vector<T, Count> Normalized() const
+		constexpr _Vector Normalized() const
 		{
 			static_assert(std::is_floating_point_v<T>, "Normalized() for floating point types only.");
 			T reciprocal = T(1) / Magnitude();
-			return _Vector<T, Count>(x * reciprocal);
+			return _Vector(x * reciprocal);
 		}
 
 		constexpr void Clamp()
@@ -155,19 +156,19 @@ namespace Y3D
 	template <class T>
 	constexpr BOOL operator == (_Vector<T, 1> const& lhs, _Vector<T, 1> const& rhs)
 	{ 
-		return (lhs.x == rhs.x);
+		return lhs.x == rhs.x
 	}
 
 	template <class T>
 	constexpr BOOL operator != (_Vector<T, 1> const& lhs, _Vector<T, 1> const& rhs)
 	{ 
-		return (lhs.x != rhs.x); 
+		return lhs.x != rhs.x; 
 	}
 
 	template <class T>
 	constexpr T Dot(_Vector<T, 1> const& lhs, _Vector<T, 1> const& rhs)
 	{ 
-		return (lhs.x * rhs.x); 
+		return lhs.x * rhs.x; 
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -210,38 +211,38 @@ namespace Y3D
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator += (_Vector<T, Count> const& rhs)
+		constexpr _Vector const& operator += (_Vector const& rhs)
 		{
 			x += rhs.x; y += rhs.y;
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator -= (_Vector<T, Count> const& rhs)
+		constexpr _Vector const& operator -= (_Vector const& rhs)
 		{
 			x -= rhs.x; y -= rhs.y;
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator *= (T const& rhs)
+		constexpr _Vector const& operator *= (T const& rhs)
 		{
 			x *= rhs; y *= rhs;
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator *= (_Vector<T, Count> const& rhs)
+		constexpr _Vector const& operator *= (_Vector const& rhs)
 		{
 			x *= rhs.x; y *= rhs.y;
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator /= (T const& rhs)
+		constexpr _Vector const& operator /= (T const& rhs)
 		{
 			T reciprocal = T(1) / rhs;
 			*this *= reciprocal;
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator /= (_Vector<T, Count> const& rhs)
+		constexpr _Vector const& operator /= (_Vector const& rhs)
 		{
 			x /= rhs.x; y /= rhs.y;
 			return *this;
@@ -267,7 +268,7 @@ namespace Y3D
 		constexpr T Magnitude() const
 		{
 			static_assert(std::is_floating_point_v<T>, "Magnitude() for floating point types only.");
-			return std::sqrt(MagnitudeSquared());
+			return Sqrt(MagnitudeSquared());
 		}
 
 		constexpr T MagnitudeSquared() const
@@ -286,13 +287,12 @@ namespace Y3D
 			*this /= Magnitude();
 		}
 
-		constexpr _Vector<T, Count> Normalized() const
+		constexpr _Vector Normalized() const
 		{
 			static_assert(std::is_floating_point_v<T>, "Normalized() for floating point types only.");
 			T reciprocal = T(1) / Magnitude();
-			return _Vector<T, Count>(x * reciprocal, y * reciprocal);
+			return _Vector(x * reciprocal, y * reciprocal);
 		}
-
 
 		constexpr void Clamp()
 		{
@@ -318,13 +318,15 @@ namespace Y3D
 	template <class T>
 	constexpr BOOL operator == (_Vector<T, 2> const& lhs, _Vector<T, 2> const& rhs)
 	{
-		return (lhs.x == rhs.x && lhs.y == rhs.y);
+		return lhs.x == rhs.x && 
+			lhs.y == rhs.y;
 	}
 
 	template <class T>
 	constexpr BOOL operator != (_Vector<T, 2> const& lhs, _Vector<T, 2> const& rhs)
 	{
-		return (lhs.x != rhs.x || lhs.y != rhs.y);
+		return lhs.x != rhs.x ||
+			lhs.y != rhs.y;
 	}
 
 	template <class T>
@@ -373,38 +375,38 @@ namespace Y3D
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator += (_Vector<T, Count> const& rhs)
+		constexpr _Vector const& operator += (_Vector const& rhs)
 		{
 			x += rhs.x; y += rhs.y; z += rhs.z;
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator -= (_Vector<T, Count> const& rhs)
+		constexpr _Vector const& operator -= (_Vector const& rhs)
 		{
 			x -= rhs.x; y -= rhs.y; z -= rhs.z;
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator *= (T const& rhs)
+		constexpr _Vector const& operator *= (T const& rhs)
 		{
 			x *= rhs; y *= rhs; z *= rhs;
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator *= (_Vector<T, Count> const& rhs)
+		constexpr _Vector const& operator *= (_Vector const& rhs)
 		{
 			x *= rhs.x; y *= rhs.y; z *= rhs.z;
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator /= (T const& rhs)
+		constexpr _Vector const& operator /= (T const& rhs)
 		{
 			T reciprocal = T(1) / rhs;
 			*this *= reciprocal;
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator /= (_Vector<T, Count> const& rhs)
+		constexpr _Vector const& operator /= (_Vector const& rhs)
 		{
 			x /= rhs.x; y /= rhs.y; z /= rhs.z;
 			return *this;
@@ -430,7 +432,7 @@ namespace Y3D
 		constexpr T Magnitude() const
 		{
 			static_assert(std::is_floating_point_v<T>, "Magnitude() for floating point types only.");
-			return ::sqrt(MagnitudeSquared());
+			return Sqrt(MagnitudeSquared());
 		}
 
 		constexpr T MagnitudeSquared() const
@@ -449,11 +451,11 @@ namespace Y3D
 			*this /= Magnitude();
 		}
 
-		constexpr _Vector<T, Count> Normalized() const
+		constexpr _Vector Normalized() const
 		{
 			static_assert(std::is_floating_point_v<T>, "Normalized() for floating point types only.");
 			T reciprocal = T(1) / Magnitude();
-			return _Vector<T, Count>(x * reciprocal, y * reciprocal, z * reciprocal);
+			return _Vector(x * reciprocal, y * reciprocal, z * reciprocal);
 		}
 
 		constexpr void Clamp()
@@ -480,13 +482,17 @@ namespace Y3D
 	template <class T>
 	constexpr BOOL operator == (_Vector<T, 3> const& lhs, _Vector<T, 3> const& rhs)
 	{
-		return (lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z);
+		return lhs.x == rhs.x && 
+			lhs.y == rhs.y && 
+			lhs.z == rhs.z;
 	}
 
 	template <class T>
 	constexpr BOOL operator != (_Vector<T, 3> const& lhs, _Vector<T, 3> const& rhs)
 	{
-		return (lhs.x != rhs.x || lhs.y != rhs.y || lhs.z != rhs.z);
+		return lhs.x != rhs.x ||
+			lhs.y != rhs.y || 
+			lhs.z != rhs.z;
 	}
 
 	template <class T>
@@ -544,38 +550,38 @@ namespace Y3D
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator += (_Vector<T, Count> const& rhs)
+		constexpr _Vector const& operator += (_Vector const& rhs)
 		{
 			x += rhs.x; y += rhs.y; z += rhs.z; w += rhs.w;
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator -= (_Vector<T, Count> const& rhs)
+		constexpr _Vector const& operator -= (_Vector const& rhs)
 		{
 			x -= rhs.x; y -= rhs.y; z -= rhs.z; w -= rhs.w;
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator *= (T const& rhs)
+		constexpr _Vector const& operator *= (T const& rhs)
 		{
 			x *= rhs; y *= rhs; z *= rhs; w *= rhs;
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator *= (_Vector<T, Count> const& rhs)
+		constexpr _Vector const& operator *= (_Vector const& rhs)
 		{
 			x *= rhs.x; y *= rhs.y; z *= rhs.z; w *= rhs.w;
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator /= (T const& rhs)
+		constexpr _Vector const& operator /= (T const& rhs)
 		{
 			T reciprocal = T(1) / rhs;
 			*this *= reciprocal;
 			return *this;
 		}
 
-		constexpr _Vector<T, Count> const& operator /= (_Vector<T, Count> const& rhs)
+		constexpr _Vector const& operator /= (_Vector const& rhs)
 		{
 			x /= rhs.x; y /= rhs.y; z /= rhs.z; w /= rhs.w;
 			return *this;
@@ -601,7 +607,7 @@ namespace Y3D
 		constexpr T Magnitude() const
 		{
 			static_assert(std::is_floating_point_v<T>, "Magnitude() for floating point types only.");
-			return std::sqrt(MagnitudeSquared());
+			return Sqrt(MagnitudeSquared());
 		}
 
 		constexpr T MagnitudeSquared() const
@@ -620,11 +626,11 @@ namespace Y3D
 			*this /= Magnitude();
 		}
 
-		constexpr _Vector<T, Count> Normalized() const
+		constexpr _Vector Normalized() const
 		{
 			static_assert(std::is_floating_point_v<T>, "Normalized() for floating point types only.");
 			T reciprocal = T(1) / Magnitude();
-			return _Vector<T, Count>(x * reciprocal, y * reciprocal, z * reciprocal, w * reciprocal);
+			return _Vector(x * reciprocal, y * reciprocal, z * reciprocal, w * reciprocal);
 		}
 
 		constexpr void Clamp()
@@ -651,13 +657,19 @@ namespace Y3D
 	template <class T>
 	constexpr BOOL operator == (_Vector<T, 4> const& lhs, _Vector<T, 4> const& rhs)
 	{
-		return (lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z && lhs.w == rhs.w);
+		return lhs.x == rhs.x &&
+			lhs.y == rhs.y &&
+			lhs.z == rhs.z && 
+			lhs.w == rhs.w;
 	}
 
 	template <class T>
 	constexpr BOOL operator != (_Vector<T, 4> const& lhs, _Vector<T, 4> const& rhs)
 	{
-		return (lhs.x != rhs.x || lhs.y != rhs.y || lhs.z != rhs.z || lhs.w != rhs.w);
+		return lhs.x != rhs.x ||
+			lhs.y != rhs.y ||
+			lhs.z != rhs.z || 
+			lhs.w != rhs.w;
 	}
 
 	template <class T>
