@@ -125,13 +125,13 @@ namespace Y3D
 			return *this;
 		}
 
-		constexpr _Matrix const& operator[](UINT32 index) const
+		constexpr _Vector<T, Col> const& operator[](UINT32 index) const
 		{
 			assert(index < Row);
 			return M[index];
 		} 
 
-		constexpr _Matrix& operator[](UINT32 index)
+		constexpr _Vector<T, Col>& operator[](UINT32 index)
 		{
 			assert(index < Row);
 			return M[index];
@@ -166,7 +166,7 @@ namespace Y3D
 			return _Matrix(-M);
 		}
 
-		constexpr _Matrix Transpose() const
+		constexpr void Transpose()
 		{
 			T m21 = M[0][1];
 			T m31 = M[0][2];
@@ -186,9 +186,9 @@ namespace Y3D
 
 		constexpr T Determinant() const
 		{
-			T	m11 = v[0][0], m21 = v[1][0], m31 = v[2][0],
-				m12 = v[0][1], m22 = v[1][1], m32 = v[2][1],
-				m13 = v[0][2], m23 = v[1][2], m33 = v[2][2];
+			T	m11 = M[0][0], m21 = M[1][0], m31 = M[2][0],
+				m12 = M[0][1], m22 = M[1][1], m32 = M[2][1],
+				m13 = M[0][2], m23 = M[1][2], m33 = M[2][2];
 
 			T	_2233 = m22 * m33,
 				_2332 = m23 * m32,
@@ -382,13 +382,13 @@ namespace Y3D
 			return *this;
 		}
 
-		constexpr _Matrix const& operator[](UINT32 index) const
+		constexpr _Vector<T, Col> const& operator[](UINT32 index) const
 		{
 			assert(index < Row);
 			return M[index];
 		}
 
-		constexpr _Matrix& operator[](UINT32 index)
+		constexpr _Vector<T, Col>& operator[](UINT32 index)
 		{
 			assert(index < Row);
 			return M[index];
@@ -425,7 +425,7 @@ namespace Y3D
 			return _Matrix(-M);
 		}
 
-		constexpr _Matrix Transpose() const
+		constexpr void Transpose()
 		{
 			T m21 = M[0][1];
 			T m31 = M[0][2];
@@ -477,10 +477,10 @@ namespace Y3D
 
 		constexpr _Matrix Inversed() const 
 		{
-			T	m11 = v[0][0], m21 = v[1][0], m31 = v[2][0], m41 = v[3][0],
-				m12 = v[0][1], m22 = v[1][1], m32 = v[2][1], m42 = v[3][1],
-				m13 = v[0][2], m23 = v[1][2], m33 = v[2][2], m43 = v[3][2],
-				m14 = v[0][3], m24 = v[1][3], m34 = v[2][3], m44 = v[3][3];
+			T	m11 = M[0][0], m21 = M[1][0], m31 = M[2][0], m41 = M[3][0],
+				m12 = M[0][1], m22 = M[1][1], m32 = M[2][1], m42 = M[3][1],
+				m13 = M[0][2], m23 = M[1][2], m33 = M[2][2], m43 = M[3][2],
+				m14 = M[0][3], m24 = M[1][3], m34 = M[2][3], m44 = M[3][3];
 
 			T	_1122_2112 = m11 * m22 - m21 * m12,
 				_1132_3112 = m11 * m32 - m31 * m12,
@@ -571,12 +571,18 @@ namespace Y3D
 	}
 
 	template<class T, UINT32 Row, UINT32 Col>
-	constexpr _Matrix<T, Row, Col> operator*(_Matrix<T, Row, Col> const& lhs, T const& rhs) 
+	constexpr _Matrix<T, Row, Col> operator *(_Matrix<T, Row, Col> const& lhs, T const& rhs) 
 	{
 		return _Matrix<T, Row, Col>(lhs) *= rhs;
 	}
 	template<class T, UINT32 Row, UINT32 Col>
-	constexpr _Matrix<T, Row, Col> operator*(T const& lhs, _Matrix<T, Row, Col> const& rhs) 
+	constexpr _Matrix<T, Row, Col> operator * (T const& lhs, _Matrix<T, Row, Col> const& rhs) 
+	{
+		return _Matrix<T, Row, Col>(rhs) *= lhs;
+	}
+
+	template<class T, UINT32 Row, UINT32 Col>
+	constexpr _Matrix<T, Row, Col> operator * (_Matrix<T, Row, Col>  const& lhs, _Matrix<T, Row, Col> const& rhs)
 	{
 		return _Matrix<T, Row, Col>(rhs) *= lhs;
 	}

@@ -2,7 +2,8 @@
 
 #include <xtr1common>
 #include "Y3DTypes.h"
-#include "Y3DMathFun.h"
+#include "Y3DMathFunc.h"
+#include <assert.h>
 
 namespace Y3D
 {
@@ -528,8 +529,9 @@ namespace Y3D
 
 		constexpr _Vector() = default;
 		constexpr explicit _Vector(T const& m) : v{m, m, m, m} {}
-		constexpr _Vector(T const& _x, T const& _y, T const& _z, T const& _w) : v{_x, _y, _z, _w} {}
-		constexpr _Vector(_Vector const& rhs) : v{rhs.x, rhs.y, rhs.z, rhs.w} {}
+		constexpr _Vector(T const& _x, T const& _y, T const& _z, T const& _w) : v{ _x, _y, _z, _w } {}
+		constexpr _Vector(_Vector const& rhs) : v{ rhs.x, rhs.y, rhs.z, rhs.w } {}
+		constexpr _Vector(_Vector<T, 3> const& rhs, T const& _w) : v{ rhs.x, rhs.y, rhs.z, _w } {}
 
 	public: // Attributes
 

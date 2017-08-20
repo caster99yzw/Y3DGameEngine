@@ -11,11 +11,14 @@
     <Filter Include="View">
       <UniqueIdentifier>{dd1c9be4-4146-4e4f-9a61-fb1338f7fde8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Entity">
+      <UniqueIdentifier>{6039009e-06eb-46f5-82bb-54c09dc5dc3e}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Mathematics">
       <UniqueIdentifier>{d9220a1a-23de-4a66-8266-c256344e3149}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Entity">
-      <UniqueIdentifier>{6039009e-06eb-46f5-82bb-54c09dc5dc3e}</UniqueIdentifier>
+    <Filter Include="Mathematics\BasicMath">
+      <UniqueIdentifier>{23d37a7f-d5ef-40ac-ae61-d3fbe958a8e3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -24,18 +27,6 @@
     </ClInclude>
     <ClInclude Include="Y3DMacro.h">
       <Filter>Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="Y3DPI.h">
-      <Filter>Mathematics</Filter>
-    </ClInclude>
-    <ClInclude Include="Y3DQuaternion.h">
-      <Filter>Mathematics</Filter>
-    </ClInclude>
-    <ClInclude Include="Y3DVector.h">
-      <Filter>Mathematics</Filter>
-    </ClInclude>
-    <ClInclude Include="Y3DMatrix.h">
-      <Filter>Mathematics</Filter>
     </ClInclude>
     <ClInclude Include="Y3DCamera.h">
       <Filter>View</Filter>
@@ -52,7 +43,29 @@
     <ClInclude Include="CameraEntity.h">
       <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="Y3DMathFun.h">
+    <ClInclude Include="Y3DVector.h">
+      <Filter>Mathematics\BasicMath</Filter>
+    </ClInclude>
+    <ClInclude Include="Y3DMatrix.h">
+      <Filter>Mathematics\BasicMath</Filter>
+    </ClInclude>
+    <ClInclude Include="Y3DPI.h">
+      <Filter>Mathematics\BasicMath</Filter>
+    </ClInclude>
+    <ClInclude Include="Y3DQuaternion.h">
+      <Filter>Mathematics\BasicMath</Filter>
+    </ClInclude>
+    <ClInclude Include="Y3DMathFunc.h">
+      <Filter>Mathematics\BasicMath</Filter>
+    </ClInclude>
+    <ClInclude Include="Y3DQuatFunc.h">
+      <Filter>Mathematics</Filter>
+    </ClInclude>
+    <ClInclude Include="Y3DVectorFunc.h">
+      <Filter>Mathematics</Filter>
+    </ClInclude>
+    <ClInclude Include="List.h" />
+    <ClInclude Include="Y3DMatrixFunc.h">
       <Filter>Mathematics</Filter>
     </ClInclude>
   </ItemGroup>
@@ -68,6 +81,9 @@
     </ClCompile>
     <ClCompile Include="CameraEntity.cpp">
       <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Y3DMatrixFunc.cpp">
+      <Filter>Mathematics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

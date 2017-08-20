@@ -117,12 +117,12 @@ namespace Y3D
 	}
 
 	template <class T>
-	constexpr Degree<T> operator * (Degree<T> const& lhs, Degree<T> const& rhs)
+	constexpr Degree<T> operator * (Degree<T> const& lhs, T const& rhs)
 	{
 		return Degree<T>(lhs) *= rhs;
 	}
 	template <class T>
-	constexpr Degree<T> operator / (Degree<T> const& lhs, Degree<T> const& rhs)
+	constexpr Degree<T> operator / (Degree<T> const& lhs, T const& rhs)
 	{
 		return Degree<T>(lhs) /= rhs;
 	}
@@ -209,13 +209,13 @@ namespace Y3D
 	}
 
 	template <class T>
-	constexpr Radian<T> operator * (Radian<T> const& lhs, Radian<T> const& rhs)
+	constexpr Radian<T> operator * (Radian<T> const& lhs, T const& rhs)
 	{
 		return Radian<T>(lhs) *= rhs;
 	}
 
 	template <class T>
-	constexpr Radian<T> operator / (Radian<T> const& lhs, Radian<T> const& rhs)
+	constexpr Radian<T> operator / (Radian<T> const& lhs, T const& rhs)
 	{
 		return Radian<T>(lhs) /= rhs;
 	}
@@ -255,4 +255,7 @@ namespace Y3D
 	{
 		return Degree<T>(radValue);
 	}
+
+	using RadianF32 = Radian<FLOAT32>;
+	using DegreeF32 = Degree<FLOAT32>;
 }

@@ -3,11 +3,12 @@
 #include "Y3DQuaternion.h"
 #include <iostream>
 
+#include <filesystem>
+
 using namespace Y3D;
 
 int main()
 {
-
 	Vec3F32 f31 = { 3.f, 4.f, 5.f };
 	Vec3F32 f32 = { 8.f, 8.f, 8.f };
 	

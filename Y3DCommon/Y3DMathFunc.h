@@ -10,7 +10,11 @@
 
 namespace Y3D
 {
+	//////////////////////////////////////////////////////////////////////////
+	//
 	// Basic Function
+	//
+	//////////////////////////////////////////////////////////////////////////
 	template <class T>
 	static T Abs(T const& rhs) { return static_cast<T>(std::fabs(rhs)); }
 
@@ -23,7 +27,11 @@ namespace Y3D
 	template <class T>
 	static T Mod(T const& lhs, T const& rhs) { return static_cast<T>(std::fmod(lhs, rhs)); }
 
+	//////////////////////////////////////////////////////////////////////////
+	//
 	// Basic self-definite function
+	//
+	//////////////////////////////////////////////////////////////////////////
 	template <class T>
 	constexpr static T Sign(T const& rhs) { return rhs >= T(0) ? T(1) : T(-1); }
 
@@ -40,12 +48,16 @@ namespace Y3D
 	}
 
 	template <class T>
-	constexpr static T Quadric(T const& rhs) { return rhs * rhs; }
+	constexpr static T Square(T const& rhs) { return rhs * rhs; }
 
 	template <class T>
-	constexpr static T Cubic(T const& rhs) { return rhs * rhs * rhs; }
+	constexpr static T Cube(T const& rhs) { return rhs * rhs * rhs; }
 
+	//////////////////////////////////////////////////////////////////////////
+	//
 	// Equi Function
+	//
+	//////////////////////////////////////////////////////////////////////////
 	template <class T>
 	constexpr static BOOL Equi(T const& lhs, T const& rhs) { return lhs == rhs; }
 
@@ -62,18 +74,22 @@ namespace Y3D
 	}
 
 	template <class T>
-	static BOOL Equal(Radian<T> const& lhs, Radian<T> const& rhs)
+	static BOOL Equi(Radian<T> const& lhs, Radian<T> const& rhs)
 	{
 		return std::abs(lhs.radValue - rhs.radValue) <= std::numeric_limits<T>::epsilon();
 	}
 
 	template <class T>
-	static BOOL Equal(Degree<T> const& lhs, Degree<T> const& rhs)
+	static BOOL Equi(Degree<T> const& lhs, Degree<T> const& rhs)
 	{ 
 		return std::abs(lhs.degVaule - rhs.degVaule) <= std::numeric_limits<T>::epsilon();
 	}
-
+	
+	//////////////////////////////////////////////////////////////////////////
+	//
 	// Trigonometric Function
+	//
+	//////////////////////////////////////////////////////////////////////////
 	template <class T>
 	static T Sin(Radian<T> const& rhs) { return static_cast<T>(std::sin(rhs.radValue)); }
 
@@ -115,7 +131,11 @@ namespace Y3D
 			); 
 	}
 
+	//////////////////////////////////////////////////////////////////////////
+	//
 	// Logarithmic and Exponential Function
+	//
+	//////////////////////////////////////////////////////////////////////////
 	template <class T>
 	static T LogE(T const& rhs) { return static_cast<T>(std::log(rhs)); }
 
