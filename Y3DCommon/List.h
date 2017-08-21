@@ -31,6 +31,10 @@ namespace Y3D
 	template <typename T>
 	class List
 	{
+	private:
+
+		friend class ListExtension<T>;
+
 	public:
 
 		using ElementType = T;
@@ -165,16 +169,122 @@ namespace Y3D
 		}
 		void InsertAtRange(INT32 nIndex, RandomAccessIter itBegin, RandomAccessIter itEnd);
 
-		// This version accept -1 additionally, do nothing. (can be used as 1.RemoveAt(1.FindLastOf(e)))
+		// This version accept -1 additionally, do nothing. (can be used as 1.RemoveAt(1.FindLastOf(e))).
 		void RemoveAt(INT32 nIndex);
 		T GetAndRemoveAt(INT32 nIndex);
 
-		
+		// Remove by swapping the last element, will not keep the order of elements.
+		// This version accept -1 additionally, do nothing. (can be used as 1.RemoveAt(1.FindLastOf(e))).
+		//
+		void RemoveAtFast(INT32 nIndex);
+		T GetAndRemoveAtFast(INT32 nIndex);
+
+		void RemoveAllOf(T const& e);
+		template <typename Prediction>
+		void RemoveAllIf(Prediction prediction);
+
+		// clear elements only, do not free storage
+		void Clear() 
+		{
+			DestructElements(m_pArray, MaxCount); 
+			m_nCount = 0; 
+		}
+		// clear elements and release memory
+		void ClearAndRealse()
+		{
+			DestructThis();
+		}
+
+		// reallocate memory if element count < m_nCapacity * (a value < 1)
+		void ShrinkCapacity();
+
+		void Sort();
+		template <typename Comparer>
+		void Sort(Comparer comparer);
+
+		// binary search for upper bound. Array need to be sorted.
+		// return index of the position. Note: it can return Count() + 1 the position is the one over the last one.
+		INT32 UpperBound(T const& value) const;
+
+		template <typename Comparer>
+		INT32 UpperBound(T const& value, Comparer comparer) const;
+
+		// binary search for lower bound. Array need to be sorted.
+		// return index of the position. Note: it can return Count() + 1 the position is the one over the last one.
+		INT32 LowerBound(T const& value) const;
+
+		template <typename Comparer>
+		INT32 LowerBound(T const& value, Comparer comparer) const;
+
+		T const* GetData() const { return m_pArray; }
+		T* GetData() { return m_pArray; }
+
+		T const* Begin() const { return m_pArray; }
+		T* Begin() { return m_pArray; }
+
+		T const* End() const { return m_pArray + m_nCount; }
+		T* End() { return m_pArray + m_nCount; }
+
+		CopyableList<T>& AsCopyable() 
+		{
+			return reinterpret_cast<AsCopyable() < T > &>(*this);
+		}
+		const CopyableList<T> AsCopyable()
+		{
+			return reinterpret_cast<const AsCopyable() < T > &>(*this);
+		}
+
+		// get extension interface
+		const ListExtension<T> E() const { return ListExtension<T>(*this); }
+		ListExtension<T> E() { return ListExtension<T>(*this); }
+
+		// these to enable for each loops: for (auto& element : container) { ... }
+		T const* begin() const { return m_pArray; }
+		T* begin() { return m_pArray; }
+
+		T const* end() const { return m_pArray + m_nCount; }
+		T* end() { return m_pArray + m_nCount; }
 
 	private:
 
+		void DefaultConstruct();
+
+		void MoveIn(List& other);
+
+		void ReallocateStorage(INT32 nNewCapacity);
+
+		static INT32 GetNextCapacity(INT32 nCurrentCapacity);
+
+		void GrowIfNeedAdd1();
+
+		void GrowIfNeed(INT32 nToAddCount);
+
 		template <typename P>
 		void DoInsert(INT32 nIndex, P&& e);
+
+		// destruct elements and release memory
+		void DestructThis();
+
+		void CheckIfExceedMax(INT64 nToAdd);
+
+		static T* AllocateUninitialized(INT32 nCount);
+		// only release pAarry without calling destructor on elements
+		static void ReleaseMemory(T* pArray);
+
+		template <typename ..Parameter>
+		static void ConstrctElementToUnitialized(T* pTo, Parameter&& ...parameter);
+		static void DefaultConstructElements(T* pTo, INT32 nCount);
+		static void ValueConstructElements(T* pTo, INT32 nCount, T const& value);
+
+		static void DestructElement(T* p);
+		static void DestructElement(T* pArray, INT32 nCount);
+
+		static void MoveElements(T* pTo, T* pFrom, INT32 nCount);
+		static void MoveElementsReverse(T* pTo, T* pFrom, INT32 nCount);
+		static void MoveElementsUnitialized(T* pTo, T const* pFrom, INT32 nCount);
+
+		static void CopyElements(T* pTo, T const* pFrom, INT32 nCount);
+		static void CopyElementsUnitialized(T* pTo, T const* pFrom, INT32 nCount);
 
 	private:
 
