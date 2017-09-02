@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Y3DCommon", "Y3DCommon\Y3DCommon.vcxproj", "{0219A4C3-C890-4295-B279-B41350B800F0}"
 EndProject
@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DemoTest", "DemoTest\DemoTe
 	ProjectSection(ProjectDependencies) = postProject
 		{0219A4C3-C890-4295-B279-B41350B800F0} = {0219A4C3-C890-4295-B279-B41350B800F0}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ThirdParty", "ThirdParty\ThirdParty.vcxproj", "{8C0DC7D3-5C28-4D11-8ECF-BE861DD1154F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,8 +36,19 @@ Global
 		{CC8613E9-0EFB-4DA6-8008-C83663EF10A9}.Release|x64.Build.0 = Release|x64
 		{CC8613E9-0EFB-4DA6-8008-C83663EF10A9}.Release|x86.ActiveCfg = Release|Win32
 		{CC8613E9-0EFB-4DA6-8008-C83663EF10A9}.Release|x86.Build.0 = Release|Win32
+		{8C0DC7D3-5C28-4D11-8ECF-BE861DD1154F}.Debug|x64.ActiveCfg = Debug|x64
+		{8C0DC7D3-5C28-4D11-8ECF-BE861DD1154F}.Debug|x64.Build.0 = Debug|x64
+		{8C0DC7D3-5C28-4D11-8ECF-BE861DD1154F}.Debug|x86.ActiveCfg = Debug|Win32
+		{8C0DC7D3-5C28-4D11-8ECF-BE861DD1154F}.Debug|x86.Build.0 = Debug|Win32
+		{8C0DC7D3-5C28-4D11-8ECF-BE861DD1154F}.Release|x64.ActiveCfg = Release|x64
+		{8C0DC7D3-5C28-4D11-8ECF-BE861DD1154F}.Release|x64.Build.0 = Release|x64
+		{8C0DC7D3-5C28-4D11-8ECF-BE861DD1154F}.Release|x86.ActiveCfg = Release|Win32
+		{8C0DC7D3-5C28-4D11-8ECF-BE861DD1154F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3526DCA4-7DFE-4F9E-9BCC-01D795A9AF75}
 	EndGlobalSection
 EndGlobal

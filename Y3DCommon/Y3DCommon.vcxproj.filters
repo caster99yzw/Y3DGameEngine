@@ -20,6 +20,9 @@
     <Filter Include="Mathematics\BasicMath">
       <UniqueIdentifier>{23d37a7f-d5ef-40ac-ae61-d3fbe958a8e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Containers">
+      <UniqueIdentifier>{40a7b37b-0824-4aaf-b475-593b1b412e8d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Y3DTypes.h">
@@ -64,9 +67,14 @@
     <ClInclude Include="Y3DVectorFunc.h">
       <Filter>Mathematics</Filter>
     </ClInclude>
-    <ClInclude Include="List.h" />
     <ClInclude Include="Y3DMatrixFunc.h">
       <Filter>Mathematics</Filter>
+    </ClInclude>
+    <ClInclude Include="List.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="ContainerUtility.h">
+      <Filter>Containers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

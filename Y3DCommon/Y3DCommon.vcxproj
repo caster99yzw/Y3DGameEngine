@@ -125,6 +125,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CameraEntity.h" />
+    <ClInclude Include="ContainerUtility.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="Y3DMatrixFunc.h" />
     <ClInclude Include="Y3DVectorFunc.h" />
