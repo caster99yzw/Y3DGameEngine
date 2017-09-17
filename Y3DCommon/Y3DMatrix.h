@@ -243,7 +243,7 @@ namespace Y3D
 	_Matrix<T, 3, 3> const _Matrix<T, 3, 3>::IDENTITY = _Matrix(T(1));
 
 	template <class T>
-	constexpr BOOL operator == (_Matrix<T, 3, 3> const& lhs, _Matrix<T, 3, 3> const& rhs)
+	constexpr bool operator == (_Matrix<T, 3, 3> const& lhs, _Matrix<T, 3, 3> const& rhs)
 	{
 		return (lhs.M[0][0] == rhs.M[0][0] && lhs.M[0][1] == rhs.M[0][1] && lhs.M[0][2] == rhs.M[0][2] 
 			&& lhs.M[1][0] == rhs.M[1][0] && lhs.M[1][1] == rhs.M[1][1] && lhs.M[1][2] == rhs.M[1][2] 
@@ -251,7 +251,7 @@ namespace Y3D
 	}
 
 	template <class T>
-	constexpr BOOL operator != (_Matrix<T, 3, 3> const& lhs, _Matrix<T, 3, 3> const& rhs)
+	constexpr bool operator != (_Matrix<T, 3, 3> const& lhs, _Matrix<T, 3, 3> const& rhs)
 	{
 		return (lhs.M[0][0] != rhs.M[0][0] || lhs.M[0][1] != rhs.M[0][1] || lhs.M[0][2] != rhs.M[0][2]
 			|| lhs.M[1][0] != rhs.M[1][0] || lhs.M[1][1] != rhs.M[1][1] || lhs.M[1][2] != rhs.M[1][2]
@@ -542,7 +542,7 @@ namespace Y3D
 	_Matrix<T, 4, 4> const _Matrix<T, 4, 4>::IDENTITY = _Matrix(T(1));
 
 	template <class T>
-	constexpr BOOL operator == (_Matrix<T, 4, 4> const& lhs, _Matrix<T, 4, 4> const& rhs)
+	constexpr bool operator == (_Matrix<T, 4, 4> const& lhs, _Matrix<T, 4, 4> const& rhs)
 	{
 		return (lhs.M[0][0] == rhs.M[0][0] && lhs.M[0][1] == rhs.M[0][1] && lhs.M[0][2] == rhs.M[0][2] && lhs.M[0][3] == rhs.M[0][3]
 			&& lhs.M[1][0] == rhs.M[1][0] && lhs.M[1][1] == rhs.M[1][1] && lhs.M[1][2] == rhs.M[1][2] && lhs.M[1][3] == rhs.M[1][3]
@@ -551,7 +551,7 @@ namespace Y3D
 	}
 
 	template <class T>
-	constexpr BOOL operator != (_Matrix<T, 4, 4> const& lhs, _Matrix<T, 4, 4> const& rhs)
+	constexpr bool operator != (_Matrix<T, 4, 4> const& lhs, _Matrix<T, 4, 4> const& rhs)
 	{
 		return (lhs.M[0][0] != rhs.M[0][0] || lhs.M[0][1] != rhs.M[0][1] || lhs.M[0][2] != rhs.M[0][2] || lhs.M[0][3] != rhs.M[0][3]
 			|| lhs.M[1][0] != rhs.M[1][0] || lhs.M[1][1] != rhs.M[1][1] || lhs.M[1][2] != rhs.M[1][2] || lhs.M[1][3] != rhs.M[1][3]

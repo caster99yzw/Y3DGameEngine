@@ -38,18 +38,18 @@ namespace internal {
 template <typename T> struct Void { typedef void Type; };
 
 ///////////////////////////////////////////////////////////////////////////////
-// BoolType, TrueType, FalseType
+// boolType, TrueType, FalseType
 //
-template <bool Cond> struct BoolType {
+template <bool Cond> struct boolType {
     static const bool Value = Cond;
-    typedef BoolType Type;
+    typedef boolType Type;
 };
-typedef BoolType<true> TrueType;
-typedef BoolType<false> FalseType;
+typedef boolType<true> TrueType;
+typedef boolType<false> FalseType;
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// SelectIf, BoolExpr, NotExpr, AndExpr, OrExpr
+// SelectIf, boolExpr, NotExpr, AndExpr, OrExpr
 //
 
 template <bool C> struct SelectIfImpl { template <typename T1, typename T2> struct Apply { typedef T1 Type; }; };
@@ -62,7 +62,7 @@ template <> struct AndExprCond<true, true> : TrueType {};
 template <bool Cond1, bool Cond2> struct OrExprCond : TrueType {};
 template <> struct OrExprCond<false, false> : FalseType {};
 
-template <typename C> struct BoolExpr : SelectIf<C,TrueType,FalseType>::Type {};
+template <typename C> struct boolExpr : SelectIf<C,TrueType,FalseType>::Type {};
 template <typename C> struct NotExpr  : SelectIf<C,FalseType,TrueType>::Type {};
 template <typename C1, typename C2> struct AndExpr : AndExprCond<C1::Value, C2::Value>::Type {};
 template <typename C1, typename C2> struct OrExpr  : OrExprCond<C1::Value, C2::Value>::Type {};
@@ -88,7 +88,7 @@ template <typename T> struct IsConst<const T> : TrueType {};
 template <typename CT, typename T>
 struct IsMoreConst
     : AndExpr<IsSame<typename RemoveConst<CT>::Type, typename RemoveConst<T>::Type>,
-              BoolType<IsConst<CT>::Value >= IsConst<T>::Value> >::Type {};
+              boolType<IsConst<CT>::Value >= IsConst<T>::Value> >::Type {};
 
 template <typename T> struct IsPointer : FalseType {};
 template <typename T> struct IsPointer<T*> : TrueType {};
@@ -99,7 +99,7 @@ template <typename T> struct IsPointer<T*> : TrueType {};
 #if RAPIDJSON_HAS_CXX11_TYPETRAITS
 
 template <typename B, typename D> struct IsBaseOf
-    : BoolType< ::std::is_base_of<B,D>::value> {};
+    : boolType< ::std::is_base_of<B,D>::value> {};
 
 #else // simplified version adopted from Boost
 
@@ -123,7 +123,7 @@ template<typename B, typename D> struct IsBaseOfImpl {
 };
 
 template <typename B, typename D> struct IsBaseOf
-    : OrExpr<IsSame<B, D>, BoolExpr<IsBaseOfImpl<B, D> > >::Type {};
+    : OrExpr<IsSame<B, D>, boolExpr<IsBaseOfImpl<B, D> > >::Type {};
 
 #endif // RAPIDJSON_HAS_CXX11_TYPETRAITS
 

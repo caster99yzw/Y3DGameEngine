@@ -59,28 +59,28 @@ namespace Y3D
 	//
 	//////////////////////////////////////////////////////////////////////////
 	template <class T>
-	constexpr static BOOL Equi(T const& lhs, T const& rhs) { return lhs == rhs; }
+	constexpr static bool Equi(T const& lhs, T const& rhs) { return lhs == rhs; }
 
 	template <>
-	static BOOL Equi<FLOAT32>(FLOAT32 const& lhs, FLOAT32 const& rhs)
+	static bool Equi<FLOAT32>(FLOAT32 const& lhs, FLOAT32 const& rhs)
 	{
 		return std::abs(lhs - rhs) <= std::numeric_limits<FLOAT32>::epsilon();
 	}
 
 	template <>
-	static BOOL Equi<FLOAT64>(FLOAT64 const& lhs, FLOAT64 const& rhs)
+	static bool Equi<FLOAT64>(FLOAT64 const& lhs, FLOAT64 const& rhs)
 	{
 		return std::abs(lhs - rhs) <= std::numeric_limits<FLOAT64>::epsilon();
 	}
 
 	template <class T>
-	static BOOL Equi(Radian<T> const& lhs, Radian<T> const& rhs)
+	static bool Equi(Radian<T> const& lhs, Radian<T> const& rhs)
 	{
 		return std::abs(lhs.radValue - rhs.radValue) <= std::numeric_limits<T>::epsilon();
 	}
 
 	template <class T>
-	static BOOL Equi(Degree<T> const& lhs, Degree<T> const& rhs)
+	static bool Equi(Degree<T> const& lhs, Degree<T> const& rhs)
 	{ 
 		return std::abs(lhs.degVaule - rhs.degVaule) <= std::numeric_limits<T>::epsilon();
 	}

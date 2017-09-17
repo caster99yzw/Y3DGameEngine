@@ -431,10 +431,10 @@ struct TypeHelper {};
 
 template<typename ValueType> 
 struct TypeHelper<ValueType, bool> {
-    static bool Is(const ValueType& v) { return v.IsBool(); }
-    static bool Get(const ValueType& v) { return v.GetBool(); }
-    static ValueType& Set(ValueType& v, bool data) { return v.SetBool(data); }
-    static ValueType& Set(ValueType& v, bool data, typename ValueType::AllocatorType&) { return v.SetBool(data); }
+    static bool Is(const ValueType& v) { return v.Isbool(); }
+    static bool Get(const ValueType& v) { return v.Getbool(); }
+    static ValueType& Set(ValueType& v, bool data) { return v.Setbool(data); }
+    static ValueType& Set(ValueType& v, bool data, typename ValueType::AllocatorType&) { return v.Setbool(data); }
 };
 
 template<typename ValueType> 
@@ -672,7 +672,7 @@ public:
     }
 
     //! Constructor for boolean value.
-    /*! \param b Boolean value
+    /*! \param b boolean value
         \note This constructor is limited to \em real boolean values and rejects
             implicitly converted types like arbitrary pointers.  Use an explicit cast
             to \c bool, if you want to construct a boolean JSON value in such cases.
@@ -848,7 +848,7 @@ public:
             \ref SetString(const Ch*, Allocator&) (for copying) or
             \ref StringRef() (to explicitly mark the pointer as constant) instead.
             All other pointer types would implicitly convert to \c bool,
-            use \ref SetBool() instead.
+            use \ref Setbool() instead.
     */
     template <typename T>
     RAPIDJSON_DISABLEIF_RETURN((internal::IsPointer<T>), (GenericValue&))
@@ -1000,7 +1000,7 @@ public:
     bool IsNull()   const { return data_.f.flags == kNullFlag; }
     bool IsFalse()  const { return data_.f.flags == kFalseFlag; }
     bool IsTrue()   const { return data_.f.flags == kTrueFlag; }
-    bool IsBool()   const { return (data_.f.flags & kBoolFlag) != 0; }
+    bool Isbool()   const { return (data_.f.flags & kboolFlag) != 0; }
     bool IsObject() const { return data_.f.flags == kObjectFlag; }
     bool IsArray()  const { return data_.f.flags == kArrayFlag; }
     bool IsNumber() const { return (data_.f.flags & kNumberFlag) != 0; }
@@ -1058,13 +1058,13 @@ public:
 
     //@}
 
-    //!@name Bool
+    //!@name bool
     //@{
 
-    bool GetBool() const { RAPIDJSON_ASSERT(IsBool()); return data_.f.flags == kTrueFlag; }
+    bool Getbool() const { RAPIDJSON_ASSERT(Isbool()); return data_.f.flags == kTrueFlag; }
     //!< Set boolean value
-    /*! \post IsBool() == true */
-    GenericValue& SetBool(bool b) { this->~GenericValue(); new (this) GenericValue(b); return *this; }
+    /*! \post Isbool() == true */
+    GenericValue& Setbool(bool b) { this->~GenericValue(); new (this) GenericValue(b); return *this; }
 
     //@}
 
@@ -1839,8 +1839,8 @@ public:
     bool Accept(Handler& handler) const {
         switch(GetType()) {
         case kNullType:     return handler.Null();
-        case kFalseType:    return handler.Bool(false);
-        case kTrueType:     return handler.Bool(true);
+        case kFalseType:    return handler.bool(false);
+        case kTrueType:     return handler.bool(true);
 
         case kObjectType:
             if (RAPIDJSON_UNLIKELY(!handler.StartObject()))
@@ -1880,7 +1880,7 @@ private:
     template <typename, typename, typename> friend class GenericDocument;
 
     enum {
-        kBoolFlag       = 0x0008,
+        kboolFlag       = 0x0008,
         kNumberFlag     = 0x0010,
         kIntFlag        = 0x0020,
         kUintFlag       = 0x0040,
@@ -1893,8 +1893,8 @@ private:
 
         // Initial flags of different types.
         kNullFlag = kNullType,
-        kTrueFlag = kTrueType | kBoolFlag,
-        kFalseFlag = kFalseType | kBoolFlag,
+        kTrueFlag = kTrueType | kboolFlag,
+        kFalseFlag = kFalseType | kboolFlag,
         kNumberIntFlag = kNumberType | kNumberFlag | kIntFlag | kInt64Flag,
         kNumberUintFlag = kNumberType | kNumberFlag | kUintFlag | kUint64Flag | kInt64Flag,
         kNumberInt64Flag = kNumberType | kNumberFlag | kInt64Flag,
@@ -2406,7 +2406,7 @@ private:
 public:
     // Implementation of Handler
     bool Null() { new (stack_.template Push<ValueType>()) ValueType(); return true; }
-    bool Bool(bool b) { new (stack_.template Push<ValueType>()) ValueType(b); return true; }
+    bool bool(bool b) { new (stack_.template Push<ValueType>()) ValueType(b); return true; }
     bool Int(int i) { new (stack_.template Push<ValueType>()) ValueType(i); return true; }
     bool Uint(unsigned i) { new (stack_.template Push<ValueType>()) ValueType(i); return true; }
     bool Int64(int64_t i) { new (stack_.template Push<ValueType>()) ValueType(i); return true; }

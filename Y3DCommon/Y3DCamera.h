@@ -49,11 +49,11 @@ namespace Y3D
 		void				PopViewTM();
 
 		// Manipulation about VP matrix
-		virtual BOOL		Transform(Vec3F32 const& vecIn, Vec3F32 const& vecOut);
-		virtual BOOL		InvTransform(Vec3F32 const& vecIn, Vec3F32 const& vecOut);
+		virtual bool		Transform(Vec3F32 const& vecIn, Vec3F32 const& vecOut);
+		virtual bool		InvTransform(Vec3F32 const& vecIn, Vec3F32 const& vecOut);
 
 		// Frustum operation
-		virtual UINT32		CalcFrustumCorners(Vec3F32* aCorners, BOOL bInViewSpace, FLOAT32 fNear, FLOAT32 fFar);
+		virtual UINT32		CalcFrustumCorners(Vec3F32* aCorners, bool bInViewSpace, FLOAT32 fNear, FLOAT32 fFar);
 
 	protected:
 

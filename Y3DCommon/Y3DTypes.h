@@ -15,6 +15,4 @@ namespace Y3D
 
 	using	FLOAT32 = float;
 	using	FLOAT64 = double;
-
-	using	BOOL	= bool;
 }

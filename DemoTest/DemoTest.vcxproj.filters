@@ -8,10 +8,24 @@
     <Filter Include="Src">
       <UniqueIdentifier>{1336ca92-1a2f-4ee7-918e-863527f71537}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Window">
+      <UniqueIdentifier>{9721b1e4-9316-4ab4-bebf-d221ee784dcf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Test.cpp">
+    <ClCompile Include="Window\Win32Entity.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="WinTest.cpp">
       <Filter>Src</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Window\Win32Entity.h">
+      <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\WindowBase.h">
+      <Filter>Window</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

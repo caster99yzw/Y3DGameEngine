@@ -16,6 +16,6 @@ namespace Y3D
 
 	public:
 
-		BOOL		CreateCamera(CameraDescBase const& desc);
+		bool		CreateCamera(CameraDescBase const& desc);
 	};
 }

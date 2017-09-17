@@ -63,9 +63,9 @@ namespace Y3D
 		//AArrayView<const T> GetView() cosnt
 
 		template <typename T>
-		friend BOOL operator == (List<T> const& lhs, List<T> const& rhs);
+		friend bool operator == (List<T> const& lhs, List<T> const& rhs);
 		template <typename T>
-		friend BOOL operator != (List<T> const& lhs, List<T> const& rhs);
+		friend bool operator != (List<T> const& lhs, List<T> const& rhs);
 
 		T const& operator [] (INT32 nIndex) const
 		{

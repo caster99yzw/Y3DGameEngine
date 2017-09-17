@@ -459,7 +459,7 @@ RAPIDJSON_NAMESPACE_END
 //! Compiler branching hint for expression with high probability to be true.
 /*!
     \ingroup RAPIDJSON_CONFIG
-    \param x Boolean expression likely to be true.
+    \param x boolean expression likely to be true.
 */
 #ifndef RAPIDJSON_LIKELY
 #if defined(__GNUC__) || defined(__clang__)
@@ -472,7 +472,7 @@ RAPIDJSON_NAMESPACE_END
 //! Compiler branching hint for expression with low probability to be true.
 /*!
     \ingroup RAPIDJSON_CONFIG
-    \param x Boolean expression unlikely to be true.
+    \param x boolean expression unlikely to be true.
 */
 #ifndef RAPIDJSON_UNLIKELY
 #if defined(__GNUC__) || defined(__clang__)

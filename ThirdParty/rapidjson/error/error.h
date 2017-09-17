@@ -105,7 +105,7 @@ enum ParseErrorCode {
 */
 struct ParseResult {
     //!! Unspecified boolean type
-    typedef bool (ParseResult::*BooleanType)() const;
+    typedef bool (ParseResult::*booleanType)() const;
 public:
     //! Default constructor, no error.
     ParseResult() : code_(kParseErrorNone), offset_(0) {}
@@ -118,7 +118,7 @@ public:
     size_t Offset() const { return offset_; }
 
     //! Explicit conversion to \c bool, returns \c true, iff !\ref IsError().
-    operator BooleanType() const { return !IsError() ? &ParseResult::IsError : NULL; }
+    operator booleanType() const { return !IsError() ? &ParseResult::IsError : NULL; }
     //! Whether the result is an error.
     bool IsError() const { return code_ != kParseErrorNone; }
 

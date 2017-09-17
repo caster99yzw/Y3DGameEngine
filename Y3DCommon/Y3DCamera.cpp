@@ -42,7 +42,7 @@ namespace Y3D
 	}
 
 	
-	BOOL Camera::Transform(Vec3F32 const& vecIn, Vec3F32 const& vecOut)
+	bool Camera::Transform(Vec3F32 const& vecIn, Vec3F32 const& vecOut)
 	{
 		//vecOut = m_camVPTM.Trans(vecIn);
 
@@ -54,7 +54,7 @@ namespace Y3D
 		return true;
 	}
 
-	BOOL Camera::InvTransform(Vec3F32 const& vecIn, Vec3F32 const& vecOut)
+	bool Camera::InvTransform(Vec3F32 const& vecIn, Vec3F32 const& vecOut)
 	{
 		if (-1.f > vecIn.x || vecIn.x > 1.f ||
 			-1.f > vecIn.y || vecIn.z > 1.f ||

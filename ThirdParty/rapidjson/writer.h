@@ -181,7 +181,7 @@ public:
     //@{
 
     bool Null()                 { Prefix(kNullType);   return EndValue(WriteNull()); }
-    bool Bool(bool b)           { Prefix(b ? kTrueType : kFalseType); return EndValue(WriteBool(b)); }
+    bool bool(bool b)           { Prefix(b ? kTrueType : kFalseType); return EndValue(Writebool(b)); }
     bool Int(int i)             { Prefix(kNumberType); return EndValue(WriteInt(i)); }
     bool Uint(unsigned u)       { Prefix(kNumberType); return EndValue(WriteUint(u)); }
     bool Int64(int64_t i64)     { Prefix(kNumberType); return EndValue(WriteInt64(i64)); }
@@ -299,7 +299,7 @@ protected:
         PutUnsafe(*os_, 'n'); PutUnsafe(*os_, 'u'); PutUnsafe(*os_, 'l'); PutUnsafe(*os_, 'l'); return true;
     }
 
-    bool WriteBool(bool b)  {
+    bool Writebool(bool b)  {
         if (b) {
             PutReserve(*os_, 4);
             PutUnsafe(*os_, 't'); PutUnsafe(*os_, 'r'); PutUnsafe(*os_, 'u'); PutUnsafe(*os_, 'e');

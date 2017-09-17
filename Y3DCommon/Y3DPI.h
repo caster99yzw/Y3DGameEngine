@@ -69,37 +69,37 @@ namespace Y3D
 	};
 
 	template <class T>
-	constexpr BOOL operator == (Degree<T> const& lhs, Degree<T> const& rhs)
+	constexpr bool operator == (Degree<T> const& lhs, Degree<T> const& rhs)
 	{ 
 		return lhs.degVaule == rhs.degVaule;
 	}
 
 	template <class T>
-	constexpr BOOL operator != (Degree<T> const& lhs, Degree<T> const& rhs)
+	constexpr bool operator != (Degree<T> const& lhs, Degree<T> const& rhs)
 	{
 		return lhs.degVaule != rhs.degVaule;
 	}
 
 	template <class T>
-	constexpr BOOL operator < (Degree<T> const& lhs, Degree<T> const& rhs)
+	constexpr bool operator < (Degree<T> const& lhs, Degree<T> const& rhs)
 	{
 		return lhs.degVaule < rhs.degVaule;
 	}
 
 	template <class T>
-	constexpr BOOL operator <= (Degree<T> const& lhs, Degree<T> const& rhs)
+	constexpr bool operator <= (Degree<T> const& lhs, Degree<T> const& rhs)
 	{
 		return lhs.degVaule <= rhs.degVaule;
 	}
 
 	template <class T>
-	constexpr BOOL operator > (Degree<T> const& lhs, Degree<T> const& rhs)
+	constexpr bool operator > (Degree<T> const& lhs, Degree<T> const& rhs)
 	{
 		return lhs.degVaule > rhs.degVaule;
 	}
 
 	template <class T>
-	constexpr BOOL operator >= (Degree<T> const& lhs, Degree<T> const& rhs)
+	constexpr bool operator >= (Degree<T> const& lhs, Degree<T> const& rhs)
 	{
 		return lhs.degVaule >= rhs.degVaule;
 	}
@@ -161,37 +161,37 @@ namespace Y3D
 	};
 
 	template <class T>
-	constexpr BOOL operator == (Radian<T> const& lhs, Radian<T> const& rhs)
+	constexpr bool operator == (Radian<T> const& lhs, Radian<T> const& rhs)
 	{
 		return lhs.radValue == rhs.radValue;
 	}
 
 	template <class T>
-	constexpr BOOL operator != (Radian<T> const& lhs, Radian<T> const& rhs)
+	constexpr bool operator != (Radian<T> const& lhs, Radian<T> const& rhs)
 	{
 		return lhs.radValue != rhs.radValue;
 	}
 
 	template <class T>
-	constexpr BOOL operator < (Radian<T> const& lhs, Radian<T> const& rhs)
+	constexpr bool operator < (Radian<T> const& lhs, Radian<T> const& rhs)
 	{
 		return lhs.radValue < rhs.radValue;
 	}
 
 	template <class T>
-	constexpr BOOL operator <= (Radian<T> const& lhs, Radian<T> const& rhs)
+	constexpr bool operator <= (Radian<T> const& lhs, Radian<T> const& rhs)
 	{
 		return lhs.radValue <= rhs.radValue;
 	}
 
 	template <class T>
-	constexpr BOOL operator > (Radian<T> const& lhs, Radian<T> const& rhs)
+	constexpr bool operator > (Radian<T> const& lhs, Radian<T> const& rhs)
 	{
 		return lhs.radValue > rhs.radValue;
 	}
 
 	template <class T>
-	constexpr BOOL operator >= (Radian<T> const& lhs, Radian<T> const& rhs)
+	constexpr bool operator >= (Radian<T> const& lhs, Radian<T> const& rhs)
 	{
 		return lhs.radValue >= rhs.radValue;
 	}

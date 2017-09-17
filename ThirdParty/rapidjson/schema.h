@@ -169,7 +169,7 @@ public:
     Hasher(Allocator* allocator = 0, size_t stackCapacity = kDefaultSize) : stack_(allocator, stackCapacity) {}
 
     bool Null() { return WriteType(kNullType); }
-    bool Bool(bool b) { return WriteType(b ? kTrueType : kFalseType); }
+    bool bool(bool b) { return WriteType(b ? kTrueType : kFalseType); }
     bool Int(int i) { Number n; n.u.i = i; n.d = static_cast<double>(i); return WriteNumber(n); }
     bool Uint(unsigned u) { Number n; n.u.u = u; n.d = static_cast<double>(u); return WriteNumber(n); }
     bool Int64(int64_t i) { Number n; n.u.i = i; n.d = static_cast<double>(i); return WriteNumber(n); }
@@ -517,8 +517,8 @@ public:
         }
 
         if (const ValueType* v = GetMember(value, GetAdditionalPropertiesString())) {
-            if (v->IsBool())
-                additionalProperties_ = v->GetBool();
+            if (v->Isbool())
+                additionalProperties_ = v->Getbool();
             else if (v->IsObject())
                 schemaDocument->CreateSchema(&additionalPropertiesSchema_, p.Append(GetAdditionalPropertiesString(), allocator_), *v, document);
         }
@@ -543,8 +543,8 @@ public:
         AssignIfExist(maxItems_, value, GetMaxItemsString());
 
         if (const ValueType* v = GetMember(value, GetAdditionalItemsString())) {
-            if (v->IsBool())
-                additionalItems_ = v->GetBool();
+            if (v->Isbool())
+                additionalItems_ = v->Getbool();
             else if (v->IsObject())
                 schemaDocument->CreateSchema(&additionalItemsSchema_, p.Append(GetAdditionalItemsString(), allocator_), *v, document);
         }
@@ -694,8 +694,8 @@ public:
         return CreateParallelValidator(context);
     }
     
-    bool Bool(Context& context, bool) const { 
-        if (!(type_ & (1 << kBooleanSchemaType)))
+    bool bool(Context& context, bool) const { 
+        if (!(type_ & (1 << kbooleanSchemaType)))
             RAPIDJSON_INVALID_KEYWORD_RETURN(GetTypeString());
         return CreateParallelValidator(context);
     }
@@ -887,7 +887,7 @@ public:
     }
 
     RAPIDJSON_STRING_(Null, 'n', 'u', 'l', 'l')
-    RAPIDJSON_STRING_(Boolean, 'b', 'o', 'o', 'l', 'e', 'a', 'n')
+    RAPIDJSON_STRING_(boolean, 'b', 'o', 'o', 'l', 'e', 'a', 'n')
     RAPIDJSON_STRING_(Object, 'o', 'b', 'j', 'e', 'c', 't')
     RAPIDJSON_STRING_(Array, 'a', 'r', 'r', 'a', 'y')
     RAPIDJSON_STRING_(String, 's', 't', 'r', 'i', 'n', 'g')
@@ -925,7 +925,7 @@ public:
 private:
     enum SchemaValueType {
         kNullSchemaType,
-        kBooleanSchemaType,
+        kbooleanSchemaType,
         kObjectSchemaType,
         kArraySchemaType,
         kStringSchemaType,
@@ -966,8 +966,8 @@ private:
 
     static void AssignIfExist(bool& out, const ValueType& value, const ValueType& name) {
         if (const ValueType* v = GetMember(value, name))
-            if (v->IsBool())
-                out = v->GetBool();
+            if (v->Isbool())
+                out = v->Getbool();
     }
 
     static void AssignIfExist(SizeType& out, const ValueType& value, const ValueType& name) {
@@ -1035,7 +1035,7 @@ private:
 
     void AddType(const ValueType& type) {
         if      (type == GetNullString()   ) type_ |= 1 << kNullSchemaType;
-        else if (type == GetBooleanString()) type_ |= 1 << kBooleanSchemaType;
+        else if (type == GetbooleanString()) type_ |= 1 << kbooleanSchemaType;
         else if (type == GetObjectString() ) type_ |= 1 << kObjectSchemaType;
         else if (type == GetArrayString()  ) type_ |= 1 << kArraySchemaType;
         else if (type == GetStringString() ) type_ |= 1 << kStringSchemaType;
@@ -1702,7 +1702,7 @@ RAPIDJSON_MULTILINEMACRO_END
     RAPIDJSON_SCHEMA_HANDLE_END_     (method, arg2)
 
     bool Null()             { RAPIDJSON_SCHEMA_HANDLE_VALUE_(Null,   (CurrentContext()   ), ( )); }
-    bool Bool(bool b)       { RAPIDJSON_SCHEMA_HANDLE_VALUE_(Bool,   (CurrentContext(), b), (b)); }
+    bool bool(bool b)       { RAPIDJSON_SCHEMA_HANDLE_VALUE_(bool,   (CurrentContext(), b), (b)); }
     bool Int(int i)         { RAPIDJSON_SCHEMA_HANDLE_VALUE_(Int,    (CurrentContext(), i), (i)); }
     bool Uint(unsigned u)   { RAPIDJSON_SCHEMA_HANDLE_VALUE_(Uint,   (CurrentContext(), u), (u)); }
     bool Int64(int64_t i)   { RAPIDJSON_SCHEMA_HANDLE_VALUE_(Int64,  (CurrentContext(), i), (i)); }

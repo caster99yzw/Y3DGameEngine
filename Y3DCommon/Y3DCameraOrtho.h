@@ -56,7 +56,7 @@ namespace Y3D
 		bInViewSpace: in view space or in world space
 		fNear, fFar: near and far distance
 		*/
-		virtual UINT32		CalcFrustumCorners(Vec3F32* aCorners, BOOL bInViewSpace, FLOAT32 fNear, FLOAT32 fFar);
+		virtual UINT32		CalcFrustumCorners(Vec3F32* aCorners, bool bInViewSpace, FLOAT32 fNear, FLOAT32 fFar);
 	};
 
 }

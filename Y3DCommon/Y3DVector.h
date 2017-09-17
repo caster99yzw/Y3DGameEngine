@@ -155,13 +155,13 @@ namespace Y3D
 
 
 	template <class T>
-	constexpr BOOL operator == (_Vector<T, 1> const& lhs, _Vector<T, 1> const& rhs)
+	constexpr bool operator == (_Vector<T, 1> const& lhs, _Vector<T, 1> const& rhs)
 	{ 
 		return lhs.x == rhs.x
 	}
 
 	template <class T>
-	constexpr BOOL operator != (_Vector<T, 1> const& lhs, _Vector<T, 1> const& rhs)
+	constexpr bool operator != (_Vector<T, 1> const& lhs, _Vector<T, 1> const& rhs)
 	{ 
 		return lhs.x != rhs.x; 
 	}
@@ -317,14 +317,14 @@ namespace Y3D
 	_Vector<T, 2> const _Vector<T, 2>::IDENTITY = _Vector(T(0), T(0));
 
 	template <class T>
-	constexpr BOOL operator == (_Vector<T, 2> const& lhs, _Vector<T, 2> const& rhs)
+	constexpr bool operator == (_Vector<T, 2> const& lhs, _Vector<T, 2> const& rhs)
 	{
 		return lhs.x == rhs.x && 
 			lhs.y == rhs.y;
 	}
 
 	template <class T>
-	constexpr BOOL operator != (_Vector<T, 2> const& lhs, _Vector<T, 2> const& rhs)
+	constexpr bool operator != (_Vector<T, 2> const& lhs, _Vector<T, 2> const& rhs)
 	{
 		return lhs.x != rhs.x ||
 			lhs.y != rhs.y;
@@ -481,7 +481,7 @@ namespace Y3D
 	_Vector<T, 3> const _Vector<T, 3>::IDENTITY = _Vector(T(0), T(0), T(0));
 
 	template <class T>
-	constexpr BOOL operator == (_Vector<T, 3> const& lhs, _Vector<T, 3> const& rhs)
+	constexpr bool operator == (_Vector<T, 3> const& lhs, _Vector<T, 3> const& rhs)
 	{
 		return lhs.x == rhs.x && 
 			lhs.y == rhs.y && 
@@ -489,7 +489,7 @@ namespace Y3D
 	}
 
 	template <class T>
-	constexpr BOOL operator != (_Vector<T, 3> const& lhs, _Vector<T, 3> const& rhs)
+	constexpr bool operator != (_Vector<T, 3> const& lhs, _Vector<T, 3> const& rhs)
 	{
 		return lhs.x != rhs.x ||
 			lhs.y != rhs.y || 
@@ -657,7 +657,7 @@ namespace Y3D
 	_Vector<T, 4> const _Vector<T, 4>::IDENTITY = _Vector(T(0), T(0), T(0), T(0));
 
 	template <class T>
-	constexpr BOOL operator == (_Vector<T, 4> const& lhs, _Vector<T, 4> const& rhs)
+	constexpr bool operator == (_Vector<T, 4> const& lhs, _Vector<T, 4> const& rhs)
 	{
 		return lhs.x == rhs.x &&
 			lhs.y == rhs.y &&
@@ -666,7 +666,7 @@ namespace Y3D
 	}
 
 	template <class T>
-	constexpr BOOL operator != (_Vector<T, 4> const& lhs, _Vector<T, 4> const& rhs)
+	constexpr bool operator != (_Vector<T, 4> const& lhs, _Vector<T, 4> const& rhs)
 	{
 		return lhs.x != rhs.x ||
 			lhs.y != rhs.y ||

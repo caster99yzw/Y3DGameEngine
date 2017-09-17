@@ -36,7 +36,7 @@ namespace Y3D
 	public:
 
 		inline void SetToDefault();
-		inline BOOL IsValid() const;
+		inline bool IsValid() const;
 		inline CameraDescType GetType() const;
 
 	};
@@ -66,7 +66,7 @@ namespace Y3D
 		inline CameraOrthoDesc();
 
 		inline void SetToDefault();
-		inline BOOL IsValid() const;
+		inline bool IsValid() const;
 	};
 
 	class CameraPerspectiveDesc : public CameraDescBase
@@ -89,7 +89,7 @@ namespace Y3D
 		inline CameraPerspectiveDesc();
 
 		inline void SetToDefault();
-		inline BOOL IsValid() const;
+		inline bool IsValid() const;
 	};
 
 	inline CameraDescBase::CameraDescBase()
@@ -104,7 +104,7 @@ namespace Y3D
 		//
 	}
 
-	inline BOOL CameraDescBase::IsValid() const
+	inline bool CameraDescBase::IsValid() const
 	{
 		//
 	}
@@ -128,7 +128,7 @@ namespace Y3D
 		vRBFPos = { 0.f, 0.f, 0.f };
 	}
 
-	inline BOOL CameraOrthoDesc::IsValid() const
+	inline bool CameraOrthoDesc::IsValid() const
 	{
 		//
 	}
@@ -145,7 +145,7 @@ namespace Y3D
 		pProjInfo = { 0.f, 0.f, 0.f, 0.f };
 	}
 
-	inline BOOL CameraPerspectiveDesc::IsValid() const
+	inline bool CameraPerspectiveDesc::IsValid() const
 	{
 		//
 	}

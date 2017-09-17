@@ -170,7 +170,7 @@ concept Handler {
     typename Ch;
 
     bool Null();
-    bool Bool(bool b);
+    bool bool(bool b);
     bool Int(int i);
     bool Uint(unsigned i);
     bool Int64(int64_t i);
@@ -202,7 +202,7 @@ struct BaseReaderHandler {
 
     bool Default() { return true; }
     bool Null() { return static_cast<Override&>(*this).Default(); }
-    bool Bool(bool) { return static_cast<Override&>(*this).Default(); }
+    bool bool(bool) { return static_cast<Override&>(*this).Default(); }
     bool Int(int) { return static_cast<Override&>(*this).Default(); }
     bool Uint(unsigned) { return static_cast<Override&>(*this).Default(); }
     bool Int64(int64_t) { return static_cast<Override&>(*this).Default(); }
@@ -870,7 +870,7 @@ private:
         is.Take();
 
         if (RAPIDJSON_LIKELY(Consume(is, 'r') && Consume(is, 'u') && Consume(is, 'e'))) {
-            if (RAPIDJSON_UNLIKELY(!handler.Bool(true)))
+            if (RAPIDJSON_UNLIKELY(!handler.bool(true)))
                 RAPIDJSON_PARSE_ERROR(kParseErrorTermination, is.Tell());
         }
         else
@@ -883,7 +883,7 @@ private:
         is.Take();
 
         if (RAPIDJSON_LIKELY(Consume(is, 'a') && Consume(is, 'l') && Consume(is, 's') && Consume(is, 'e'))) {
-            if (RAPIDJSON_UNLIKELY(!handler.Bool(false)))
+            if (RAPIDJSON_UNLIKELY(!handler.bool(false)))
                 RAPIDJSON_PARSE_ERROR(kParseErrorTermination, is.Tell());
         }
         else

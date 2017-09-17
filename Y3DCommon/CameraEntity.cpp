@@ -17,7 +17,7 @@ namespace Y3D
 
 	}
 
-	BOOL CameraEntity::CreateCamera(CameraDescBase const& desc)
+	bool CameraEntity::CreateCamera(CameraDescBase const& desc)
 	{
 		CameraDescType type = desc.GetType();
 
