@@ -11,6 +11,9 @@
     <Filter Include="Window">
       <UniqueIdentifier>{9721b1e4-9316-4ab4-bebf-d221ee784dcf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="D3DX11">
+      <UniqueIdentifier>{e8c49c1d-2077-47ed-bf47-cc5b6b7b67f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window\Win32Entity.cpp">
@@ -19,6 +22,12 @@
     <ClCompile Include="WinTest.cpp">
       <Filter>Src</Filter>
     </ClCompile>
+    <ClCompile Include="D3DX11\D3DCreator.cpp">
+      <Filter>D3DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DX11\D3DHelper.cpp">
+      <Filter>D3DX11</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window\Win32Entity.h">
@@ -26,6 +35,12 @@
     </ClInclude>
     <ClInclude Include="Window\WindowBase.h">
       <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DX11\D3DCreator.h">
+      <Filter>D3DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DX11\D3DHelper.h">
+      <Filter>D3DX11</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

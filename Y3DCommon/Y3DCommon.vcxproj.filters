@@ -76,6 +76,15 @@
     <ClInclude Include="ContainerUtility.h">
       <Filter>Containers</Filter>
     </ClInclude>
+    <ClInclude Include="UniquePtr.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="SharedPtr.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeTraits.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Y3DCameraOrtho.cpp">
