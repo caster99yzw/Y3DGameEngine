@@ -78,7 +78,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)..\Output\Bin\$(Platform)\$(Configuration)\$(ProjectName)\</OutDir>
     <IntDir>$(ProjectDir)..\Output\IDOC\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(ProjectDir)..\Y3DCommon\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\Y3DCommon\;$(ProjectDir)..\ThirdParty\</IncludePath>
     <LibraryPath>$(ProjectDir)..\Output\Lib\$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

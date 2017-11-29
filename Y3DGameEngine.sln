@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.8
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Y3DCommon", "Y3DCommon\Y3DCommon.vcxproj", "{0219A4C3-C890-4295-B279-B41350B800F0}"
 EndProject
@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DemoTest", "DemoTest\DemoTe
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ThirdParty", "ThirdParty\ThirdParty.vcxproj", "{8C0DC7D3-5C28-4D11-8ECF-BE861DD1154F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Y3DAnimation", "Y3DAnimation\Y3DAnimation.vcxproj", "{976979CB-BDEB-4930-9031-DCF46E57EFFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +46,14 @@ Global
 		{8C0DC7D3-5C28-4D11-8ECF-BE861DD1154F}.Release|x64.Build.0 = Release|x64
 		{8C0DC7D3-5C28-4D11-8ECF-BE861DD1154F}.Release|x86.ActiveCfg = Release|Win32
 		{8C0DC7D3-5C28-4D11-8ECF-BE861DD1154F}.Release|x86.Build.0 = Release|Win32
+		{976979CB-BDEB-4930-9031-DCF46E57EFFC}.Debug|x64.ActiveCfg = Debug|x64
+		{976979CB-BDEB-4930-9031-DCF46E57EFFC}.Debug|x64.Build.0 = Debug|x64
+		{976979CB-BDEB-4930-9031-DCF46E57EFFC}.Debug|x86.ActiveCfg = Debug|Win32
+		{976979CB-BDEB-4930-9031-DCF46E57EFFC}.Debug|x86.Build.0 = Debug|Win32
+		{976979CB-BDEB-4930-9031-DCF46E57EFFC}.Release|x64.ActiveCfg = Release|x64
+		{976979CB-BDEB-4930-9031-DCF46E57EFFC}.Release|x64.Build.0 = Release|x64
+		{976979CB-BDEB-4930-9031-DCF46E57EFFC}.Release|x86.ActiveCfg = Release|Win32
+		{976979CB-BDEB-4930-9031-DCF46E57EFFC}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
