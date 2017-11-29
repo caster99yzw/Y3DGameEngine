@@ -125,6 +125,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Algorithm.h" />
     <ClInclude Include="CameraEntity.h" />
     <ClInclude Include="ContainerUtility.h" />
     <ClInclude Include="List.h" />

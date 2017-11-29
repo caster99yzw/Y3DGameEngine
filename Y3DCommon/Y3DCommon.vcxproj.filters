@@ -85,6 +85,9 @@
     <ClInclude Include="TypeTraits.h">
       <Filter>Containers</Filter>
     </ClInclude>
+    <ClInclude Include="Algorithm.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Y3DCameraOrtho.cpp">
