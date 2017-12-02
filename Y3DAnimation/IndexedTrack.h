@@ -137,7 +137,7 @@ public:
 
 	virtual KeyHandle				AddKeyNoOverride(TimeType t, KeyType const& key);
 	virtual KeyHandle				AddOrUpdateKey(TimeType t, KeyType const& key);
-	virtual KeyHandle				AddOrUpdateKey(TimeType t, KeyType & key);
+	virtual KeyHandle				AddOrUpdateKey(TimeType t, KeyType && key);
 
 	//	Binary search (promise the ordered array)
 	inline UINT32					UpperBound(TimeType t) const;
@@ -151,13 +151,13 @@ public:
 	//inline void						AddUnorderedFrames();
 	//inline void						MoveTrackArray();
 
-	inline void						GetRelatedTrackElementsBS() const;
+	inline void						GetRelatedTrackElementsBS(TimeType inTime, INT32& trackIdx1, INT32& trackIdx2, FLOAT32& tOut) const;
 	
 protected:
 
 	inline UINT32					FindOrderedIndex() const;
 	inline UINT32					FindOrderedIndexReverse() const;
-	inline void						GetRelatedTrackElements();
+	inline void						GetRelatedTrackElements(TimeType inTime, INT32& trackIdx1, INT32& trackIdx2, FLOAT32& tOut);
 	inline void						SortByTime();
 
 protected:

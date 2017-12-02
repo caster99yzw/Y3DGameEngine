@@ -72,7 +72,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(ProjectDir)..\Output\Lib\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)..\Output\Idoc\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(ProjectDir)..\Y3DCommon\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\Y3DCommon\;$(ProjectDir)..\Y3DSTLCore\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)..\Output\Lib\$(Platform)\$(Configuration)\</OutDir>
@@ -83,6 +83,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -112,6 +114,8 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -121,13 +125,18 @@
   <ItemGroup>
     <ClInclude Include="AnimLoop.h" />
     <ClInclude Include="IndexedKey.h" />
+    <ClInclude Include="IndexedRangeTrack.h" />
     <ClInclude Include="IndexedTrack.h" />
+    <ClInclude Include="IndexedKeyTrack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimLoop.cpp" />
     <ClCompile Include="Helper.h" />
     <ClCompile Include="IndexedKey.cpp" />
+    <ClCompile Include="IndexedRangeTrack.cpp" />
     <ClCompile Include="IndexedTrack.cpp" />
+    <ClCompile Include="IndexedKeyTrack.cpp" />
+    <ClCompile Include="Interval.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

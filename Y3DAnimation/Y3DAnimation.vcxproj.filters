@@ -5,10 +5,15 @@
     <ClCompile Include="IndexedKey.cpp" />
     <ClCompile Include="AnimLoop.cpp" />
     <ClCompile Include="IndexedTrack.cpp" />
+    <ClCompile Include="IndexedKeyTrack.cpp" />
+    <ClCompile Include="IndexedRangeTrack.cpp" />
+    <ClCompile Include="Interval.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IndexedKey.h" />
     <ClInclude Include="AnimLoop.h" />
     <ClInclude Include="IndexedTrack.h" />
+    <ClInclude Include="IndexedKeyTrack.h" />
+    <ClInclude Include="IndexedRangeTrack.h" />
   </ItemGroup>
 </Project>

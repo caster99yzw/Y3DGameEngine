@@ -242,31 +242,249 @@ typename TrackBase<_K, _E>::TimeType TrackBase<_K, _E>::GetMaxKeyTime() const
 	return m_arrTrackData[m_arrTrackData.size() - 1].GetKeyTime();
 }
 
-//virtual bool					UpdateKeyValue(KeyHandle h, void* pData);
-//inline void						ScaleTime(FLOAT32 factor);
-//inline void						EstimateKeyFrameNum(UINT32 num);
+template <typename _K, typename _E>
+bool TrackBase<_K, _E>::UpdateKeyValue(KeyHandle h, void* pData)
+{
+	if (!pData)
+		return false;
+
+	TrackElement* pEle = GetTrackElementByHandle(h);
+	if (!pEle)
+		return false;
+
+	typename TrackElement::ValueType* pKey = (typename TrackElement::ValueType*)pData;
+	pEle->Value = *pKey;
+	return true;
+}
+
+template <typename _K, typename _E>
+void TrackBase<_K, _E>::ScaleTime(FLOAT32 factor)
+{
+	if (factor == 0) return;
+
+	for (INT32 i = 0; i < m_arrTrackData.size(); ++i)
+	{
+		m_arrTrackData[i].SetKeyTimeUnsafe(m_arrTrackData[i].GetKeyTime() * factor);
+	}
+
+	if (factor < 0)
+	{
+		for (INT32 i = 0; i < m_arrTrackData.size(); ++i)
+		{
+			//	swap
+			TrackElement e = std::move(m_arrTrackData[m_arrTrackData.size()]);
+			m_arrTrackData[m_arrTrackData.size()] = std::move(m_arrTrackData[i]);
+			m_arrTrackData[i] = e;
+		}
+	}
+}
+
+template <typename _K, typename _E>
+void TrackBase<_K, _E>::EstimateKeyFrameNum(UINT32 num)
+{
+	//m_arrTrackData.capacity(num);
+}
+
+template <typename _K, typename _E>
+KeyHandle TrackBase<_K, _E>::AddKeyNoOverride(TimeType t, KeyType const& key)
+{
+	INT32 i;
+	FindIndexByTime(t, i);
+	TrackElement e;
+	e.Value = key;
+	e.SetKeyTimeUnsafe(t);
+	auto handle = e.GetHandle();
+	m_arrTrackData.insert(i, std::move(e));
+	return handle;
+}
+
+template <typename _K, typename _E>
+KeyHandle TrackBase<_K, _E>::AddOrUpdateKey(TimeType t, KeyType const& key)
+{
+	INT32 i;
+	if (FindIndexByTime(t, i))
+	{
+		m_arrTrackData[i].Value = std::move(key);
+		return m_arrTrackData[i].GetHandle();
+	}
+	else
+	{
+		TrackElement e;
+		e.Value = key;
+		e.SetKeyTimeUnsafe(t);
+		auto handle = e.GetHandle();
+		m_arrTrackData.insert(i, std::move(e));
+		return handle;
+	}
+
+}
+
+template <typename _K, typename _E>
+KeyHandle TrackBase<_K, _E>::AddOrUpdateKey(TimeType t, KeyType && key)
+{
+	INT32 i;
+	if (FindIndexByTime(t, i))
+	{
+		m_arrTrackData[i].Value = std::move(key);
+		return m_arrTrackData[i].GetHandle();
+	}
+	else
+	{
+		TrackElement e;
+		e.Value = std::move(key);
+		e.SetKeyTimeUnsafe(t);
+		auto handle = e.GetHandle();
+		m_arrTrackData.insert(i, std::move(e));
+		return handle;
+	}
+}
+
+template <typename _K, typename _E>
+UINT32 TrackBase<_K, _E>::UpperBound(TimeType t) const
+{
+	//return static_cast<UINT32>(
+	//	UpperBound(m_arrTrackData._Get_data(), t, Less<TrackElement>()) - m_arrTrackData._Get_data())
+	//	);
+}
+
+template <typename _K, typename _E>
+UINT32 TrackBase<_K, _E>::LowerBound(TimeType t) const
+{
+	//return static_cast<UINT32>(
+	//	LowerBound(m_arrTrackData._Get_data(), t, Less<TrackElement>()) - m_arrTrackData._Get_data())
+	//	);
+}
+
+template <typename _K, typename _E>
+typename TrackBase<_K, _E>::TrackElement& TrackBase<_K, _E>::GetTrackElementAtIndex(UINT32 index)
+{
+	return const_cast<typename TrackBase<_K, _E>::TrackElement&>(
+		static_cast<TrackBase<_K, _E> const>(*this).GetTrackElementAtIndex(index)
+		);
+}
+
+template <typename _K, typename _E>
+typename TrackBase<_K, _E>::TrackElement const& TrackBase<_K, _E>::GetTrackElementAtIndex(UINT32 index) const
+{
+	return m_arrTrackData[index];
+}
+
+template <typename _K, typename _E>
+typename TrackBase<_K, _E>::TrackElement* TrackBase<_K, _E>::GetTrackElementByHandle(KeyHandle h)
+{
+	return const_cast<typename TrackBase<_K, _E>::TrackElement*>(
+		static_cast<TrackBase<_K, _E> const>(*this).GetTrackElementByHandle(h)
+		);
+}
+
+template <typename _K, typename _E>
+typename TrackBase<_K, _E>::TrackElement const* TrackBase<_K, _E>::GetTrackElementByHandle(KeyHandle h) const
+{
+	INT32 i = FindIndexByHandle(h);
+
+	if (i != -1)
+		return &m_arrTrackData[i];
+	else
+		return nullptr;
+}
+
+//template <typename _K, typename _E>
+//void TrackBase<_K, _E>::AddUnorderedFrames()
+//{
+//	//m_arrTrackData.
+//	//for (int i = 0)
 //
-//virtual KeyHandle				AddKeyNoOverride(TimeType t, KeyType const& key);
-//virtual KeyHandle				AddOrUpdateKey(TimeType t, KeyType const& key);
-//virtual KeyHandle				AddOrUpdateKey(TimeType t, KeyType & key);
+//	SortByTime();
+//}
 //
-////	Binary search (promise the ordered array)
-//inline UINT32					UpperBound(TimeType t) const;
-//inline UINT32					LowerBound(TimeType t) const;
-//
-//inline TrackElement&			GetTrackElementAtIndex(UINT32 index);
-//inline TrackElement const&		GetTrackElementAtIndex(UINT32 index) const;
-//inline TrackElement*			GetTrackElementByHandle(KeyHandle h);
-//inline TrackElement const*		GetTrackElementByHandle(KeyHandle h) const;
-//
-////inline void						AddUnorderedFrames();
-////inline void						MoveTrackArray();
-//
-//inline void						GetRelatedTrackElementsBS() const;
-//
-//protected:
-//
-//	inline UINT32					FindOrderedIndex() const;
-//	inline UINT32					FindOrderedIndexReverse() const;
-//	inline void						GetRelatedTrackElements();
-//	inline void						SortByTime();
+//template <typename _K, typename _E>
+//void TrackBase<_K, _E>::MoveTrackArray()
+//{
+//	//
+//}
+
+template <typename _K, typename _E>
+void TrackBase<_K, _E>::GetRelatedTrackElementsBS(TimeType inTime, INT32& trackIdx1, INT32& trackIdx2, FLOAT32& tOut) const
+{
+
+	ASSERT(m_arrTrackData.size() != 0);
+
+	INT32 i = 0;
+	if (inTime <= m_arrTrackData[0].GetKeyTime())
+	{
+		trackIdx1 = trackIdx2 = 0;
+		tOut = 0;
+		return;
+	}
+
+	if (inTime >= m_arrTrackData[m_arrTrackData.size() - 1].GetKeyTime())
+	{
+		trackIdx1 = trackIdx2 = m_arrTrackData.size() - 1;
+		tOut = 1;
+		return;
+	}
+
+
+	i = UpperBound(inTime);
+	trackIdx1 = i - 1;
+	trackIdx2 = i;
+	tOut = FLOAT32(inTime - m_arrTrackData[trackIdx1].GetKeyTime()) / (m_arrTrackData[trackIdx2].GetKeyTime() - m_arrTrackData[trackIdx1].GetKeyTime());
+}
+
+template <typename _K, typename _E>
+UINT32 TrackBase<_K, _E>::FindOrderedIndex() const 
+{
+	UINT32 i = 0;
+	while (i < m_arrTrackData.size() && time > m_arrTrackData[i].GetKeyTime())
+	{
+		++i;
+	}
+	return i;
+}
+
+template <typename _K, typename _E>
+UINT32 TrackBase<_K, _E>::FindOrderedIndexReverse() const
+{
+	UINT32 i = m_arrTrackData.size();
+	while (i > 0 && time > m_arrTrackData[i - 1].GetKeyTime())
+	{
+		--i;
+	}
+	return i;
+}
+
+template <typename _K, typename _E>
+void TrackBase<_K, _E>::GetRelatedTrackElements(TimeType inTime, INT32& trackIdx1, INT32& trackIdx2, FLOAT32& tOut)
+{
+	ASSERT(m_arrTrackData.size() != 0);
+
+	INT32 i = 0;
+	if (inTime <= m_arrTrackData[0].GetKeyTime())
+	{
+		trackIdx1 = trackIdx2 = 0;
+		tOut = 0;
+		return;
+	}
+
+	if (inTime >= m_arrTrackData[m_arrTrackData.size() - 1].GetKeyTime())
+	{
+		trackIdx1 = trackIdx2 = m_arrTrackData.size() - 1;
+		tOut = 1;
+		return;
+	}
+
+	while (i < m_arrTrackData.size() && time > m_arrTrackData[i].GetKeyTime())
+	{
+		++i;
+	}
+	trackIdx1 = i - 1;
+	trackIdx2 = i;
+	tOut = FLOAT32(inTime - m_arrTrackData[trackIdx1].GetKeyTime()) / (m_arrTrackData[trackIdx2].GetKeyTime() - m_arrTrackData[trackIdx1].GetKeyTime());
+
+}
+
+template <typename _K, typename _E>
+void TrackBase<_K, _E>::SortByTime()
+{
+	Sort(m_arrTrackData.begin(), m_arrTrackData.end(), less<TrackElement>());
+}

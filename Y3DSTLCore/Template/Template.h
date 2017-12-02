@@ -1,3 +1,5 @@
+#pragma once
+
 #include "EnableIf.h"
 #include "../CoreTypes.h"
 

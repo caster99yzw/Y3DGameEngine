@@ -6,7 +6,7 @@
 * (based on std::remove_cv<>
 * note: won't remove the const from "const int*", as the pointer is not const
 */
-template <typename T> struct TRemoveCV						{ typedef T Type; };
-template <typename T> struct TRemoveCV<const T>				{ typedef T Type; };
-template <typename T> struct TRemoveCV<volatile T>			{ typedef T Type; };
-template <typename T> struct TRemoveCV<const volatile T>	{ typedef T Type; };
+template <typename T> struct RemoveCV						{ typedef T Type; };
+template <typename T> struct RemoveCV<const T>				{ typedef T Type; };
+template <typename T> struct RemoveCV<volatile T>			{ typedef T Type; };
+template <typename T> struct RemoveCV<const volatile T>		{ typedef T Type; };

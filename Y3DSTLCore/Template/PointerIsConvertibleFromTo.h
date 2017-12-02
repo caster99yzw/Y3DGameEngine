@@ -13,7 +13,7 @@ private:
 	static UINT16	Test(To*);
 
 public:
-	enum { Value = sizeof(Test((From*)nullptr)) - 1; };
+	enum { Value = sizeof(Test((From*)nullptr)) - 1 };
 };
 
 class PointerIsConvertibleFromTo_TestBase

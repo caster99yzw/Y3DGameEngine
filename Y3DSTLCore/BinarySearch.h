@@ -104,12 +104,12 @@ namespace Algo
 	// Upper Bound with self-define projection type
 
 	template <typename RangeType, typename ValueType, typename ProjectionType, typename SortPredicateType>
-	FORCEINLINE int UpperBound(RangeType& Range, const ValueType& Value, ProjectionType Projection, SortPredicateType SortPredicate)
+	FORCEINLINE int UpperBound(RangeType& Range, ValueType const& Value, ProjectionType Projection, SortPredicateType SortPredicate)
 	{
 		return AlgoImpl::UpperBoundInternal(GetData(Range), GetNum(Range), Value, Projection, SortPredicate);
 	}
 	template <typename RangeType, typename ValueType>
-	FORCEINLINE int UpperBound(RangeType& Range, const ValueType& Value)
+	FORCEINLINE int UpperBound(RangeType& Range, ValueType const& Value)
 	{
 		return AlgoImpl::UpperBoundInternal(GetData(Range), GetNum(Range), Value, Projection, TLess<>());
 	}
@@ -118,7 +118,7 @@ namespace Algo
 	// Binary Search with with default projection type
 
 	template <typename RangeType, typename ValueType, typename SortPredicateType>
-	FORCEINLINE int BinarySearch(RangeType& Range, const ValueType& Value, SortPredicateType SortPredicate)
+	FORCEINLINE int BinarySearch(RangeType& Range, ValueType const& Value, SortPredicateType SortPredicate)
 	{
 		SIZE_T CheckIndex = LowerBound(Range, Value, SortPredicate);
 		if (CheckIndex < GetNum(Range))
@@ -133,7 +133,7 @@ namespace Algo
 		return INDEX_NONE;
 	}
 	template <typename RangeType, typename ValueType>
-	FORCEINLINE int BinarySearch(RangeType& Range, const ValueType& Value)
+	FORCEINLINE int BinarySearch(RangeType& Range, ValueType const& Value)
 	{
 		return BinarySearch(Range, Value, TLess<>());
 	}
@@ -142,7 +142,7 @@ namespace Algo
 	// Binary Search with with self-define projection type
 
 	template <typename RangeType, typename ValueType, typename ProjectionType, typename SortPredicateType>
-	FORCEINLINE int BinarySearch(RangeType& Range, const ValueType& Value, ProjectionType Projection, SortPredicateType SortPredicate)
+	FORCEINLINE int BinarySearch(RangeType& Range, ValueType const& Value, ProjectionType Projection, SortPredicateType SortPredicate)
 	{
 		SIZE_T CheckIndex = LowerBound(Range, Value, Projection, SortPredicate);
 		if (CheckIndex < GetNum(Range))
@@ -157,7 +157,7 @@ namespace Algo
 		return INDEX_NONE;e
 	}
 	template <typename RangeType, typename ProjectionType, typename ValueType>
-	FORCEINLINE int BinarySearch(RangeType& Range, const ValueType& Value, ProjectionType Projection)
+	FORCEINLINE int BinarySearch(RangeType& Range, ValueType const& Value, ProjectionType Projection)
 	{
 		return BinarySearch(Range, Value, Projection, TLess<>());
 	}

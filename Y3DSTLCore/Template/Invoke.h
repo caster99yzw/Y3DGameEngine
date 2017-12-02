@@ -3,6 +3,7 @@
 #include "EnableIf.h"
 #include "PointerIsConvertibleFromTo.h"
 #include "Decay.h"
+#include "Template.h"
 
 namespace Invoke_Private
 {
@@ -15,7 +16,7 @@ namespace Invoke_Private
 
 	template <typename BaseType, typename CallableType>
 	FORCEINLINE auto DereferenceIfNecessary(CallableType&& Callable)
-		-> typename EnableIf<!PointerIsConvertibleFromTo<typename Decay<BaseType>::Type, typename Decay<CallableType>::Type>::Value, decltype((*CallableType&&)Callable)>::Type
+		-> typename EnableIf<!PointerIsConvertibleFromTo<typename Decay<BaseType>::Type, typename Decay<CallableType>::Type>::Value, decltype(*(CallableType&&)Callable)>::Type
 	{
 		return *(CallableType&&)Callable;
 	}
@@ -36,21 +37,21 @@ FORCEINLINE auto Invoke(FuncType&& Func, ArgTypes&&... Args)
 
 template <typename ReturnType, typename ObjType, typename CallableType>
 FORCEINLINE auto Invoke(ReturnType ObjType::*pdm, CallableType&& Callable)
-	-> decltype(Invoke_Private::DereferenceIfNecessary<ObjType>(Forward(CallableType)<Callable>).*pdm)
+	-> decltype(Invoke_Private::DereferenceIfNecessary<ObjType>(Forward<CallableType>(Callable)).*pdm)
 {
-	return Invoke_Private::DereferenceIfNecessary<ObjType>(Forward(CallableType)<Callable>).*pdm;
+	return Invoke_Private::DereferenceIfNecessary<ObjType>(Forward<CallableType>(Callable)).*pdm;
 }
 
 template <typename ReturnType, typename ObjType, typename... PMFArgTypes, typename CallableType, typename... ArgTypes>
 FORCEINLINE auto Invoke(ReturnType (ObjType::*PtrMemFun)(PMFArgTypes...), CallableType&& Callable, ArgTypes&&... Args)
--> decltype(Invoke_Private::DereferenceIfNecessary<ObjType>(Forward<CallableType>(Callable)).*PtrMemFun)(Forward<ArgTypes>(Args)...)
+	-> decltype(Invoke_Private::DereferenceIfNecessary<ObjType>(Forward<CallableType>(Callable).*PtrMemFun)(Forward<ArgTypes>(Args)...))
 {
-	return (Invoke_Private::DereferenceIfNecessary<ObjType>(Forward<CallableType>(Callable)).*PtrMemFun)(Forward<ArgTypes>(Args)...);
+	return (Invoke_Private::DereferenceIfNecessary<ObjType>((Forward<CallableType>(Callable)).*PtrMemFun)(Forward<ArgTypes>(Args)...));
 }
 
 template <typename ReturnType, typename ObjType, typename... PMFArgTypes, typename CallableType, typename... ArgTypes>
 FORCEINLINE auto Invoke(ReturnType(ObjType::*PtrMemFun)(PMFArgTypes...) const, CallableType&& Callable, ArgTypes&&... Args)
--> decltype(Invoke_Private::DereferenceIfNecessary<ObjType>(Forward<CallableType>(Callable)).*PtrMemFun)(Forward<ArgTypes>(Args)...)
+	-> decltype(Invoke_Private::DereferenceIfNecessary<ObjType>(Forward<CallableType>(Callable).*PtrMemFun)(Forward<ArgTypes>(Args)...))
 {
-	return (Invoke_Private::DereferenceIfNecessary<ObjType>(Forward<CallableType>(Callable)).*PtrMemFun)(Forward<ArgTypes>(Args)...);
+	return (Invoke_Private::DereferenceIfNecessary<ObjType>(Forward<CallableType>(Callable).*PtrMemFun)(Forward<ArgTypes>(Args)...));
 }
