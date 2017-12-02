@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Invoke.h"
-#include "IdentityFunctor.h"
+#include "Template/IdentityFunctor.h"
+#include "Template/Invoke.h"
+#include "Template/Template.h"
 
 namespace AlgoImpl
 {
@@ -14,6 +15,7 @@ namespace AlgoImpl
 		SIZE_T start = 0;
 
 		SIZE_T Size = Num;
+
 
 		while (Size > 0)
 		{
@@ -62,12 +64,12 @@ namespace Algo
 	template <typename RangeType, typename ValueType, typename SortPredicateType>
 	FORCEINLINE int LowerBound(RangeType& Range, const ValueType& Value, SortPredicateType SortPredicate)
 	{
-		return AlgoImpl::LowerBoundInternal(GetData(Range), GetNum(Range), Value, FIdentityFunctor(), SortPredicate);
+		return AlgoImpl::LowerBoundInternal(GetData(Range), GetNum(Range), Value, IdentityFunctor(), SortPredicate);
 	}
 	template <typename RangeType, typename ValueType>
 	FORCEINLINE int LowerBound(RangeType& Range, const ValueType& Value)
 	{
-		return AlgoImpl::LowerBoundInternal(GetData(Range), GetNum(Range), Value, FIdentityFunctor(), TLess<>());
+		return AlgoImpl::LowerBoundInternal(GetData(Range), GetNum(Range), Value, IdentityFunctor(), TLess<>());
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -90,12 +92,12 @@ namespace Algo
 	template <typename RangeType, typename ValueType, typename SortPredicateType>
 	FORCEINLINE int UpperBound(RangeType& Range, const ValueType& Value, SortPredicateType SortPredicate)
 	{
-		return AlgoImpl::UpperBoundInternal(GetData(Range), GetNum(Range), Value, FIdentityFunctor(), SortPredicate);
+		return AlgoImpl::UpperBoundInternal(GetData(Range), GetNum(Range), Value, IdentityFunctor(), SortPredicate);
 	}
 	template <typename RangeType, typename ValueType>
 	FORCEINLINE int UpperBound(RangeType& Range, const ValueType& Value)
 	{
-		return AlgoImpl::UpperBoundInternal(GetData(Range), GetNum(Range), Value, FIdentityFunctor(), TLess<>());
+		return AlgoImpl::UpperBoundInternal(GetData(Range), GetNum(Range), Value, IdentityFunctor(), TLess<>());
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -152,7 +154,7 @@ namespace Algo
 				return CheckIndex;
 			}
 		}
-		return INDEX_NONE;
+		return INDEX_NONE;e
 	}
 	template <typename RangeType, typename ProjectionType, typename ValueType>
 	FORCEINLINE int BinarySearch(RangeType& Range, const ValueType& Value, ProjectionType Projection)

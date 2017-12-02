@@ -121,9 +121,18 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Allocator.h" />
     <ClInclude Include="BinarySearch.h" />
-    <ClInclude Include="IdentityFunctor.h" />
-    <ClInclude Include="Invoke.h" />
+    <ClInclude Include="CoreTypes.h" />
+    <ClInclude Include="Template\Decay.h" />
+    <ClInclude Include="Template\EnableIf.h" />
+    <ClInclude Include="Template\IdentityFunctor.h" />
+    <ClInclude Include="Template\Invoke.h" />
+    <ClInclude Include="Template\IsContiguousContainer.h" />
+    <ClInclude Include="Template\PointerIsConvertibleFromTo.h" />
+    <ClInclude Include="Template\RemoveCV.h" />
+    <ClInclude Include="Template\RemoveReference.h" />
+    <ClInclude Include="Template\Template.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

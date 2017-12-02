@@ -4,8 +4,40 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Invoke.h" />
     <ClInclude Include="BinarySearch.h" />
-    <ClInclude Include="IdentityFunctor.h" />
+    <ClInclude Include="Template\Decay.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Template\EnableIf.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Template\IdentityFunctor.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Template\Invoke.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Template\IsContiguousContainer.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Template\RemoveCV.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Template\RemoveReference.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Template\Template.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="CoreTypes.h" />
+    <ClInclude Include="Template\PointerIsConvertibleFromTo.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Allocator.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Template">
+      <UniqueIdentifier>{2d959ab6-8aa8-4c2e-b41f-dd2cb730cee1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

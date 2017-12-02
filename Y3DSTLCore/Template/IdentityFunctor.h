@@ -1,10 +1,8 @@
 #pragma once
 
-#define FORCEINLINE __forceinline
-#define INDEX_NONE -1
-typedef unsigned long		SIZE_T;
+#include "../CoreTypes.h"
 
-struct FIdentityFunctor
+struct IdentityFunctor
 {
 	template <typename T>
 	FORCEINLINE T&& operator()(T&& Val) const
