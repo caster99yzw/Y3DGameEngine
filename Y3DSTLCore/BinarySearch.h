@@ -3,6 +3,7 @@
 #include "Template/IdentityFunctor.h"
 #include "Template/Invoke.h"
 #include "Template/Template.h"
+#include "Template/Less.h"
 
 namespace AlgoImpl
 {
@@ -62,63 +63,64 @@ namespace Algo
 	// Lower Bound with default projection type
 
 	template <typename RangeType, typename ValueType, typename SortPredicateType>
-	FORCEINLINE int LowerBound(RangeType& Range, const ValueType& Value, SortPredicateType SortPredicate)
+	FORCEINLINE UINT32 LowerBound(RangeType& Range, ValueType const& Value, SortPredicateType SortPredicate)
 	{
 		return AlgoImpl::LowerBoundInternal(GetData(Range), GetNum(Range), Value, IdentityFunctor(), SortPredicate);
 	}
 	template <typename RangeType, typename ValueType>
-	FORCEINLINE int LowerBound(RangeType& Range, const ValueType& Value)
+	FORCEINLINE UINT32 LowerBound(RangeType& Range, ValueType const& Value)
 	{
-		return AlgoImpl::LowerBoundInternal(GetData(Range), GetNum(Range), Value, IdentityFunctor(), TLess<>());
+		return AlgoImpl::LowerBoundInternal(GetData(Range), GetNum(Range), Value, IdentityFunctor(), Less<>());
 	}
 
 	//////////////////////////////////////////////////////////////////////////
 	// Lower Bound with self-define projection type
 
 	template <typename RangeType, typename ValueType, typename ProjectionType, typename SortPredicateType>
-	FORCEINLINE int LowerBound(RangeType& Range, const ValueType& Value, ProjectionType Projection, SortPredicateType SortPredicate)
+	FORCEINLINE UINT32 LowerBoundBy(RangeType& Range, ValueType const& Value, ProjectionType Projection, SortPredicateType SortPredicate)
 	{
 		return AlgoImpl::LowerBoundInternal(GetData(Range), GetNum(Range), Value, Projection, SortPredicate);
 	}
-	template <typename RangeType, typename ValueType>
-	FORCEINLINE int LowerBound(RangeType& Range, const ValueType& Value)
+	template <typename RangeType, typename ValueType, typename ProjectionType>
+	FORCEINLINE UINT32 LowerBoundBy(RangeType& Range, ValueType const& Value, ProjectionType Projection)
 	{
-		return AlgoImpl::LowerBoundInternal(GetData(Range), GetNum(Range), Value, Projection, TLess<>());
+		return AlgoImpl::LowerBoundInternal(GetData(Range), GetNum(Range), Value, Projection, Less<>());
 	}
 
 	//////////////////////////////////////////////////////////////////////////
 	// Upper Bound with default projection type
 
 	template <typename RangeType, typename ValueType, typename SortPredicateType>
-	FORCEINLINE int UpperBound(RangeType& Range, const ValueType& Value, SortPredicateType SortPredicate)
+	FORCEINLINE UINT32 UpperBound(RangeType& Range, ValueType const& Value, SortPredicateType SortPredicate)
 	{
+
 		return AlgoImpl::UpperBoundInternal(GetData(Range), GetNum(Range), Value, IdentityFunctor(), SortPredicate);
 	}
 	template <typename RangeType, typename ValueType>
-	FORCEINLINE int UpperBound(RangeType& Range, const ValueType& Value)
+	FORCEINLINE UINT32 UpperBound(RangeType& Range, ValueType const& Value)
 	{
-		return AlgoImpl::UpperBoundInternal(GetData(Range), GetNum(Range), Value, IdentityFunctor(), TLess<>());
+		return AlgoImpl::UpperBoundInternal(GetData(Range), GetNum(Range), Value, IdentityFunctor(), Less<>());
 	}
 
 	//////////////////////////////////////////////////////////////////////////
 	// Upper Bound with self-define projection type
 
 	template <typename RangeType, typename ValueType, typename ProjectionType, typename SortPredicateType>
-	FORCEINLINE int UpperBound(RangeType& Range, ValueType const& Value, ProjectionType Projection, SortPredicateType SortPredicate)
+	FORCEINLINE UINT32 UpperBoundBy(RangeType& Range, ValueType const& Value, ProjectionType Projection, SortPredicateType SortPredicate)
 	{
 		return AlgoImpl::UpperBoundInternal(GetData(Range), GetNum(Range), Value, Projection, SortPredicate);
 	}
-	template <typename RangeType, typename ValueType>
-	FORCEINLINE int UpperBound(RangeType& Range, ValueType const& Value)
+	template <typename RangeType, typename ValueType, typename ProjectionType>
+	FORCEINLINE UINT32 UpperBoundBy(RangeType& Range, ValueType const& Value, ProjectionType Projection)
 	{
-		return AlgoImpl::UpperBoundInternal(GetData(Range), GetNum(Range), Value, Projection, TLess<>());
+		return AlgoImpl::UpperBoundInternal(GetData(Range), GetNum(Range), Value, Projection, Less<>());
 	}
 
 	//////////////////////////////////////////////////////////////////////////
 	// Binary Search with with default projection type
 
 	template <typename RangeType, typename ValueType, typename SortPredicateType>
-	FORCEINLINE int BinarySearch(RangeType& Range, ValueType const& Value, SortPredicateType SortPredicate)
+	FORCEINLINE UINT32 BinarySearch(RangeType& Range, ValueType const& Value, SortPredicateType SortPredicate)
 	{
 		SIZE_T CheckIndex = LowerBound(Range, Value, SortPredicate);
 		if (CheckIndex < GetNum(Range))
@@ -133,7 +135,7 @@ namespace Algo
 		return INDEX_NONE;
 	}
 	template <typename RangeType, typename ValueType>
-	FORCEINLINE int BinarySearch(RangeType& Range, ValueType const& Value)
+	FORCEINLINE UINT32 BinarySearch(RangeType& Range, ValueType const& Value)
 	{
 		return BinarySearch(Range, Value, TLess<>());
 	}
@@ -142,7 +144,7 @@ namespace Algo
 	// Binary Search with with self-define projection type
 
 	template <typename RangeType, typename ValueType, typename ProjectionType, typename SortPredicateType>
-	FORCEINLINE int BinarySearch(RangeType& Range, ValueType const& Value, ProjectionType Projection, SortPredicateType SortPredicate)
+	FORCEINLINE UINT32 BinarySearch(RangeType& Range, ValueType const& Value, ProjectionType Projection, SortPredicateType SortPredicate)
 	{
 		SIZE_T CheckIndex = LowerBound(Range, Value, Projection, SortPredicate);
 		if (CheckIndex < GetNum(Range))
@@ -157,8 +159,8 @@ namespace Algo
 		return INDEX_NONE;e
 	}
 	template <typename RangeType, typename ProjectionType, typename ValueType>
-	FORCEINLINE int BinarySearch(RangeType& Range, ValueType const& Value, ProjectionType Projection)
+	FORCEINLINE UINT32 BinarySearch(RangeType& Range, ValueType const& Value, ProjectionType Projection)
 	{
-		return BinarySearch(Range, Value, Projection, TLess<>());
+		return BinarySearch(Range, Value, Projection, Less<>());
 	}
 }

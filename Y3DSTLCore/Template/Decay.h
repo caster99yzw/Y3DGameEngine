@@ -2,6 +2,7 @@
 
 #include "RemoveReference.h"
 #include "RemoveCV.h"
+#include "../CoreTypes.h"
 
 namespace Decay_Private
 {
@@ -17,7 +18,7 @@ namespace Decay_Private
 		typedef typename T* Type;
 	};
 
-	template <typename T, int N>
+	template <typename T, UINT32 N>
 	struct DecayNonReference<T[N]>
 	{
 		typedef typename T* Type;

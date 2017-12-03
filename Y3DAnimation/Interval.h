@@ -1,4 +1,5 @@
 #pragma once
+#include "CoreTypes.h"
 #include "BinarySearch.h"
 
 struct IntervalType
@@ -16,34 +17,34 @@ struct IntervalType
 	};
 };
 
-template <typename IndexType, typename RangeType, template	ValueType>
-FORCEINLINE bool GetInterval(RangeType& Range, const ValueType& Value, IntervalType type, IndexType& begin, IndexType& end) const
+template <typename IndexType, typename RangeType, typename ValueType>
+FORCEINLINE bool GetInterval(RangeType& Range, ValueType const& Value, IntervalType type, IndexType& begin, IndexType& end) 
 {
 	//	the range is sorted from largest to smallest in default
 	begin = (type & IntervalType::LEFT_CLOSE)
-		? LowerBound(Range, Value)
-		: UpperBound(Range, Value);
+		? Algo::LowerBound(Range, Value)
+		: Algo::UpperBound(Range, Value);
 
 	end = (type & IntervalType::RIGHT_OPEN)
-		? LowerBound(Range, Value)
-		: UpperBound(Range, Value);
+		? Algo::LowerBound(Range, Value)
+		: Algo::UpperBound(Range, Value);
 
 	return (begin + end) > 0;
 }
 
 
 template <typename IndexType, typename RangeType, typename ValueType, typename SortPredicateType>
-FORCEINLINE bool GetInterval(RangeType& Range, const ValueType& Value, SortPredicateType SortPredicate, IntervalType type, IndexType& begin, IndexType& end) const
+FORCEINLINE bool GetInterval(RangeType& Range, const ValueType& Value, SortPredicateType SortPredicate, IntervalType type, IndexType& begin, IndexType& end) 
 {
 	// this is needed to test...
 	// ...
 	begin = (type & IntervalType::LEFT_CLOSE)
-		? LowerBound(Range, Value, SortPredicate)
-		: UpperBound(Range, Value, SortPredicate);
+		? Algo::LowerBound(Range, Value, SortPredicate)
+		: Algo::UpperBound(Range, Value, SortPredicate);
 
 	end = (type & IntervalType::RIGHT_OPEN)
-		? LowerBound(Range, Value, SortPredicate)
-		: UpperBound(Range, Value, SortPredicate);
+		? Algo::LowerBound(Range, Value, SortPredicate)
+		: Algo::UpperBound(Range, Value, SortPredicate);
 
 	return (begin + end) > 0;
 }

@@ -34,6 +34,7 @@
       <Filter>Template</Filter>
     </ClInclude>
     <ClInclude Include="Allocator.h" />
+    <ClInclude Include="Template\Less.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Template">

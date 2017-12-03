@@ -129,6 +129,7 @@
     <ClInclude Include="Template\IdentityFunctor.h" />
     <ClInclude Include="Template\Invoke.h" />
     <ClInclude Include="Template\IsContiguousContainer.h" />
+    <ClInclude Include="Template\Less.h" />
     <ClInclude Include="Template\PointerIsConvertibleFromTo.h" />
     <ClInclude Include="Template\RemoveCV.h" />
     <ClInclude Include="Template\RemoveReference.h" />
