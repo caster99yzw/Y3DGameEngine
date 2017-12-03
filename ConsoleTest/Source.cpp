@@ -13,7 +13,7 @@ int main()
 
 
 	int ia[5] = { 0,1,2,3,4 };
-	unsigned int ii;
+	//unsigned int ii;
 
 	//std::vector<int, simple_alloc<int>> iv(ia, ia + 5);
 

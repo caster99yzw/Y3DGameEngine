@@ -1,9 +1,11 @@
 #pragma once
-#include "Helper.h"
+#include "../Helper.h"
 #include "AnimLoop.h"
 
 enum TrackKeyType
 {
+	TRACK_VECTOR3_FLOAT,
+	TRACK_QUATERNION_FLOAT,
 	TRACK_TYPE_NUM = 0
 };
 

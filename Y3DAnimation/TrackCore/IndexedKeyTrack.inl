@@ -1,3 +1,4 @@
+
 #include "IndexedKeyTrack.h"
 #include "Interval.h"
 
@@ -110,7 +111,7 @@ bool IndexedKeyTrack<IndexedKeyType>::FindIdxInTimeSpan(TimeType t1, TimeType t2
 	bool res = false;
 	int i, j;
 
-	GetInterval()
+	GetInterval(m_arrTrackData, t1, t2, openCloseFlag, i, j);
 
 	idx1 = 1;
 	idx2 = j - 1;

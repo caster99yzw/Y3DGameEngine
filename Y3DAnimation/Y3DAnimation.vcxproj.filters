@@ -2,18 +2,56 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Helper.h" />
-    <ClCompile Include="IndexedKey.cpp" />
-    <ClCompile Include="AnimLoop.cpp" />
-    <ClCompile Include="IndexedTrack.cpp" />
-    <ClCompile Include="IndexedKeyTrack.cpp" />
-    <ClCompile Include="IndexedRangeTrack.cpp" />
     <ClCompile Include="Interval.h" />
+    <ClCompile Include="TrackCore\AnimLoop.cpp">
+      <Filter>TrackCore</Filter>
+    </ClCompile>
+    <ClCompile Include="TrackCore\IndexedKey.cpp">
+      <Filter>TrackCore</Filter>
+    </ClCompile>
+    <ClCompile Include="DenseKeyTrack.cpp" />
+    <ClCompile Include="CurveKeyTrack.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IndexedKey.h" />
-    <ClInclude Include="AnimLoop.h" />
-    <ClInclude Include="IndexedTrack.h" />
-    <ClInclude Include="IndexedKeyTrack.h" />
-    <ClInclude Include="IndexedRangeTrack.h" />
+    <Filter Include="TrackCore">
+      <UniqueIdentifier>{917456ab-5752-48b1-84a9-085dc1f3bded}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TrackCore\AnimLoop.h">
+      <Filter>TrackCore</Filter>
+    </ClInclude>
+    <ClInclude Include="TrackCore\IndexedKey.h">
+      <Filter>TrackCore</Filter>
+    </ClInclude>
+    <ClInclude Include="TrackCore\IndexedKeyTrack.h">
+      <Filter>TrackCore</Filter>
+    </ClInclude>
+    <ClInclude Include="TrackCore\IndexedRangeTrack.h">
+      <Filter>TrackCore</Filter>
+    </ClInclude>
+    <ClInclude Include="TrackCore\IndexedTrack.h">
+      <Filter>TrackCore</Filter>
+    </ClInclude>
+    <ClInclude Include="DenseKeyTrack.h" />
+    <ClInclude Include="CurveKeyTrack.h" />
+    <ClInclude Include="IDCreator.h" />
+    <ClInclude Include="IndexedTrackGroup.h">
+      <Filter>TrackCore</Filter>
+    </ClInclude>
+    <ClInclude Include="TrackCore\IndexTrackBase.h">
+      <Filter>TrackCore</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TrackCore\IndexedKeyTrack.inl">
+      <Filter>TrackCore</Filter>
+    </None>
+    <None Include="TrackCore\IndexedRangeTrack.inl">
+      <Filter>TrackCore</Filter>
+    </None>
+    <None Include="TrackCore\IndexedTrack.inl">
+      <Filter>TrackCore</Filter>
+    </None>
   </ItemGroup>
 </Project>

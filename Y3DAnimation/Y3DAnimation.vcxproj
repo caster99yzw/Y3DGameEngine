@@ -85,6 +85,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -123,20 +124,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AnimLoop.h" />
-    <ClInclude Include="IndexedKey.h" />
-    <ClInclude Include="IndexedRangeTrack.h" />
-    <ClInclude Include="IndexedTrack.h" />
-    <ClInclude Include="IndexedKeyTrack.h" />
+    <ClCompile Include="CurveKeyTrack.cpp" />
+    <ClCompile Include="DenseKeyTrack.cpp" />
+    <ClCompile Include="Helper.h" />
+    <ClCompile Include="Interval.h" />
+    <ClCompile Include="TrackCore\AnimLoop.cpp" />
+    <ClCompile Include="TrackCore\IndexedKey.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AnimLoop.cpp" />
-    <ClCompile Include="Helper.h" />
-    <ClCompile Include="IndexedKey.cpp" />
-    <ClCompile Include="IndexedRangeTrack.cpp" />
-    <ClCompile Include="IndexedTrack.cpp" />
-    <ClCompile Include="IndexedKeyTrack.cpp" />
-    <ClCompile Include="Interval.h" />
+    <ClInclude Include="CurveKeyTrack.h" />
+    <ClInclude Include="DenseKeyTrack.h" />
+    <ClInclude Include="IDCreator.h" />
+    <ClInclude Include="IndexedTrackGroup.h" />
+    <ClInclude Include="TrackCore\AnimLoop.h" />
+    <ClInclude Include="TrackCore\IndexedKey.h" />
+    <ClInclude Include="TrackCore\IndexedKeyTrack.h" />
+    <ClInclude Include="TrackCore\IndexedRangeTrack.h" />
+    <ClInclude Include="TrackCore\IndexedTrack.h" />
+    <ClInclude Include="TrackCore\IndexTrackBase.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TrackCore\IndexedKeyTrack.inl" />
+    <None Include="TrackCore\IndexedRangeTrack.inl" />
+    <None Include="TrackCore\IndexedTrack.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

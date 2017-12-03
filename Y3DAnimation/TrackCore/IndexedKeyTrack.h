@@ -50,13 +50,13 @@ public:
 
 public:
 
-	virtual bool					Save() const override { return true };
-	virtual bool					Load() override { return true };
-	virtual bool					Serialize() override { return true }; 	//	This function is used in UI, such as unity
+	virtual bool					Save() const override { return true; }
+	virtual bool					Load() override { return true; }
+	virtual bool					Serialize() override { return true; }	//	This function is used in UI, such as unity
 
-	virtual bool					IsRangeTrack() const override { return false };
-	virtual bool					IsCompositeRange() const override { return false };
-	virtual bool					SplitRangeKey() override { return false };
+	virtual bool					IsRangeTrack() const override { return false; }
+	virtual bool					IsCompositeRange() const override { return false; }
+	virtual bool					SplitRangeKey() override { return false; }
 
 	inline KeyType					Evaluate(TimeType time) const;
 	inline KeyType					Evaluate(TimeType time, KeyType const& fallbackVal) const;
@@ -65,3 +65,4 @@ public:
 	inline bool						FindIdxInTimeSpan(TimeType t1, TimeType t2, UINT32 openCloseFlag, INT32& idx1, INT32& idx2) const;
 };
 
+//#include "IndexedKeyTrack.inl"
