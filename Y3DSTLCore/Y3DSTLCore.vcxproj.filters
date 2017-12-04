@@ -31,7 +31,9 @@
       <Filter>Template</Filter>
     </ClInclude>
     <ClInclude Include="Allocator.h" />
-    <ClInclude Include="Template\Less.h" />
+    <ClInclude Include="Template\Less.h">
+      <Filter>Template</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Template">

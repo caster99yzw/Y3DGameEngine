@@ -65,4 +65,4 @@ public:
 	inline bool						FindIdxInTimeSpan(TimeType t1, TimeType t2, UINT32 openCloseFlag, INT32& idx1, INT32& idx2) const;
 };
 
-//#include "IndexedKeyTrack.inl"
+#include "IndexedKeyTrack.inl"

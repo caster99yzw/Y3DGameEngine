@@ -111,4 +111,4 @@ protected:
 	void*							m_userData;
 };
 
-//#include "IndexedTrack.inl"
+#include "IndexedTrack.inl"

@@ -1,6 +1,5 @@
 
-#include "IndexedKeyTrack.h"
-#include "Interval.h"
+#include "../Interval.h"
 
 //////////////////////////////////////////////////////////////////////////
 //	Indexed Key Element

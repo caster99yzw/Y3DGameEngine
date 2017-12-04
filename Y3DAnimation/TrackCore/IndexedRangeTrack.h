@@ -78,4 +78,4 @@ public:
 	virtual bool					AlignAllWithNextKey(KeyHandle h);
 };
 
-//	#include "IndexedRangeTrack.inl"
+#include "IndexedRangeTrack.inl"

@@ -137,7 +137,7 @@ namespace Algo
 	template <typename RangeType, typename ValueType>
 	FORCEINLINE UINT32 BinarySearch(RangeType& Range, ValueType const& Value)
 	{
-		return BinarySearch(Range, Value, TLess<>());
+		return BinarySearch(Range, Value, Less<>());
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -146,7 +146,7 @@ namespace Algo
 	template <typename RangeType, typename ValueType, typename ProjectionType, typename SortPredicateType>
 	FORCEINLINE UINT32 BinarySearch(RangeType& Range, ValueType const& Value, ProjectionType Projection, SortPredicateType SortPredicate)
 	{
-		SIZE_T CheckIndex = LowerBound(Range, Value, Projection, SortPredicate);
+		SIZE_T CheckIndex = LowerBoundBy(Range, Value, Projection, SortPredicate);
 		if (CheckIndex < GetNum(Range))
 		{
 			auto&& CheckValue = Invoke(Projection, GetData(Range)[CheckIndex]);

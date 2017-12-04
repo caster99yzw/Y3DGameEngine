@@ -29,7 +29,7 @@ CONSTEXPR T* GetData(std::initializer_list<T> List)
 /**
 * Generically gets the number of items in a contiguous container
 */
-template <typename T, typename = typename EnableIf<EnableIf<IsContiguousContainer<T>::Value>::Type>::Type>
+template <typename T, typename = typename EnableIf<IsContiguousContainer<T>::Value>::Type>
 auto GetNum(T&& Container) -> decltype(Container.Num())
 {
 	return Container.Num();
