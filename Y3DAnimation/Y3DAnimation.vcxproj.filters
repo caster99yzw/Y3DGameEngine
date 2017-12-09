@@ -9,12 +9,22 @@
     <ClCompile Include="TrackCore\IndexedKey.cpp">
       <Filter>TrackCore</Filter>
     </ClCompile>
-    <ClCompile Include="DenseKeyTrack.cpp" />
-    <ClCompile Include="CurveKeyTrack.cpp" />
+    <ClCompile Include="TrackCore\IndexedTrackGroup.cpp">
+      <Filter>TrackCore</Filter>
+    </ClCompile>
+    <ClCompile Include="TrackRuntime\CurveKeyTrack.cpp">
+      <Filter>TrackRuntime</Filter>
+    </ClCompile>
+    <ClCompile Include="TrackRuntime\DenseKeyTrack.cpp">
+      <Filter>TrackRuntime</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="TrackCore">
       <UniqueIdentifier>{917456ab-5752-48b1-84a9-085dc1f3bded}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TrackRuntime">
+      <UniqueIdentifier>{94c7f9b7-9c10-44a2-99dc-29d07be0e918}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -33,14 +43,18 @@
     <ClInclude Include="TrackCore\IndexedTrack.h">
       <Filter>TrackCore</Filter>
     </ClInclude>
-    <ClInclude Include="DenseKeyTrack.h" />
-    <ClInclude Include="CurveKeyTrack.h" />
     <ClInclude Include="IDCreator.h" />
-    <ClInclude Include="IndexedTrackGroup.h">
-      <Filter>TrackCore</Filter>
-    </ClInclude>
     <ClInclude Include="TrackCore\IndexTrackBase.h">
       <Filter>TrackCore</Filter>
+    </ClInclude>
+    <ClInclude Include="TrackCore\IndexedTrackGroup.h">
+      <Filter>TrackCore</Filter>
+    </ClInclude>
+    <ClInclude Include="TrackRuntime\CurveKeyTrack.h">
+      <Filter>TrackRuntime</Filter>
+    </ClInclude>
+    <ClInclude Include="TrackRuntime\DenseKeyTrack.h">
+      <Filter>TrackRuntime</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

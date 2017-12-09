@@ -1,7 +1,9 @@
 #pragma once
-#include "TrackCore/IndexedKeyTrack.h"
 #include "Y3DQuaternion.h"
 #include "Y3DVector.h"
+
+#include "TrackCore/IndexedKeyTrack.h"
+
 using namespace Y3D;
 
 class DenseQuatFloatTrack : public IndexedKeyTrack<QuatF32>
@@ -48,4 +50,4 @@ public:
 	//virtual void						AddOrUpdateTransform(AnimTimeType t, Transform & pos) = 0;
 };
 
-class 
+//class 
