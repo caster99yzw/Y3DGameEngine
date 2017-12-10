@@ -30,8 +30,43 @@
     <ClInclude Include="Template\PointerIsConvertibleFromTo.h">
       <Filter>Template</Filter>
     </ClInclude>
-    <ClInclude Include="Allocator.h" />
     <ClInclude Include="Template\Less.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="SGISTL\Allocator.h">
+      <Filter>SGISTL</Filter>
+    </ClInclude>
+    <ClInclude Include="SGISTL\Construct.h">
+      <Filter>SGISTL</Filter>
+    </ClInclude>
+    <ClInclude Include="SGISTL\IteratorBase.h">
+      <Filter>SGISTL</Filter>
+    </ClInclude>
+    <ClInclude Include="SGISTL\Vector.h">
+      <Filter>SGISTL</Filter>
+    </ClInclude>
+    <ClInclude Include="Template\Greater.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Template\IsTriviallyDestructible.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Template\IsPODType.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Template\IsArithmetic.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Template\IsPointer.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Template\AndOrNot.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Template\IsTriviallyCopyAssignable.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Template\IsTriviallyCopyConstructible.h">
       <Filter>Template</Filter>
     </ClInclude>
   </ItemGroup>
@@ -39,5 +74,11 @@
     <Filter Include="Template">
       <UniqueIdentifier>{2d959ab6-8aa8-4c2e-b41f-dd2cb730cee1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SGISTL">
+      <UniqueIdentifier>{8055c294-4c6b-4a15-beb8-c4b662d03ef5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Template\Source.cpp" />
   </ItemGroup>
 </Project>

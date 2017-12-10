@@ -1,8 +1,8 @@
 #pragma once
 
-#include "RemoveReference.h"
-#include "RemoveCV.h"
-#include "../CoreTypes.h"
+#include "Template/RemoveReference.h"
+#include "Template/RemoveCV.h"
+#include "CoreTypes.h"
 
 namespace Decay_Private
 {

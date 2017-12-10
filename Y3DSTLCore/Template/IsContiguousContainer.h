@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../CoreTypes.h"
+#include "CoreTypes.h"
 
 /**
 * Traits class which tests if a type is a contiguous container.

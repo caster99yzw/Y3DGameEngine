@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../CoreTypes.h"
+#include "CoreTypes.h"
 
 /**
 * Tests if a From* is convertible to a To*

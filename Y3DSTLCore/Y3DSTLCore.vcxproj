@@ -72,16 +72,19 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)..\Output\Lib\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)..\Output\Idoc\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IncludePath>$(ProjectDir)..\Y3DSTLCore\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(ProjectDir)..\Output\Lib\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)..\Output\Idoc\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IncludePath>$(ProjectDir)..\Y3DSTLCore\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -118,11 +121,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Allocator.h" />
     <ClInclude Include="BinarySearch.h" />
     <ClInclude Include="CoreTypes.h" />
+    <ClInclude Include="SGISTL\Allocator.h" />
+    <ClInclude Include="SGISTL\Construct.h" />
+    <ClInclude Include="SGISTL\IteratorBase.h" />
+    <ClInclude Include="SGISTL\Vector.h" />
+    <ClInclude Include="Template\AndOrNot.h" />
     <ClInclude Include="Template\Decay.h" />
     <ClInclude Include="Template\EnableIf.h" />
+    <ClInclude Include="Template\Greater.h" />
+    <ClInclude Include="Template\IsPointer.h" />
+    <ClInclude Include="Template\IsArithmetic.h" />
+    <ClInclude Include="Template\IsPODType.h" />
+    <ClInclude Include="Template\IsTriviallyCopyAssignable.h" />
+    <ClInclude Include="Template\IsTriviallyCopyConstructible.h" />
+    <ClInclude Include="Template\IsTriviallyDestructible.h" />
     <ClInclude Include="Template\IdentityFunctor.h" />
     <ClInclude Include="Template\Invoke.h" />
     <ClInclude Include="Template\IsContiguousContainer.h" />
@@ -131,6 +145,9 @@
     <ClInclude Include="Template\RemoveCV.h" />
     <ClInclude Include="Template\RemoveReference.h" />
     <ClInclude Include="Template\Template.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Template\Source.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

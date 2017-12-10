@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../CoreTypes.h"
+#include "CoreTypes.h"
 
 struct IdentityFunctor
 {

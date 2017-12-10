@@ -3,26 +3,25 @@
 #include "CoreTypes.h"
 
 /**
-* Binary predicate class for sorting elements in order.  Assumes < operator is defined for the template type.
-* Forward declaration exists in ContainersFwd.h
+* Binary predicate class for sorting elements in reverse order.  Assumes < operator is defined for the template type.
 *
 * 
 */
 template <typename T = void>
-struct Less
+struct Greater
 {
 	FORCEINLINE bool operator()(T const& A, T const& B) const
 	{
-		return A < B;
+		return A > B;
 	}
 };
 
 template <>
-struct Less<void>
+struct Greater<void>
 {
 	template <typename T>
 	FORCEINLINE bool operator()(T const& A, T const& B) const
 	{
-		return A < B;
+		return A > B;
 	}
 };

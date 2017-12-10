@@ -1,7 +1,7 @@
 #pragma once
 
-#include "EnableIf.h"
-#include "../CoreTypes.h"
+#include "Template/EnableIf.h"
+#include "CoreTypes.h"
 
 
 /**
