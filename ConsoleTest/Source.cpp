@@ -4,8 +4,8 @@
 //#include "SGISTL/Allocator.h"
 
 #include "Template/IsTriviallyDestructible.h"
-#include "Template/IsTriviallyCopyConstructible.h"
-#include "Template/IsTriviallyCopyAssignable.h"
+#include "Template/IsTriviallyConstructible.h"
+#include "Template/IsTriviallyAssignable.h"
 #include <vector>
 
 #include <type_traits> 

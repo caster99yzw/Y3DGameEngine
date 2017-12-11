@@ -127,6 +127,7 @@
     <ClInclude Include="SGISTL\Construct.h" />
     <ClInclude Include="SGISTL\IteratorBase.h" />
     <ClInclude Include="SGISTL\Vector.h" />
+    <ClInclude Include="Template\AddReference.h" />
     <ClInclude Include="Template\AndOrNot.h" />
     <ClInclude Include="Template\Decay.h" />
     <ClInclude Include="Template\EnableIf.h" />
@@ -134,8 +135,8 @@
     <ClInclude Include="Template\IsPointer.h" />
     <ClInclude Include="Template\IsArithmetic.h" />
     <ClInclude Include="Template\IsPODType.h" />
-    <ClInclude Include="Template\IsTriviallyCopyAssignable.h" />
-    <ClInclude Include="Template\IsTriviallyCopyConstructible.h" />
+    <ClInclude Include="Template\IsTriviallyAssignable.h" />
+    <ClInclude Include="Template\IsTriviallyConstructible.h" />
     <ClInclude Include="Template\IsTriviallyDestructible.h" />
     <ClInclude Include="Template\IdentityFunctor.h" />
     <ClInclude Include="Template\Invoke.h" />

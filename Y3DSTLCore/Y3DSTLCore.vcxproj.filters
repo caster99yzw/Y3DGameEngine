@@ -63,10 +63,13 @@
     <ClInclude Include="Template\AndOrNot.h">
       <Filter>Template</Filter>
     </ClInclude>
-    <ClInclude Include="Template\IsTriviallyCopyAssignable.h">
+    <ClInclude Include="Template\IsTriviallyAssignable.h">
       <Filter>Template</Filter>
     </ClInclude>
-    <ClInclude Include="Template\IsTriviallyCopyConstructible.h">
+    <ClInclude Include="Template\IsTriviallyConstructible.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Template\AddReference.h">
       <Filter>Template</Filter>
     </ClInclude>
   </ItemGroup>

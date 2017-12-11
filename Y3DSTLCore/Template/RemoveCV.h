@@ -2,7 +2,7 @@
 
 
 /**
-* TRemoveCV<type> will remove any const/volatile qualifiers from a type.
+* RemoveCV<type> will remove any const/volatile qualifiers from a type.
 * (based on std::remove_cv<>
 * note: won't remove the const from "const int*", as the pointer is not const
 */
