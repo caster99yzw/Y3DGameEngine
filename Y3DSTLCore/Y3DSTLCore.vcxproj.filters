@@ -48,9 +48,6 @@
     <ClInclude Include="Template\Greater.h">
       <Filter>Template</Filter>
     </ClInclude>
-    <ClInclude Include="Template\IsTriviallyDestructible.h">
-      <Filter>Template</Filter>
-    </ClInclude>
     <ClInclude Include="Template\IsPODType.h">
       <Filter>Template</Filter>
     </ClInclude>
@@ -63,13 +60,10 @@
     <ClInclude Include="Template\AndOrNot.h">
       <Filter>Template</Filter>
     </ClInclude>
-    <ClInclude Include="Template\IsTriviallyAssignable.h">
-      <Filter>Template</Filter>
-    </ClInclude>
-    <ClInclude Include="Template\IsTriviallyConstructible.h">
-      <Filter>Template</Filter>
-    </ClInclude>
     <ClInclude Include="Template\AddReference.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Template\IsTrivially.h">
       <Filter>Template</Filter>
     </ClInclude>
   </ItemGroup>

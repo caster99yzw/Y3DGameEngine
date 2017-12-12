@@ -3,9 +3,7 @@
 #include "Template/IdentityFunctor.h"
 //#include "SGISTL/Allocator.h"
 
-#include "Template/IsTriviallyDestructible.h"
-#include "Template/IsTriviallyConstructible.h"
-#include "Template/IsTriviallyAssignable.h"
+#include "Template/IsTrivially.h"
 #include <vector>
 
 #include <type_traits> 

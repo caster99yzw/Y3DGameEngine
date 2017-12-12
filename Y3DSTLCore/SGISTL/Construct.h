@@ -3,7 +3,7 @@
 #include "CoreTypes.h"
 #include "SGISTL/IteratorBase.h"
 #include "Template/EnableIf.h"
-#include "Template/IsTriviallyDestructible.h"
+#include "Template/IsTrivially.h"
 
 namespace Destroy_Private
 {

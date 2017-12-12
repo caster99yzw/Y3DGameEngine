@@ -135,9 +135,7 @@
     <ClInclude Include="Template\IsPointer.h" />
     <ClInclude Include="Template\IsArithmetic.h" />
     <ClInclude Include="Template\IsPODType.h" />
-    <ClInclude Include="Template\IsTriviallyAssignable.h" />
-    <ClInclude Include="Template\IsTriviallyConstructible.h" />
-    <ClInclude Include="Template\IsTriviallyDestructible.h" />
+    <ClInclude Include="Template\IsTrivially.h" />
     <ClInclude Include="Template\IdentityFunctor.h" />
     <ClInclude Include="Template\Invoke.h" />
     <ClInclude Include="Template\IsContiguousContainer.h" />
