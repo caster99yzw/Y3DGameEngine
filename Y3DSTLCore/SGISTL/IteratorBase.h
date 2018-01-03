@@ -138,5 +138,5 @@ inline typename iterator_traits<InputIterator>::difference_type
 distance(InputIterator first, InputIterator last)
 {
 	typedef typename iterator_traits<InputIterator>::iterator_category category;
-	__distance(first, last, category());
+	return __distance(first, last, category());
 }

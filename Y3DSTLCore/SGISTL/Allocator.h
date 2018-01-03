@@ -24,7 +24,7 @@ namespace Alloc_Private
 		static void* allocate(size_t n)
 		{
 			void* result = malloc(n);
-			if (0 == result) result == oom_malloc(n);
+			if (0 == result) result = oom_malloc(n);
 			return result;
 		}
 
@@ -62,13 +62,13 @@ namespace Alloc_Private
 			my_malloc_handle = __malloc_alloc_oom_handler;
 			if (0 == my_malloc_handle) { __THROW_BAD_ALLOC; }
 			(*my_malloc_handle)();
-			result = malloc(p, n);
+			result = malloc(n);
 			if (result) return(result);
 		}
 	}
 
 	template <int inst>
-	void* __malloc_alloc_template<inst>::oom_realloc(void*, size_t)
+	void* __malloc_alloc_template<inst>::oom_realloc(void* p, size_t n)
 	{
 		void(*my_malloc_handle)();
 		void* result;
@@ -114,16 +114,16 @@ class simple_alloc
 {
 public:
 	static T* allocate(size_t n)
-	{ return 0 == n ? 0 : (T*)Alloc::allocate(n * sizeof(T)); }
+		{ return 0 == n ? 0 : (T*)Alloc::allocate(n * sizeof(T)); }
 
 	static T* allocate(void)
-	{ return (T*)Alloc::allocate(sizeof(T)); }
+		{ return (T*)Alloc::allocate(sizeof(T)); }
 
-	static void deallocate(T* p.size_t n)
-	{ if (0 != n) Alloc::deallocate(p, n * sizeof(T)); }
+	static void deallocate(T* p, size_t n)
+		{ if (0 != n) Alloc::deallocate(p, n * sizeof(T)); }
 
 	static void deallocate(T* p)
-	{ Alloc::deallocate(sizeof(T)); }
+		{ Alloc::deallocate(sizeof(T)); }
 };
 
 
@@ -164,13 +164,13 @@ public:
 	pointer allocate(size_type __n)
 	{
 		return (__n != 0)
-			? static_cast<pointer>(_Alloc::_allocate(__n * sizeof(value_type)))
+			? static_cast<pointer>(_Alloc::allocate(__n * sizeof(value_type)))
 			: 0;
 	}
 
 	void deallocate(pointer __p, size_type __n)
 	{
-		_Alloc::_deallocate(__p, __n * sizeof(va));
+		_Alloc::deallocate(__p, __n * sizeof(va));
 	}
 
 	size_type max_size() const

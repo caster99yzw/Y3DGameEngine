@@ -12,6 +12,9 @@
 #include "SGISTL/Construct.h"
 #include "Template/AndOrNot.h"
 
+#include "SGISTL/Vector.h"
+#include <memory>
+
 int main()
 {
 
@@ -39,17 +42,28 @@ int main()
 
 	//std::vector<int, simple_alloc<int>> iv(ia, ia + 5);
 
+	vector<int> I(10, 33);
 
-	std::cout << "has_trivial_destructor<trivial> == " << std::boolalpha
-		<< std::is_trivially_copy_constructible<int>::value << std::endl;
+	I.pop_back();
+	I.push_back(34);
 
-	std::cout << IsTriviallyCopyConstructible<int>::Value << std::endl;
+	for (int i = 0; i < I.size(); i++)
+	{
+		std::cout << I[i] << std::endl;
+	}
 
 
-	std::cout << "has_trivial_destructor<trivial> == " << std::boolalpha
-		<< std::is_trivially_copy_assignable<int>::value << std::endl;
+	int* p = new int;
 
-	std::cout << IsTriviallyCopyAssignable<int>::Value << std::endl;
+	memset(p, 33, sizeof(int) * 10);
+
+	std::uninitialized_fill_n(p, 10, 33);
+
+
+	for (int i = 0; i < 10; i++)
+	{
+		std::cout << p[i] << std::endl;
+	}
 
 	system("pause");
 

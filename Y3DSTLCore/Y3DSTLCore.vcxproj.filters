@@ -66,6 +66,21 @@
     <ClInclude Include="Template\IsTrivially.h">
       <Filter>Template</Filter>
     </ClInclude>
+    <ClInclude Include="SGISTL\Uninitialized.h">
+      <Filter>SGISTL</Filter>
+    </ClInclude>
+    <ClInclude Include="Template\Junction.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Template\IsCharacter.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Template\TypeTraits.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="SGISTL\IsSafetyFillMemset.h">
+      <Filter>SGISTL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Template">

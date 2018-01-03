@@ -1,16 +1,22 @@
 #pragma once
 
-template <typename T, typename Alloc>
+#include "SGISTL/Allocator.h"
+#include "SGISTL/Construct.h"
+#include "SGISTL/Uninitialized.h"
+
+template <typename T, typename Alloc = alloc>
 class vector
 {
 public:
 	typedef T						value_type;
 	typedef value_type*				pointer;
+	typedef value_type const*		const_pointer;
 	typedef value_type*				iterator;
+	typedef value_type const*		const_iterator;
 	typedef value_type&				reference;
+	typedef value_type const&		const_reference;
 	typedef size_t					size_type;
 	typedef ptrdiff_t				difference_type;
-
 
 protected:
 
@@ -20,7 +26,7 @@ protected:
 	iterator						finish;
 	iterator						end_of_storage;
 
-	void insert_aux(iterator position, value_type const& x);
+	void insert_aux(iterator position, value_type const& x) {}
 
 	void deallocate()
 	{
@@ -30,7 +36,7 @@ protected:
 
 	void fill_initialize(size_type n, value_type const& value)
 	{
-		//start = allocate_and_fill(n, value);
+		start = allocate_and_fill(n, value);
 		finish = start + n;
 		end_of_storage = finish;
 	}
@@ -38,7 +44,9 @@ protected:
 public:
 
 	iterator begin() { return start; }
+	const_iterator begin() const { return start; }
 	iterator end() { return finish; }
+	const_iterator end() const { return finish; }
 	
 	size_type size() const { return size_type(end() - begin()); }
 	size_type capacity() const { return size_type(end_of_storage - begin()); }
@@ -55,7 +63,7 @@ public:
 
 	~vector() 
 	{
-		destroy(start, finish);
+		Destroy(start, finish);
 		deallocate();
 	}
 
@@ -66,7 +74,7 @@ public:
 	{
 		if (finish != end_of_storage)
 		{
-			construct(finish, x);
+			Construct(finish, x);
 			++finish;
 		}
 		else
@@ -75,8 +83,8 @@ public:
 
 	void pop_back()
 	{
-		--finish();
-		destroy(finish);
+		--finish;
+		Destroy(finish);
 	}
 
 	iterator erase(iterator position)
@@ -104,7 +112,7 @@ protected:
 	iterator allocate_and_fill(size_type n, value_type const& x)
 	{
 		iterator result = data_allocator::allocate(n);
-		uninitialized_fill_n(result, n, x);
+		UninitializedFill_n(result, n, x);
 		return result;
 	}
 };

@@ -125,13 +125,16 @@
     <ClInclude Include="CoreTypes.h" />
     <ClInclude Include="SGISTL\Allocator.h" />
     <ClInclude Include="SGISTL\Construct.h" />
+    <ClInclude Include="SGISTL\IsSafetyFillMemset.h" />
     <ClInclude Include="SGISTL\IteratorBase.h" />
+    <ClInclude Include="SGISTL\Uninitialized.h" />
     <ClInclude Include="SGISTL\Vector.h" />
     <ClInclude Include="Template\AddReference.h" />
     <ClInclude Include="Template\AndOrNot.h" />
     <ClInclude Include="Template\Decay.h" />
     <ClInclude Include="Template\EnableIf.h" />
     <ClInclude Include="Template\Greater.h" />
+    <ClInclude Include="Template\IsCharacter.h" />
     <ClInclude Include="Template\IsPointer.h" />
     <ClInclude Include="Template\IsArithmetic.h" />
     <ClInclude Include="Template\IsPODType.h" />
@@ -139,11 +142,13 @@
     <ClInclude Include="Template\IdentityFunctor.h" />
     <ClInclude Include="Template\Invoke.h" />
     <ClInclude Include="Template\IsContiguousContainer.h" />
+    <ClInclude Include="Template\Junction.h" />
     <ClInclude Include="Template\Less.h" />
     <ClInclude Include="Template\PointerIsConvertibleFromTo.h" />
     <ClInclude Include="Template\RemoveCV.h" />
     <ClInclude Include="Template\RemoveReference.h" />
     <ClInclude Include="Template\Template.h" />
+    <ClInclude Include="Template\TypeTraits.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Template\Source.cpp" />
