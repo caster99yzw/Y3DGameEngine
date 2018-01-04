@@ -127,9 +127,9 @@ public:
 };
 
 
-typedef Alloc_Private::__malloc_alloc_template<0> malloc_alloc;
+typedef Alloc_Private::__malloc_alloc_template<0>	malloc_alloc;
 
-typedef malloc_alloc alloc;
+typedef malloc_alloc								alloc;
 
 //////////////////////////////////////////////////////////////////////////
 //
