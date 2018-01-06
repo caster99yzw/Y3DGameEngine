@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreTypes.h"
+#include "Template/RemoveReference.h"
 #include "Template/EnableIf.h"
 
 
