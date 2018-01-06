@@ -63,3 +63,13 @@ FORCEINLINE T&& Forward(typename RemoveReference<T>::Type&& Obj)
 {
 	return (T&&)Obj;
 }
+
+/**
+* MoveTemp will cast a reference to an rvalue reference.
+* This is UE's equivalent of std::move.
+*/
+template <typename T>
+FORCEINLINE typename RemoveReference<T>::Type&& Move(T&& Obj)
+{
+	return (typename RemoveReference<T>::Type&&)Obj;
+}

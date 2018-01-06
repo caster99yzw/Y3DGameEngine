@@ -3,6 +3,8 @@
 #include "Template/IdentityFunctor.h"
 //#include "SGISTL/Allocator.h"
 
+#include "Template/UniquePtr.h"
+
 #include "Template/IsTrivially.h"
 #include <vector>
 

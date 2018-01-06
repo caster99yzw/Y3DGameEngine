@@ -24,7 +24,7 @@ using	FLOAT64			= double;
 using	ANSICHAR		= char;			// -                  8-bit fixed-width representation of 7-bit characters.
 using	WIDECHAR		= wchar_t;		// - In-memory only.  ?-bit fixed-width representation of the platform's natural wide character set.  Could be different sizes on different platforms.
 
-										
+using	TYPE_OF_NULLPTR = decltype(nullptr);
 										
 //typedef uint8				CHAR8;		// An 8-bit character type - In-memory only.  8-bit representation.  Should really be char8_t but making this the generic option is easier for compilers which don't fully support C++11 yet (i.e. MSVC).
 //typedef uint16				CHAR16;		// A 16-bit character type - In-memory only.  16-bit representation.  Should really be char16_t but making this the generic option is easier for compilers which don't fully support C++11 yet (i.e. MSVC).
