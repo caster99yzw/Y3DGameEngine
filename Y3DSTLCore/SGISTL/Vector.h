@@ -5,12 +5,15 @@
 #include "SGISTL/Uninitialized.h"
 #include "Template/IsArithmetic.h"
 
+// why????????
+#include "../../Y3DCommon/Y3DMathFunc.h"
+
 template <typename T, typename Alloc>
 class vector_base
 {
 public:
 	typedef Alloc					allocator_type;
-	static allocator_type get_allocator() const { return allocator_type(); }
+	static allocator_type get_allocator() { return allocator_type(); }
 
 	vector_base(Alloc const&)
 		: M_start(0), M_finish(0), M_end_of_storage(0) {}
@@ -30,10 +33,11 @@ protected:
 	T* M_end_of_storage;
 
 	typedef simple_alloc<T, Alloc>	M_data_allocator;
+
 	T* M_allocate(size_t n)	
 		{ return M_data_allocator::allocate(n); }
-	T* M_deallocate(T* p, size_t n) 
-		{ return M_data_allocator::deallcate(p, n);	}
+	void M_deallocate(T* p, size_t n) 
+		{ return M_data_allocator::deallocate(p, n);	}
 
 
 };
@@ -56,13 +60,15 @@ public:
 	typedef ptrdiff_t				difference_type;
 
 	typedef typename base::allocator_type	allocator_type;
-	allocator_type get_allocator() const { return base::get_allocator(); }
+	static allocator_type get_allocator() { return base::get_allocator(); }
 
 protected:
 
-	void M_insert_aux(iterator position, value_type const& x) {}
-	void M_insert_aux(iterator position) {}
+	void M_insert_aux(iterator position, value_type const& x);
+	void M_insert_aux(iterator position);
+	void M_fill_insert(iterator pos, size_type n, T const& x);
 
+	
 public:
 
 	iterator begin() { return M_start; }
@@ -100,7 +106,7 @@ public:
 	explicit vector(allocator_type const& a = get_allocator())
 		: base(a) {}
 	
-	vector(size_type n, value_type const& value, allocator_type const& a = get_allocator()) 
+ 	vector(size_type n, value_type const& value, allocator_type const& a = get_allocator())
 		: base(n, a)
 	{
 		M_finish = UninitializedFill_n(M_start, n, value);
@@ -153,7 +159,7 @@ public:
 			M_insert_aux(end());
 	}
 
-	iterator insert(iterator position, T const* x)
+	iterator insert(iterator position, T const& x)
 	{
 		size_type n = position - begin();
 		if (M_finish != M_end_of_storage && position == end())
@@ -179,15 +185,10 @@ public:
 		return begin() + n;
 	}
 
-	//void insert(iterator position, const_iterator first, const_iterator __last);
-
-	//void insert(iterator __pos, size_type __n, const _Tp& __x)
-	//{
-		//_M_fill_insert(__pos, __n, __x);
-	//}
-
-	//void _M_fill_insert(iterator __pos, size_type __n, const _Tp& __x);
-
+	void insert(iterator pos, size_type n, const T& x)
+	{
+		M_fill_insert(pos, n, x);
+	}
 	void pop_back()
 	{
 		--M_finish;
@@ -220,8 +221,143 @@ public:
 
 	void resize(size_type new_size) { resize(new_size, T()); }
 	void clear() { erase(begin(), end()); }
-
-protected:
-
-	//
 };
+
+template <typename T, typename Alloc>
+FORCEINLINE bool operator == (vector<T, Alloc> const& lhs, vector<T, Alloc> const& rhs)
+{
+	return lhs.size() == y.size();
+}
+
+template <typename T, typename Alloc>
+FORCEINLINE bool operator < (vector<T, Alloc> const& lhs, vector<T, Alloc> const& rhs)
+{
+	return lhs.size() < y.size();
+}
+
+template <typename T, typename Alloc>
+FORCEINLINE bool operator > (vector<T, Alloc> const& lhs, vector<T, Alloc> const& rhs)
+{
+	return rhs < lhs;
+}
+
+template <typename T, typename Alloc>
+FORCEINLINE bool operator != (vector<T, Alloc> const& lhs, vector<T, Alloc> const& rhs) 
+{
+	return !(lhs == rhs);
+}
+
+template <typename T, typename Alloc>
+FORCEINLINE bool operator <= (vector<T, Alloc> const& lhs, vector<T, Alloc> const& rhs) 
+{
+	return !(rhs < lhs);
+}
+
+template <typename T, typename Alloc>
+FORCEINLINE bool operator >= (vector<T, Alloc> const& __x, vector<T, Alloc> const& __y) 
+{
+	return !(lhs < rhs);
+}
+
+template <typename T, typename Alloc>
+void vector<T, Alloc>::M_insert_aux(iterator position, value_type const& x) 
+{
+	if (M_finish != M_end_of_storage)
+	{
+		Construct(M_finish, *(M_finish - 1));
+		++M_finish;	
+		T xCopy = x;
+		UninitializedCopy(position, M_finish - 1, position + 1);
+		*position = xCopy;
+	}
+	else
+	{
+		size_type const old_size = size();
+		size_type const len = old_size != 0 ? 2 * old_size : 1;
+		iterator new_start = M_allocate(len);
+		iterator new_finish = new_start;
+		
+		new_finish = UninitializedCopy(M_start, position, new_start);
+		Construct(new_finish, x);
+		++new_finish;
+		new_finish = UninitializedCopy(position, M_finish, new_finish);
+
+		M_deallocate(M_start, M_end_of_storage - M_start);
+		M_start = new_start;
+		M_finish = new_finish;
+		M_end_of_storage = new_start + len;
+	}
+}
+
+template <typename T, typename Alloc>
+void vector<T, Alloc>::M_insert_aux(iterator position)
+{
+	if (M_finish != M_end_of_storage)
+	{
+		Construct(M_finish, *(M_finish - 1));
+		++M_finish;
+		UninitializedCopy(position, M_finish - 1, position + 1);
+		*position = T();
+	}
+	else
+	{
+		size_type const old_size = size();
+		size_type const len = old_size != 0 ? 2 * old_size : 1;
+		iterator new_start = M_allocate(len);
+		iterator new_finish = new_start;
+
+		new_finish = UninitializedCopy(M_start, position, new_start);
+		Construct(new_finish);
+		++new_finish;
+		new_finish = UninitializedCopy(position, M_finish, new_finish);
+
+		M_deallocate(M_start, M_end_of_storage - M_start);
+		M_start = new_start;
+		M_finish = new_finish;
+		M_end_of_storage = new_start + len;
+	}
+}
+
+template <typename T, typename Alloc>
+void vector<T, Alloc>::M_fill_insert(iterator pos, size_type n, T const& x)
+{
+	if (n == 0) return;
+	
+	if (size_type(M_end_of_storage - M_finish) >= n)
+	{
+		T xCopy = x;
+		size_type const elems_after = M_finish - pos;
+		iterator old_finish = M_finish;
+		if (elems_after > n)
+		{
+			UninitializedCopy(M_finish - n, M_finish, M_finish);
+			M_finish += n;
+			UninitializedCopy(pos, old_finish, pos + n);
+			UninitializedFill(pos, pos + n, xCopy);
+		}
+		else
+		{
+			UninitializedFill_n(M_finish, n - elems_after, xCopy);
+			M_finish += n - elems_after;
+			UninitializedCopy(pos, old_finish, M_finish);
+			M_finish += elems_after;
+			UninitializedFill(pos, old_finish, xCopy);
+		}
+	}
+	else
+	{
+		size_type const old_size = size();
+		size_type const len = old_size + Y3D::Max(old_size, n);
+		iterator new_start = M_allocate(len);
+		iterator new_finish = new_start;
+
+		new_finish = UninitializedCopy(M_start, pos, new_start);
+		new_finish = UninitializedFill_n(new_finish, n, x);
+		new_finish = UninitializedCopy(pos, M_finish, new_finish);
+
+		M_deallocate(M_start, M_end_of_storage - M_start);
+		M_start = new_start;
+		M_finish = new_finish;
+		M_end_of_storage = new_start + len;
+	}
+}

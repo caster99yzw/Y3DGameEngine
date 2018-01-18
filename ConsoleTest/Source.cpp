@@ -48,6 +48,14 @@ int main()
 
 	I.pop_back();
 	I.push_back(34);
+	I.push_back(34);
+
+	I.insert(I.begin() + 3, 18);
+	I.insert(I.begin() + 3, 18);
+
+	I.insert(I.end() - 5, 3, 244444);
+	I.insert(I.end() - 2, 3, 244444);
+	I.insert(I.end() - 3, 10, 232313);
 
 	for (int i = 0; i < I.size(); i++)
 	{
@@ -55,17 +63,17 @@ int main()
 	}
 
 
-	int* p = new int;
+	//int* p = new int;
 
-	memset(p, 33, sizeof(int) * 10);
+	//memset(p, 33, sizeof(int) * 10);
 
-	std::uninitialized_fill_n(p, 10, 33);
+	//std::uninitialized_fill_n(p, 10, 33);
 
 
-	for (int i = 0; i < 10; i++)
-	{
-		std::cout << p[i] << std::endl;
-	}
+	//for (int i = 0; i < 10; i++)
+	//{
+	//	std::cout << p[i] << std::endl;
+	//}
 
 	system("pause");
 

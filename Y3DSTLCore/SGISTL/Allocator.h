@@ -82,8 +82,8 @@ namespace Alloc_Private
 			if (result) return(result);
 		}
 	}
-
 }
+
 namespace Alloc_Private_1
 {
 	template <typename T>
