@@ -81,6 +81,9 @@
     <ClInclude Include="SGISTL\IsSafetyFillMemset.h">
       <Filter>SGISTL</Filter>
     </ClInclude>
+    <ClInclude Include="SGISTL\List.h">
+      <Filter>SGISTL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Template">

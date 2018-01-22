@@ -15,9 +15,9 @@ public:
 	typedef Alloc					allocator_type;
 	static allocator_type get_allocator() { return allocator_type(); }
 
-	vector_base(Alloc const&)
+	vector_base(allocator_type const&)
 		: M_start(0), M_finish(0), M_end_of_storage(0) {}
-	vector_base(size_t n, Alloc const&)
+	vector_base(size_t n, allocator_type const&)
 		: M_start(0), M_finish(0), M_end_of_storage(0) 
 	{
 		M_start = M_allocate(n);
@@ -121,16 +121,21 @@ public:
 	vector(vector<T, Alloc> const& x)
 		: base(x.size(), x.get_allocator())
 	{
-		M_finish = UninitializedCopy_n(x.begin(), n, M_start);
+		M_finish = UninitializedCopy(x.begin(), x.end(), M_start);
 	}
 
 	vector(T const* first, T const* last, const allocator_type& a = allocator_type())
 		: base(last - first, a)
 	{
-		M_finish = uninitialized_copy(first, last, M_start);
+		M_finish = UninitializedCopy(first, last, M_start);
 	}
 
 	~vector() { Destroy(M_start, M_finish); }
+
+	vector<T, Alloc>& operator = (vector<T, Alloc> const& x)
+	{
+		M_finish = UninitializedCopy(x.begin(), x.end(), M_start);
+	}
 
 	reference front() { return *begin(); }
 	const_reference front() const { return *begin(); }
@@ -254,7 +259,7 @@ FORCEINLINE bool operator <= (vector<T, Alloc> const& lhs, vector<T, Alloc> cons
 }
 
 template <typename T, typename Alloc>
-FORCEINLINE bool operator >= (vector<T, Alloc> const& __x, vector<T, Alloc> const& __y) 
+FORCEINLINE bool operator >= (vector<T, Alloc> const& lhs, vector<T, Alloc> const& rhs) 
 {
 	return !(lhs < rhs);
 }
