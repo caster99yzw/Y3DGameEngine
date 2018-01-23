@@ -60,11 +60,11 @@ struct list_iterator : public list_iterator_base
 	typedef Ref										reference;
 	typedef list_node<T>*							link_type;
 
-	list_iterator(link_type x) : list_node_base(x) {} 
+	list_iterator(link_type x) : list_iterator_base(x) {}
 	list_iterator() {}
 	list_iterator(iterator const& x) : list_iterator_base(x.M_node) {}
 
-	reference operator * () const { return (static_cast<link_type>(M_node)->M_data; }
+	reference operator * () const { return static_cast<link_type>(M_node)->M_data; }
 	pointer operator -> () const { return &(operator*()); }
 
 	self& operator ++ ()
@@ -75,7 +75,7 @@ struct list_iterator : public list_iterator_base
 
 	self operator ++ (int)
 	{
-		self* tmp = *this;
+		self tmp = *this;
 		this->M_increment();
 		return tmp;
 	}
@@ -88,7 +88,7 @@ struct list_iterator : public list_iterator_base
 
 	self operator -- (int)
 	{
-		self* tmp = *this;
+		self tmp = *this;
 		this->M_decrement();
 		return *this;
 	}
@@ -119,7 +119,7 @@ public:
 protected:
 	typedef simple_alloc<list_node<T>, Alloc>	M_data_allocator;
 	list_node<T>* M_get_node() { return M_data_allocator::allocate(1); }
-	list_node<T>* M_put_node(list_node<T>* p) { return M_data_allocator::deallocate(p, 1e); }
+	void M_put_node(list_node<T>* p) { return M_data_allocator::deallocate(p, 1); }
 
 protected:
 	list_node<T>*					M_node;
@@ -132,7 +132,7 @@ void list_base<T, Alloc>::clear()
 	while (cur != M_node)
 	{
 		list_node<T>* tmp = cur;
-		cur = static_cast<list_node<T>*>(M_node->M_next);
+		cur = static_cast<list_node<T>*>(cur->M_next);
 		Destroy(&tmp->M_data);
 		M_put_node(tmp);
 	}
@@ -140,7 +140,7 @@ void list_base<T, Alloc>::clear()
 	M_node->M_prev = M_node;
 }
 
-template <typename T, typename Alloc>
+template <typename T, typename Alloc = alloc>
 class list : protected list_base<T, Alloc>
 {
 
@@ -194,7 +194,7 @@ protected:
 		M_put_node(p);
 	}
 
-	iterator M_fill_insert(iterator pos, size_type n, T const& x) {}
+	void M_fill_insert(iterator pos, size_type n, T const& x);
 
 public:
 
@@ -214,20 +214,22 @@ public:
 
 	reference front() { return *begin(); }
 	const_reference front() const { return *begin(); }
-	reference front() { return *(--end()); }
-	const_reference front() const { return *(--end()); }
+	reference back() { return *(--end()); }
+	const_reference back() const { return *(--end()); }
+
+	void swap(list<T, Alloc>& x) { std::swap(M_node, x.M_node); }
 
 	iterator insert(iterator pos, T const& x)
 	{
 		node_pointer_type tmp = M_create_node(x);
 		tmp->M_next = pos.M_node;
-		tmp->M_prev = pos.M_node->M_prev;
 		pos.M_node->M_prev->M_next = tmp;
+		tmp->M_prev = pos.M_node->M_prev;
 		pos.M_node->M_prev = tmp;
 		return tmp;
 	}
 
-	iterator insert(iterator pos) { return insert(pos, T(); }
+	iterator insert(iterator pos) { return insert(pos, T()); }
 
 	iterator insert(iterator pos, size_type n, T const& x)
 	{
@@ -291,8 +293,6 @@ public:
 	{
 		insert(begin(), x.begin(), x.end());
 	}
-
-	~list() { clear(); }
 
 	list<T, Alloc>& operator = (list<T, Alloc> const& x)
 	{
@@ -487,8 +487,30 @@ void list<T, Alloc>::reverse()
 	}
 }
 
+//merge sort
 template <typename T, typename Alloc>
 void list<T, Alloc>::sort()
 {
+	if (M_node->M_next == M_node || M_node->M_next->M_next = M_node)
+		return;
 
+	list<T, Alloc> carry;
+	list<T, Alloc> counter[64];
+	int fill = 0;
+
+	while (!empty())
+	{
+		carry.splice(carry.begin(), *this, begin());
+		int i = 0;
+		while (i < fill && !counter[i].empty())
+		{
+			carry.merge(counter[i++]);
+		}
+		carry.swap(counter[i]);
+		if (i == fill) ++fill;
+	}
+
+	for (int i = 1; i < fill; ++i)
+		counter[i].merge(counter[i - 1]);
+	swap(counter[fill - 1]);
 }

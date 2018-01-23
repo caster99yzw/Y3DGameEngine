@@ -132,9 +132,17 @@ public:
 
 	~vector() { Destroy(M_start, M_finish); }
 
-	vector<T, Alloc>& operator = (vector<T, Alloc> const& x)
+	vector<T, Alloc>& operator = (vector<T, Alloc> const& x);
+	void reserve(size_type n)
 	{
-		M_finish = UninitializedCopy(x.begin(), x.end(), M_start);
+		size_type old_size = size();
+		iterator result = M_allocate(n);
+		UninitializedCopy(M_start, M_finish, result);
+		Destroy(M_start, M_finish);
+		M_deallocate(M_start, M_end_of_storage - M_start);
+		M_start = result;
+		M_finish = result + old_size;
+		M_end_of_storage = M_start + n;
 	}
 
 	reference front() { return *begin(); }
@@ -262,6 +270,36 @@ template <typename T, typename Alloc>
 FORCEINLINE bool operator >= (vector<T, Alloc> const& lhs, vector<T, Alloc> const& rhs) 
 {
 	return !(lhs < rhs);
+}
+
+template <typename T, typename Alloc>
+vector<T, Alloc>& vector<T, Alloc>::operator = (vector<T, Alloc> const& x)
+{
+	if (&x != this)
+	{
+		size_type const xlen = x.size();
+		if (xlen > capacity())
+		{
+			iterator result = M_allocate(xlen);
+			UninitializedCopy(x.begin(), x.end(), result);
+			Destroy(M_start, M_finish);
+			M_deallocate(M_start, M_end_of_storage - M_start);
+			M_start = result;
+			M_end_of_storage = M_start + xlen;
+		}
+		else if (size() >= xlen)
+		{
+			iterator pos = UninitializedCopy(x.begin(), x.end(), begin());
+			Destroy(pos, M_finish);
+		}
+		else
+		{
+			UninitializedCopy(x.begin(), x.begin() + size(), begin());
+			UninitializedCopy(x.begin() + size(), x.end(), end());
+		}
+		M_finish = M_start + xlen;
+	}
+	return *this;
 }
 
 template <typename T, typename Alloc>
