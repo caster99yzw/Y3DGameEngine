@@ -231,7 +231,7 @@ public:
 
 	iterator insert(iterator pos) { return insert(pos, T()); }
 
-	iterator insert(iterator pos, size_type n, T const& x)
+	void insert(iterator pos, size_type n, T const& x)
 	{
 		M_fill_insert(pos, n, x);
 	}
@@ -474,7 +474,7 @@ void list<T, Alloc>::merge(list& x)
 template <typename T, typename Alloc>
 void list<T, Alloc>::reverse()
 {
-	if (M_node->M_next == M_node || M_node->M_next->M_next = M_node)
+	if (M_node->M_next == M_node || M_node->M_next->M_next == M_node)
 		return;
 
 	iterator first = begin();

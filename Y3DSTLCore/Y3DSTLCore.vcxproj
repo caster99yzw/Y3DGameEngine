@@ -129,6 +129,7 @@
     <ClInclude Include="CoreTypes.h" />
     <ClInclude Include="SGISTL\Allocator.h" />
     <ClInclude Include="SGISTL\Construct.h" />
+    <ClInclude Include="SGISTL\Deque.h" />
     <ClInclude Include="SGISTL\IsSafetyFillMemset.h" />
     <ClInclude Include="SGISTL\IteratorBase.h" />
     <ClInclude Include="SGISTL\List.h" />

@@ -5,8 +5,7 @@
 #include "SGISTL/Uninitialized.h"
 #include "Template/IsArithmetic.h"
 
-// why????????
-#include "../../Y3DCommon/Y3DMathFunc.h"
+#include "Y3DMathFunc.h"
 
 template <typename T, typename Alloc>
 class vector_base

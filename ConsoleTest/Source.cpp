@@ -44,14 +44,35 @@ int main()
 	l.insert(l.begin(), 50);
 	l.insert(((++l.begin())++), 60);
 
-	l.erase((++(++l.begin())));
+	l.insert(((++l.begin())++), 4, 600000);
+
+	l.push_back(8000);
+	l.push_front(8000);
+
+	l.pop_back();
+	l.pop_front();
 
 	for (list<int>::iterator itor = l.begin();
 		itor != l.end();
 		itor++)
 	{
-		std::cout << *itor << std::endl;
+		std::cout << *itor << " ";
 	}
+	std::cout << std::endl;
+
+
+	list<int> newl(l);
+
+	newl.reverse();
+
+	for (list<int>::iterator itor = newl.begin();
+		itor != newl.end();
+		itor++)
+	{
+		std::cout << *itor << " ";
+	}
+	std::cout << std::endl;
+
 
 	system("pause");
 
