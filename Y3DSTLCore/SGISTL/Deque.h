@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SGISTL/IteratorBase.h"
+#include "SGISTL/Uninitialized.h"
 #include "Y3DMatrixFunc.h"
 
 inline size_t deque_buf_size(size_t sz)
@@ -144,7 +145,7 @@ struct deque_iterator
 	}
 };
 
-template <class T, class Alloc>
+template <typename T, typename Alloc>
 class deque_alloc_base 
 {
 protected:
@@ -156,12 +157,12 @@ protected:
 
 protected:
 
-	typedef simple_alloc<T, Alloc>				node_allocator;
+	typedef simple_alloc<T, Alloc>				data_allocator;
 	typedef simple_alloc<T*, Alloc>				map_allocator;
 
 	T* allocate_node() 
 	{
-		return node_allocator::allocate(buffer));
+		return node_allocator::allocate();
 	}
 
 	void deallocate_node(T* p) 
@@ -183,7 +184,7 @@ protected:
 	size_t		MapSize;
 };
 
-template <class T, class Alloc>
+template <typename T, typename Alloc>
 class deque_base : public deque_alloc_base<T, Alloc>
 {
 public:
@@ -223,7 +224,7 @@ deque_base<T, Alloc>::~deque_base()
 	}
 }
 
-template <class T, class Alloc>
+template <typename T, typename Alloc>
 void deque_base<T, Alloc>::initialize_map(size_t Num)
 {
 	size_t num_nodes = Num / deque_buf_size(sizeof(T)) + 1;
@@ -242,7 +243,7 @@ void deque_base<T, Alloc>::initialize_map(size_t Num)
 	Finish.Cur = Finish.First + Num % deque_buf_size(sizeof(T));
 }
 
-template <class T, class Alloc>
+template <typename T, typename Alloc>
 void deque_base<T, Alloc>::create_nodes(T** nstart, T** nfinish)
 {
 	T** Cur;
@@ -250,7 +251,7 @@ void deque_base<T, Alloc>::create_nodes(T** nstart, T** nfinish)
 		*Cur = allocate_node();
 }
 
-template <class T, class Alloc>
+template <typename T, typename Alloc>
 void deque_base<T, Alloc>::destroy_nodes(T** nstart, T** nfinish)
 {
 	T** Cur;
@@ -266,8 +267,6 @@ public:
 	typedef deque_iterator<T, T&, T*>					iterator;
 	typedef deque_iterator<T, T const&, T const*>		const_iterator;
 
-public:
-
 	typedef T						value_type;
 	typedef value_type*				pointer;
 	typedef value_type const*		const_pointer;
@@ -279,11 +278,7 @@ public:
 protected:
 
 	typedef pointer*		map_pointer;
-
-protected:
-
-	map_pointer			Map;
-	size_type			MapSize;
+	static size_t buffer_size() { return deque_buf_size(sizeof(T)); }
 
 public:
 
@@ -294,13 +289,13 @@ public:
 
 	reference front() { return *Start; }
 	const_reference front() const { return *Start; }
-	reference back() 
+	reference back()
 	{
 		iterator tmp = Finish;
 		--tmp;
 		return *tmp;
 	}
-	const_reference back() const 
+	const_reference back() const
 	{
 		return const_cast<reference>(
 			static_cast<const_reference>(*this.back()));
@@ -309,6 +304,74 @@ public:
 	size_type size() const { return Finish - Start; }
 	size_type max_size() const { return size_type(-1); }
 	bool empty() const { return Finish == Start; }
+
+	iterator insert(iterator position, value_type const& x)
+	{
+		if (position.Cur == Start.Cur)
+		{
+			push_front(x);
+			return Start;
+		}
+		else if (position.Cur == Finish.Cur)
+		{
+			push_back(x);
+			iterator tmp = Finish;
+			--tmp;
+			return tmp;
+		}
+		else
+		{
+			return insert_aux(position, x);
+		}
+	}
+
+	iterator insert(iterator position)
+	{
+		if (position.Cur == Start.Cur)
+		{
+			push_front();
+			return Start;
+		}
+		else if (position.Cur == Finish.Cur)
+		{
+			push_back();
+			iterator tmp = Finish;
+			--tmp;
+			return tmp;
+		}
+		else
+		{
+			return insert_aux(position);
+		}
+	}
+
+	void insert(iterator pos, size_type n, value_type const& x)
+	{
+		fill_insert(pos, n, x);
+	}
+
+	void fill_insert(iterator pos, size_type n, value_type const& x);
+
+	iterator erase(iterator pos)
+	{
+		iterator next = pos;
+		++next;
+		difference_type index = pos - Start;
+		if (index < (size() >> 1))
+		{
+			copy_backward(Start, pos, next);
+			pop_front();
+		}
+		else
+		{
+			copy(next, Finish, pos);
+			pop_back();
+		}
+		return Start + index;
+	}
+
+	iterator erase(iterator First, iterator Last);
+	void clear();
 
 public:
 
@@ -379,7 +442,7 @@ public:
 			pop_front_aux(Value);
 	}
 
-protected:                    
+protected:
 
 	void push_back_aux();
 	void push_back_aux(const value_type& Value);
@@ -387,7 +450,105 @@ protected:
 	void push_front_aux(const value_type& Value);
 	void pop_back_aux();
 	void pop_front_aux();
+
+	iterator insert_aux(iterator pos, value_type const& x);
+	iterator insert_aux(iterator pos);
+	void insert_aux(iterator pos, size_type n, value_type const& x);
+
+	void reserve_map_at_back(size_type nodes_to_add = 1)
+	{
+		if (nodes_to_add + 1 > MapSize - (Finish.Node - Map))
+		{
+			reallocate_map(nodes_to_add, false);
+		}
+	}
+	void reserve_map_at_front(size_type nodes_to_add = 1)
+	{
+		if (nodes_to_add + 1 > Start.Node - Map)
+		{
+			reallocate_map(nodes_to_add, true);
+		}
+	}
+
+	void reallocate_map(size_type nodes_to_add, bool add_at_front);
 };
+
+template <typename T, typename Alloc>
+void deque<T, Alloc>::fill_insert(iterator pos, size_type n, value_type const& x)
+{
+	if (position.Cur == Start.Cur)
+	{
+		iterator new_start = reserve_map_at_front(n);
+		UninitializedFill(new_start, Start, x);
+		Start = new_start;
+	}
+	else if (position.Cur == Finish.Cur)
+	{
+		iterator new_finish = reserve_map_at_back(n);
+		UninitializedFill(Finish, new_finish, x);
+		Finish = new_finish;
+	}
+	else
+	{
+		return insert_aux(position, n, x);
+	}
+}
+
+template <typename T, typename Alloc>
+void deque<T, Alloc>::clear()
+{
+	for (map_pointer node = Start.Node + 1; node < Finish.Node; node++)
+	{
+		Destroy(*node, *node + buffer_size());
+		data_allocator::deallocate(*node, buffer_size());
+	}
+
+	if (Start.Node != Finish.Node)
+	{
+		Destroy(Start.Cur, Start.Last);
+		Destroy(Finish.First, Finish.Cur);
+		data_allocator::deallocate(Finish.First, buffer_size());
+	}
+	else
+		Destroy(Start.Cur, Finish.Cur);
+
+	Finish = Start;
+}
+
+template <typename T, typename Alloc>
+deque<T, Alloc>::iterator deque<T, Alloc>::erase(iterator First, iterator Last)
+{
+	if (First == Start && Last == Finish)
+	{
+		clear();
+		return Finish;
+	}
+	else
+	{
+		difference_type n = Last - First;
+		difference_type elems_before = First - Start;
+		if (elems_before < (size() - n) / 2)
+		{
+			copy_backward(Start, First, Last);
+			iterator new_start = Start + n;
+			Destroy(Start, new_start);
+			for (map_pointer node = Start.Node; node < new_start.Node; node++)
+				data_allocator::deallocate(*node, buffer_size());
+			Start = new_start;
+		}
+		else
+		{
+			copy(Last, Finish, First);
+			iterator new_finish = Finish - n;
+			Destroy(new_finish, Finish);
+			for (map_pointer node = new_finish.Node + 1; node < Finish.Node; node++)
+				data_allocator::deallocate(*node, buffer_size());
+			Finish = new_finish;
+		}
+		return Start + elems_before;
+	}
+
+}
 
 template <typename T, typename Alloc>
 void deque<T, Alloc>::push_back_aux()
@@ -447,4 +608,149 @@ void deque<T, Alloc>::pop_front_aux()
 	deallocate_node(Start.First);
 	Finish.set_node(Start.Node + 1);
 	Finish.Cur = Finish.First;
+}
+
+template <typename T, typename Alloc>
+deque<T, Alloc>::iterator deque<T, Alloc>::insert_aux(iterator pos, value_type const& x)
+{
+	difference_type index = pos - Start;
+	value_type x_copy = x;
+	if (index < size() / 2)
+	{
+		push_front(front());
+		iterator front1 = Start;
+		++front1;
+		iterator front2 = front1;
+		++front2;
+		pos = Start + index;
+		iterator pos1 = pos;
+		++pos1;
+		copy(front2, pos1, front1);	// end - 1
+	}
+	else
+	{
+		push_back(back());
+		iterator back1 = Finish;
+		--back1;
+		iterator back2 = back1;
+		--back2;
+		pos = Start + index;
+		copy_backward(pos, back2, back1);
+	}
+	*pos = x_copy;
+	return pos;
+}
+
+template <typename T, typename Alloc>
+deque<T, Alloc>::iterator deque<T, Alloc>::insert_aux(iterator pos)
+{
+	difference_type index = pos - Start;
+	value_type x_copy = x;
+	if (index < size() / 2)
+	{
+		push_front(front());
+		iterator front1 = Start;
+		++front1;
+		iterator front2 = front1;
+		++front2;
+		pos = Start + index;
+		iterator pos1 = pos;
+		++pos1;
+		copy(front2, pos1, front1);	// end - 1
+	}
+	else
+	{
+		push_back(back());
+		iterator back1 = Finish;
+		--back1;
+		iterator back2 = back1;
+		--back2;
+		pos = Start + index;
+		copy_backward(pos, back2, back1);
+	}
+	*pos = value_type();
+	return pos;
+}
+
+template <typename T, typename Alloc>
+void deque<T, Alloc>::insert_aux(iterator pos, size_type n, value_type const& x)
+{
+	difference_type elemsbefore = pos - Start;
+	if (elemsbefore < size() / 2)
+	{
+		iterator new_start = reserve_map_at_front(n);
+		iterator old_start = Start;
+		pos = Start + elemsbefore;
+		if (elemsbefore >= n)
+		{
+			iterator start_n = Start + n;
+			UninitializedCopy(Start, start_n, new_start);
+			Start = new_start;
+			copy(start_n, pos, old_start);
+			UninitializedFill(pos - n, pos, x);
+		}
+		else
+		{
+			iterator mid = UninitializedCopy(Start, pos, new_start);
+			UninitializedFill(mid, Start, x);
+			Start = new_start;
+			UninitializedFill(old_start, pos, x);
+		}
+	}
+	else
+	{
+		iterator new_finish = reserve_map_at_back(n);
+		iterator old_finish = Finish;
+		difference_type elemsafter = size() - elemsbefore;
+		if (elemsafter > n)
+		{
+			iterator finish_n = Finish - n;
+			UninitializedCopy(finish_n, Finish, Finish);
+			Finish = new_finish;
+			copy_backward(pos, finish_n, old_finish);
+			UninitializedFill(pos, pos + n, x);
+		}
+		else
+		{
+			iterator mid = UninitializedFill(Finish, pos + n, x);
+			UninitializedCopy(pos, Finish, mid);
+			Finish = new_finish;
+			UninitializedFill(pos, old_finish, x);
+
+		}
+	}
+}
+
+template <typename T, typename Alloc>
+void deque<T, Alloc>::reallocate_map(size_type nodes_to_add, bool add_at_front)
+{
+	size_type old_num_nodes = Finish.Node - Start.Node + 1;
+	size_type new_num_nodes = old_num_nodes + nodes_to_add;
+
+	map_pointer new_nstart;
+	if (MapSize > 2 * new_num_nodes)
+	{
+		new_nstart = Map + (MapSize - new_num_nodes) / 2 
+						+ (add_at_front ? nodes_to_add : 0);
+		if (new_nstart < Start.Node)
+			copy(Start.Node, Finish.Node + 1, new_nstart);
+		else
+			copy_backward(Start.Node, Finish.Node + 1, new_nstart + old_num_nodes);
+	}
+	else
+	{
+		size_type new_map_size = MapSize + Max(MapSize, nodes_to_add) + 2;
+		
+		map_pointer new_map = allocate_map(new_map_size);
+		new_nstart = new_map + (MapSize - new_num_nodes) / 2 
+						+ (add_at_front ? nodes_to_add : 0);
+		copy(Start.Node, Finish.Node + 1, new_nstart);
+		deallocate_map(Map, MapSize);
+
+		Map = new_map;
+		MapSize = new_map_size;
+	}
+
+	Start.set_node(new_nstart);
+	Finish.set_node(new_nstart + old_num_nodes - 1);
 }
