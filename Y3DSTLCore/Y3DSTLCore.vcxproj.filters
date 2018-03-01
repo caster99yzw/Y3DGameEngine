@@ -87,6 +87,12 @@
     <ClInclude Include="SGISTL\Deque.h">
       <Filter>SGISTL</Filter>
     </ClInclude>
+    <ClInclude Include="SGISTL\Stack.h">
+      <Filter>SGISTL</Filter>
+    </ClInclude>
+    <ClInclude Include="SGISTL\Queue.h">
+      <Filter>SGISTL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Template">

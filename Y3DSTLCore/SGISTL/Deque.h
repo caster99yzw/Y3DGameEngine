@@ -12,8 +12,8 @@ inline size_t deque_buf_size(size_t sz)
 template <typename T, typename Ref, typename Ptr>
 struct deque_iterator
 {
-	typedef deque_iterator<T, T&, T*, BufSiz>				iterator;
-	typedef deque_iterator<T, T const&, T const*, BufSiz>	const_iterator;
+	typedef deque_iterator<T, T&, T*>					iterator;
+	typedef deque_iterator<T, T const&, T const*>		const_iterator;
 
 	static size_t buffer_size() { return deque_buf_size(sizeof(T)); }
 
@@ -23,7 +23,7 @@ struct deque_iterator
 	typedef Ref									reference;
 	typedef size_t								size_type;
 	typedef ptrdiff_t							difference_type;
-	typedef T**									map_pointer;h
+	typedef T**									map_pointer;
 
 	typedef deque_iterator						self;
 
@@ -516,7 +516,7 @@ void deque<T, Alloc>::clear()
 }
 
 template <typename T, typename Alloc>
-deque<T, Alloc>::iterator deque<T, Alloc>::erase(iterator First, iterator Last)
+typename deque<T, Alloc>::iterator deque<T, Alloc>::erase(iterator First, iterator Last)
 {
 	if (First == Start && Last == Finish)
 	{
@@ -611,7 +611,7 @@ void deque<T, Alloc>::pop_front_aux()
 }
 
 template <typename T, typename Alloc>
-deque<T, Alloc>::iterator deque<T, Alloc>::insert_aux(iterator pos, value_type const& x)
+typename deque<T, Alloc>::iterator deque<T, Alloc>::insert_aux(iterator pos, value_type const& x)
 {
 	difference_type index = pos - Start;
 	value_type x_copy = x;
@@ -642,7 +642,7 @@ deque<T, Alloc>::iterator deque<T, Alloc>::insert_aux(iterator pos, value_type c
 }
 
 template <typename T, typename Alloc>
-deque<T, Alloc>::iterator deque<T, Alloc>::insert_aux(iterator pos)
+typename deque<T, Alloc>::iterator deque<T, Alloc>::insert_aux(iterator pos)
 {
 	difference_type index = pos - Start;
 	value_type x_copy = x;
