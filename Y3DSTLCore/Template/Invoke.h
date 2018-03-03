@@ -26,32 +26,37 @@ namespace Invoke_Private
 * Invokes a callable with a set of arguments.  Allows the following:
 *
 * - Calling a functor object given a set of arguments.
+* - Calling a function pointer given a set of arguments.
+* - Calling a member function given a reference to an object and a set of arguments.
+* - Calling a member function given a pointer (including smart pointers) to an object and a set of arguments.
+* - Projecting via a data member pointer given a reference to an object.
+* - Projecting via a data member pointer given a pointer (including smart pointers) to an object.
 *
 **/
 template <typename FuncType, typename... ArgTypes>
 FORCEINLINE auto Invoke(FuncType&& Func, ArgTypes&&... Args)
-	-> decltype(Forward(FuncType)(Func)(Forward(ArgTypes)(Args)...))
+	-> decltype(Forward<FuncType>(Func)(Forward<ArgTypes>(Args)...))
 {
-	return Forward(FuncType)(Func)(Forward(ArgTypes)(Args)...);
+	return Forward<FuncType>(Func)(Forward<ArgTypes>(Args)...);
 }
 
-template <typename ReturnType, typename ObjType, typename CallableType>
-FORCEINLINE auto Invoke(ReturnType ObjType::*pdm, CallableType&& Callable)
-	-> decltype(Invoke_Private::DereferenceIfNecessary<ObjType>(Forward<CallableType>(Callable)).*pdm)
-{
-	return Invoke_Private::DereferenceIfNecessary<ObjType>(Forward<CallableType>(Callable)).*pdm;
-}
-
-template <typename ReturnType, typename ObjType, typename... PMFArgTypes, typename CallableType, typename... ArgTypes>
-FORCEINLINE auto Invoke(ReturnType (ObjType::*PtrMemFun)(PMFArgTypes...), CallableType&& Callable, ArgTypes&&... Args)
-	-> decltype(Invoke_Private::DereferenceIfNecessary<ObjType>(Forward<CallableType>(Callable).*PtrMemFun)(Forward<ArgTypes>(Args)...))
-{
-	return (Invoke_Private::DereferenceIfNecessary<ObjType>((Forward<CallableType>(Callable)).*PtrMemFun)(Forward<ArgTypes>(Args)...));
-}
-
-template <typename ReturnType, typename ObjType, typename... PMFArgTypes, typename CallableType, typename... ArgTypes>
-FORCEINLINE auto Invoke(ReturnType(ObjType::*PtrMemFun)(PMFArgTypes...) const, CallableType&& Callable, ArgTypes&&... Args)
-	-> decltype(Invoke_Private::DereferenceIfNecessary<ObjType>(Forward<CallableType>(Callable).*PtrMemFun)(Forward<ArgTypes>(Args)...))
-{
-	return (Invoke_Private::DereferenceIfNecessary<ObjType>(Forward<CallableType>(Callable).*PtrMemFun)(Forward<ArgTypes>(Args)...));
-}
+//template <typename ReturnType, typename ObjType, typename CallableType>
+//FORCEINLINE auto Invoke(ReturnType ObjType::*pdm, CallableType&& Callable)
+//	-> decltype(Invoke_Private::DereferenceIfNecessary<ObjType>(Forward<CallableType>(Callable)).*pdm)
+//{
+//	return Invoke_Private::DereferenceIfNecessary<ObjType>(Forward<CallableType>(Callable)).*pdm;
+//}
+//
+//template <typename ReturnType, typename ObjType, typename... PMFArgTypes, typename CallableType, typename... ArgTypes>
+//FORCEINLINE auto Invoke(ReturnType (ObjType::*PtrMemFun)(PMFArgTypes...), CallableType&& Callable, ArgTypes&&... Args)
+//	-> decltype(Invoke_Private::DereferenceIfNecessary<ObjType>(Forward<CallableType>(Callable).*PtrMemFun)(Forward<ArgTypes>(Args)...))
+//{
+//	return (Invoke_Private::DereferenceIfNecessary<ObjType>((Forward<CallableType>(Callable)).*PtrMemFun)(Forward<ArgTypes>(Args)...));
+//}
+//
+//template <typename ReturnType, typename ObjType, typename... PMFArgTypes, typename CallableType, typename... ArgTypes>
+//FORCEINLINE auto Invoke(ReturnType (ObjType::*PtrMemFun)(PMFArgTypes...) const, CallableType&& Callable, ArgTypes&&... Args)
+//	-> decltype(Invoke_Private::DereferenceIfNecessary<ObjType>(Forward<CallableType>(Callable).*PtrMemFun)(Forward<ArgTypes>(Args)...))
+//{
+//	return (Invoke_Private::DereferenceIfNecessary<ObjType>(Forward<CallableType>(Callable).*PtrMemFun)(Forward<ArgTypes>(Args)...));
+//}

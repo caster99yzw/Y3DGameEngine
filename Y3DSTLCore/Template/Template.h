@@ -3,6 +3,9 @@
 #include "CoreTypes.h"
 #include "Template/RemoveReference.h"
 #include "Template/EnableIf.h"
+#include "Template/AndOrNot.h"
+#include "Template/IsArithmetic.h"
+#include "Template/IsPointer.h"
 
 
 /**
@@ -73,4 +76,33 @@ template <typename T>
 FORCEINLINE typename RemoveReference<T>::Type&& Move(T&& Obj)
 {
 	return (typename RemoveReference<T>::Type&&)Obj;
+}
+/**
+* A traits class which specifies whether a Swap of a given type should swap the bits or use a traditional value-based swap.
+*/
+template <typename T>
+struct UseBitwiseSwap
+{
+	// We don't use bitwise swapping for 'register' types because this will force them into memory and be slower.
+	enum { Value = !OrVaule<__is_enum(T), IsPointer<T>, IsArithmetic<T>>::Value };
+};
+
+/**
+* Swap two values.  Assumes the types are trivially relocatable.
+*/
+template <typename T>
+inline typename EnableIf<UseBitwiseSwap<T>::Value>::Type Swap(T& A, T& B)
+{
+	T Temp;
+	memccpy(&Temp, &A, sizeof(T));
+	memccpy(&A, &B, sizeof(T));
+	memccpy(&B, &Temp, sizeof(T));
+}
+
+template <typename T>
+inline typename EnableIf<!UseBitwiseSwap<T>::Value>::Type Swap(T& A, T& B)
+{
+	T Temp = Move(A);
+	A = Move(B);
+	B = Move(Temp);
 }

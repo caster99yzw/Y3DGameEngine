@@ -130,6 +130,7 @@
     <ClInclude Include="SGISTL\Allocator.h" />
     <ClInclude Include="SGISTL\Construct.h" />
     <ClInclude Include="SGISTL\Deque.h" />
+    <ClInclude Include="SGISTL\Heap.h" />
     <ClInclude Include="SGISTL\Queue.h" />
     <ClInclude Include="SGISTL\Stack.h" />
     <ClInclude Include="SGISTL\IsSafetyFillMemset.h" />
