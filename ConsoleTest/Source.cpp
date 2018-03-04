@@ -19,6 +19,7 @@
 #include "SGISTL/List.h"
 #include "SGISTL/Deque.h"
 #include "SGISTL/Heap.h"
+#include "SGISTL/Queue.h"
 #include <memory>
 
 int compare(int a)
@@ -91,28 +92,18 @@ int main()
 	//std::cout << std::endl;
 
 	int ia[9] = { 0, 1, 2, 3, 4, 8, 9, 3, 5 };
-	vector<int> ivec(ia, ia + 9);
+	priority_queue<int> ipq(ia, ia + 9);
 
-	for (vector<int>::iterator itor = ivec.begin();
-		itor != ivec.end();
-		itor++)
+	for (int i = 0; i < ipq.size(); i++)
 	{
-		std::cout << *itor << " ";
+		std::cout << ipq.top()<< " ";
 	}
 	std::cout << std::endl;
 
-	MakeHeap(ivec.begin(), ivec.end(), Less<int>());
-	ivec.push_back(7);
-
-	PushHeap(ivec.begin(), ivec.end(), Less<int>());
-
-	PopHeap(ivec.begin(), ivec.end(), Less<int>());
-
-	for (vector<int>::iterator itor = ivec.begin();
-		itor != ivec.end();
-		itor++)
+	while (!ipq.empty())
 	{
-		std::cout << *itor << " ";
+		std::cout << ipq.top() << " ";
+		ipq.pop();
 	}
 	std::cout << std::endl;
 
