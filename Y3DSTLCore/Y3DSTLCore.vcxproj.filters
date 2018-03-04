@@ -96,6 +96,9 @@
     <ClInclude Include="SGISTL\Heap.h">
       <Filter>SGISTL</Filter>
     </ClInclude>
+    <ClInclude Include="SGISTL\Slist.h">
+      <Filter>SGISTL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Template">
