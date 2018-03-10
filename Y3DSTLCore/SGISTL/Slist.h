@@ -221,7 +221,7 @@ public:
 	typedef slist_iterator<T, T&, T*>				iterator;
 	typedef slist_iterator<T, T const&, T const*>	const_iterator;
 
-	typedef typename _Base::allocator_type	allocator_type;
+	typedef typename base::allocator_type	allocator_type;
 	allocator_type get_allocator() const { return base::get_allocator(); }
 
 private:
@@ -520,6 +520,7 @@ void slist<T, Alloc>::merge(slist& x)
 			slist_splice_after(link, &x.Head, x.Head.next);
 		link = link->next;
 	}
+
 	if (x.Head.next)
 	{
 		link->next = x.Head.next;
@@ -530,26 +531,28 @@ void slist<T, Alloc>::merge(slist& x)
 template <typename T, typename Alloc>
 void slist<T, Alloc>::sort()
 {
-	if (this->_M_head._M_next && this->_M_head._M_next->_M_next) {
-		slist __carry;
-		slist __counter[64];
-		int __fill = 0;
-		while (!empty()) {
-			__slist_splice_after(&__carry._M_head,
-				&this->_M_head, this->_M_head._M_next);
-			int __i = 0;
-			while (__i < __fill && !__counter[__i].empty()) {
-				__counter[__i].merge(__carry);
-				__carry.swap(__counter[__i]);
-				++__i;
+	if (this->Head.next && this->Head.next->next) {
+		slist carry;
+		slist counter[64];
+		int fill = 0;
+
+		while (!empty())
+		{
+			slist_splice_after(&carry.Head, &this->Head, this->Head.next);
+			int i = 0;
+			while (i < fill && !counter[i].empty())
+			{
+				counter[i].merge(carry);
+				carry.swap(counter[i]);
+				++i;
 			}
-			__carry.swap(__counter[__i]);
-			if (__i == __fill)
-				++__fill;
+			carry.swap(counter[i]);
+			if (i == fill)
+				++fill;
 		}
 
-		for (int __i = 1; __i < __fill; ++__i)
-			__counter[__i].merge(__counter[__i - 1]);
-		this->swap(__counter[__fill - 1]);
-	}
+		for (int i = 1; i < fill; ++i)
+			counter[i].merge(counter[i - 1]);
+		this->swap(counter[fill - 1]);
+	}eeeee
 }

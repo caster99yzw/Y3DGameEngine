@@ -20,6 +20,7 @@
 #include "SGISTL/Deque.h"
 #include "SGISTL/Heap.h"
 #include "SGISTL/Queue.h"
+#include "SGISTL/RBTree.h"
 #include <memory>
 
 int compare(int a)
