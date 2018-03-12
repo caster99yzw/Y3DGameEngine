@@ -35,7 +35,7 @@ namespace Y3D
 
 	public:
 
-		inline void SetToDefault();
+		inline void multisetToDefault();
 		inline bool IsValid() const;
 		inline CameraDescType GetType() const;
 
@@ -65,7 +65,7 @@ namespace Y3D
 
 		inline CameraOrthoDesc();
 
-		inline void SetToDefault();
+		inline void multisetToDefault();
 		inline bool IsValid() const;
 	};
 
@@ -88,7 +88,7 @@ namespace Y3D
 
 		inline CameraPerspectiveDesc();
 
-		inline void SetToDefault();
+		inline void multisetToDefault();
 		inline bool IsValid() const;
 	};
 
@@ -97,7 +97,7 @@ namespace Y3D
 		// Nothing
 	}
 
-	inline void CameraDescBase::SetToDefault()
+	inline void CameraDescBase::multisetToDefault()
 	{
 		//
 		//
@@ -121,9 +121,9 @@ namespace Y3D
 		type = Y3D_CAMERA_ORTHOGONAL;
 	}
 
-	inline void CameraOrthoDesc::SetToDefault()
+	inline void CameraOrthoDesc::multisetToDefault()
 	{
-		CameraDescBase::SetToDefault();
+		CameraDescBase::multisetToDefault();
 		vLTNPos = { 0.f, 0.f, 0.f };
 		vRBFPos = { 0.f, 0.f, 0.f };
 	}
@@ -139,9 +139,9 @@ namespace Y3D
 		type = Y3D_CAMERA_PERSPECTIVE;
 	}
 
-	inline void CameraPerspectiveDesc::SetToDefault()
+	inline void CameraPerspectiveDesc::multisetToDefault()
 	{
-		CameraDescBase::SetToDefault();
+		CameraDescBase::multisetToDefault();
 		pProjInfo = { 0.f, 0.f, 0.f, 0.f };
 	}
 

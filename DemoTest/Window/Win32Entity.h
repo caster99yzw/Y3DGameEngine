@@ -35,7 +35,7 @@ namespace Y3D
 		INT32			GetMouseX() override;
 		INT32			GetMouseY() override;
 		bool			IsFullScreen() override;
-		void			SetWidthAndHeight(INT32 width, INT32 height) override;
+		void			multisetWidthAndHeight(INT32 width, INT32 height) override;
 
 		UINT32			GetWidth() override;
 		UINT32			GetHeight() override;

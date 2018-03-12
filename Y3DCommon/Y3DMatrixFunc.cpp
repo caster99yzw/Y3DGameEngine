@@ -65,7 +65,7 @@ namespace Y3D
 
 	// mat4's _11,_12,_13,_21,_22,_23,_31,_32,_33 is mat3
 	// mat4's is _41,_42,_43 is vec3
-	Mat4F32 _Set_Mat3_Vec3_To_Mat4(Mat3F32 const& mat, Vec3F32 const& vec)
+	Mat4F32 _multiset_Mat3_Vec3_To_Mat4(Mat3F32 const& mat, Vec3F32 const& vec)
 	{
 		return Mat4F32(
 			mat[0][0], mat[0][1], mat[0][2], 0.f,
@@ -76,7 +76,7 @@ namespace Y3D
 	}
 
 	// Generate mat3 by (vec3).transpose * vec3
-	Mat3F32 _Set_Vec3Tr_Vec3_To_Mat3(Vec3F32 const& vecTp, Vec3F32 const& vec)
+	Mat3F32 _multiset_Vec3Tr_Vec3_To_Mat3(Vec3F32 const& vecTp, Vec3F32 const& vec)
 	{
 		return Mat3F32(
 			vecTp[0] * vec[0], vecTp[0] * vec[1], vecTp[0] * vec[2],
@@ -86,7 +86,7 @@ namespace Y3D
 	}
 
 	// Generate mat4 by (vec4).transpose * vec4
-	Mat4F32 _Set_Vec4Tr_Vec4_To_Mat4(Vec4F32 const& vecTp, Vec4F32 const& vec)
+	Mat4F32 _multiset_Vec4Tr_Vec4_To_Mat4(Vec4F32 const& vecTp, Vec4F32 const& vec)
 	{
 		return Mat4F32(
 			vecTp[0] * vec[0], vecTp[0] * vec[1], vecTp[0] * vec[2], vecTp[0] * vec[3],
@@ -104,7 +104,7 @@ namespace Y3D
 		Mat3F32 m3RT = _Get_Mat3_From_Mat4(matTp).Transposed();
 		Mat3F32 m3L = _Get_Mat3_From_Mat4(mat) * m3RT;
 
-		return _Set_Mat3_Vec3_To_Mat4(m3L, Vec3F32(0.f));
+		return _multiset_Mat3_Vec3_To_Mat4(m3L, Vec3F32(0.f));
 	}
 
 	Mat4F32 _Tranform_Left_Inverse(Mat4F32 const& mat, Mat4F32 const& matInv)
@@ -112,7 +112,7 @@ namespace Y3D
 		Mat3F32 m3RT = _Get_Mat3_From_Mat4(matInv).Inversed();
 		Mat3F32 m3L = _Get_Mat3_From_Mat4(mat) * m3RT;
 
-		return _Set_Mat3_Vec3_To_Mat4(m3L, Vec3F32(0.f));
+		return _multiset_Mat3_Vec3_To_Mat4(m3L, Vec3F32(0.f));
 	}
 
 	Mat4F32 _Tranform_Right_Transpose(Mat4F32 const& matTp, Mat4F32 const& mat)
@@ -120,7 +120,7 @@ namespace Y3D
 		Mat3F32 m3LT = _Get_Mat3_From_Mat4(matTp).Transposed();
 		Mat3F32 m3R = m3LT * _Get_Mat3_From_Mat4(mat);
 
-		return _Set_Mat3_Vec3_To_Mat4(m3R, Vec3F32(0.f));
+		return _multiset_Mat3_Vec3_To_Mat4(m3R, Vec3F32(0.f));
 	}
 
 	Mat4F32 _Tranform_Right_Inverse(Mat4F32 const& matInv, Mat4F32 const& mat)
@@ -128,7 +128,7 @@ namespace Y3D
 		Mat3F32 m3LT = _Get_Mat3_From_Mat4(matInv).Transposed();
 		Mat3F32 m3R = m3LT * _Get_Mat3_From_Mat4(mat);
 
-		return _Set_Mat3_Vec3_To_Mat4(m3R, Vec3F32(0.f));
+		return _multiset_Mat3_Vec3_To_Mat4(m3R, Vec3F32(0.f));
 	}
 
 	//
@@ -242,9 +242,9 @@ namespace Y3D
 		// M[i,j] = (s - 1) * W[i] * W[j] + (i == j ? 1: 0)
 
 		//Mat3F32 mat = Mat3F32::IDENTITY;
-		//Mat3F32 sMat = _Set_Vec3Tr_Vec3_To_Mat3(axis, axis);
+		//Mat3F32 sMat = _multiset_Vec3Tr_Vec3_To_Mat3(axis, axis);
 		//mat += (s - 1.f) * sMat;
-		//return _Set_Mat3_Vec3_To_Mat4(mat, { 0.f,0.f,0.f });
+		//return _multiset_Mat3_Vec3_To_Mat4(mat, { 0.f,0.f,0.f });
 
 		return Mat4F32(
 			(s - 1.f) * axis.x * axis.x + 1, (s - 1.f) * axis.x * axis.y, (s - 1.f) * axis.x * axis.z, 0.f,

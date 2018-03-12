@@ -106,14 +106,14 @@ public:
     //@{
 
     //! Default constructor.
-    GenericPointer(Allocator* allocator = 0) : allocator_(allocator), ownAllocator_(), nameBuffer_(), tokens_(), tokenCount_(), parseErrorOffset_(), parseErrorCode_(kPointerParseErrorNone) {}
+    GenericPointer(Allocator* allocator = 0) : allocator_(allocator), ownAllocator_(), nameBuffer_(), tokens_(), tokenCount_(), parseErrorOffmultiset_(), parseErrorCode_(kPointerParseErrorNone) {}
 
     //! Constructor that parses a string or URI fragment representation.
     /*!
         \param source A null-terminated, string or URI fragment representation of JSON pointer.
         \param allocator User supplied allocator for this pointer. If no allocator is provided, it creates a self-owned one.
     */
-    explicit GenericPointer(const Ch* source, Allocator* allocator = 0) : allocator_(allocator), ownAllocator_(), nameBuffer_(), tokens_(), tokenCount_(), parseErrorOffset_(), parseErrorCode_(kPointerParseErrorNone) {
+    explicit GenericPointer(const Ch* source, Allocator* allocator = 0) : allocator_(allocator), ownAllocator_(), nameBuffer_(), tokens_(), tokenCount_(), parseErrorOffmultiset_(), parseErrorCode_(kPointerParseErrorNone) {
         Parse(source, internal::StrLen(source));
     }
 
@@ -124,7 +124,7 @@ public:
         \param allocator User supplied allocator for this pointer. If no allocator is provided, it creates a self-owned one.
         \note Requires the definition of the preprocessor symbol \ref RAPIDJSON_HAS_STDSTRING.
     */
-    explicit GenericPointer(const std::basic_string<Ch>& source, Allocator* allocator = 0) : allocator_(allocator), ownAllocator_(), nameBuffer_(), tokens_(), tokenCount_(), parseErrorOffset_(), parseErrorCode_(kPointerParseErrorNone) {
+    explicit GenericPointer(const std::basic_string<Ch>& source, Allocator* allocator = 0) : allocator_(allocator), ownAllocator_(), nameBuffer_(), tokens_(), tokenCount_(), parseErrorOffmultiset_(), parseErrorCode_(kPointerParseErrorNone) {
         Parse(source.c_str(), source.size());
     }
 #endif
@@ -136,7 +136,7 @@ public:
         \param allocator User supplied allocator for this pointer. If no allocator is provided, it creates a self-owned one.
         \note Slightly faster than the overload without length.
     */
-    GenericPointer(const Ch* source, size_t length, Allocator* allocator = 0) : allocator_(allocator), ownAllocator_(), nameBuffer_(), tokens_(), tokenCount_(), parseErrorOffset_(), parseErrorCode_(kPointerParseErrorNone) {
+    GenericPointer(const Ch* source, size_t length, Allocator* allocator = 0) : allocator_(allocator), ownAllocator_(), nameBuffer_(), tokens_(), tokenCount_(), parseErrorOffmultiset_(), parseErrorCode_(kPointerParseErrorNone) {
         Parse(source, length);
     }
 
@@ -162,10 +162,10 @@ public:
         #undef INDEX
         \endcode
     */
-    GenericPointer(const Token* tokens, size_t tokenCount) : allocator_(), ownAllocator_(), nameBuffer_(), tokens_(const_cast<Token*>(tokens)), tokenCount_(tokenCount), parseErrorOffset_(), parseErrorCode_(kPointerParseErrorNone) {}
+    GenericPointer(const Token* tokens, size_t tokenCount) : allocator_(), ownAllocator_(), nameBuffer_(), tokens_(const_cast<Token*>(tokens)), tokenCount_(tokenCount), parseErrorOffmultiset_(), parseErrorCode_(kPointerParseErrorNone) {}
 
     //! Copy constructor.
-    GenericPointer(const GenericPointer& rhs, Allocator* allocator = 0) : allocator_(allocator), ownAllocator_(), nameBuffer_(), tokens_(), tokenCount_(), parseErrorOffset_(), parseErrorCode_(kPointerParseErrorNone) {
+    GenericPointer(const GenericPointer& rhs, Allocator* allocator = 0) : allocator_(allocator), ownAllocator_(), nameBuffer_(), tokens_(), tokenCount_(), parseErrorOffmultiset_(), parseErrorCode_(kPointerParseErrorNone) {
         *this = rhs;
     }
 
@@ -184,7 +184,7 @@ public:
                 Allocator::Free(tokens_);
 
             tokenCount_ = rhs.tokenCount_;
-            parseErrorOffset_ = rhs.parseErrorOffset_;
+            parseErrorOffmultiset_ = rhs.parseErrorOffmultiset_;
             parseErrorCode_ = rhs.parseErrorCode_;
 
             if (rhs.nameBuffer_)
@@ -302,8 +302,8 @@ public:
     //! Check whether this is a valid pointer.
     bool IsValid() const { return parseErrorCode_ == kPointerParseErrorNone; }
 
-    //! Get the parsing error offset in code unit.
-    size_t GetParseErrorOffset() const { return parseErrorOffset_; }
+    //! Get the parsing error offmultiset in code unit.
+    size_t GetParseErrorOffmultimultiset() const { return parseErrorOffmultiset_; }
 
     //! Get the parsing error code.
     PointerParseErrorCode GetParseErrorCode() const { return parseErrorCode_; }
@@ -411,11 +411,11 @@ public:
             else {
                 if (t->index == kPointerInvalidIndex) { // must be object name
                     if (!v->IsObject())
-                        v->SetObject(); // Change to Object
+                        v->multisetObject(); // Change to Object
                 }
                 else { // object name or array index
                     if (!v->IsArray() && !v->IsObject())
-                        v->SetArray(); // Change to Array
+                        v->multisetArray(); // Change to Array
                 }
 
                 if (v->IsArray()) {
@@ -540,7 +540,7 @@ public:
     ValueType& GetWithDefault(ValueType& root, const Ch* defaultValue, typename ValueType::AllocatorType& allocator) const {
         bool alreadyExist;
         Value& v = Create(root, allocator, &alreadyExist);
-        return alreadyExist ? v : v.SetString(defaultValue, allocator);
+        return alreadyExist ? v : v.multisetString(defaultValue, allocator);
     }
 
 #if RAPIDJSON_HAS_STDSTRING
@@ -548,7 +548,7 @@ public:
     ValueType& GetWithDefault(ValueType& root, const std::basic_string<Ch>& defaultValue, typename ValueType::AllocatorType& allocator) const {
         bool alreadyExist;
         Value& v = Create(root, allocator, &alreadyExist);
-        return alreadyExist ? v : v.SetString(defaultValue, allocator);
+        return alreadyExist ? v : v.multisetString(defaultValue, allocator);
     }
 #endif
 
@@ -594,83 +594,83 @@ public:
 
     //@}
 
-    //!@name Set a value
+    //!@name multiset a value
     //@{
 
-    //! Set a value in a subtree, with move semantics.
+    //! multiset a value in a subtree, with move semantics.
     /*!
         It creates all parents if they are not exist or types are different to the tokens.
         So this function always succeeds but potentially remove existing values.
 
         \param root Root value of a DOM sub-tree to be resolved. It can be any value other than document root.
-        \param value Value to be set.
+        \param value Value to be multiset.
         \param allocator Allocator for creating the values if the specified value or its parents are not exist.
         \see Create()
     */
-    ValueType& Set(ValueType& root, ValueType& value, typename ValueType::AllocatorType& allocator) const {
+    ValueType& multimultiset(ValueType& root, ValueType& value, typename ValueType::AllocatorType& allocator) const {
         return Create(root, allocator) = value;
     }
 
-    //! Set a value in a subtree, with copy semantics.
-    ValueType& Set(ValueType& root, const ValueType& value, typename ValueType::AllocatorType& allocator) const {
+    //! multiset a value in a subtree, with copy semantics.
+    ValueType& multimultiset(ValueType& root, const ValueType& value, typename ValueType::AllocatorType& allocator) const {
         return Create(root, allocator).CopyFrom(value, allocator);
     }
 
-    //! Set a null-terminated string in a subtree.
-    ValueType& Set(ValueType& root, const Ch* value, typename ValueType::AllocatorType& allocator) const {
+    //! multiset a null-terminated string in a subtree.
+    ValueType& multimultiset(ValueType& root, const Ch* value, typename ValueType::AllocatorType& allocator) const {
         return Create(root, allocator) = ValueType(value, allocator).Move();
     }
 
 #if RAPIDJSON_HAS_STDSTRING
-    //! Set a std::basic_string in a subtree.
-    ValueType& Set(ValueType& root, const std::basic_string<Ch>& value, typename ValueType::AllocatorType& allocator) const {
+    //! multiset a std::basic_string in a subtree.
+    ValueType& multimultiset(ValueType& root, const std::basic_string<Ch>& value, typename ValueType::AllocatorType& allocator) const {
         return Create(root, allocator) = ValueType(value, allocator).Move();
     }
 #endif
 
-    //! Set a primitive value in a subtree.
+    //! multiset a primitive value in a subtree.
     /*!
         \tparam T Either \ref Type, \c int, \c unsigned, \c int64_t, \c uint64_t, \c bool
     */
     template <typename T>
     RAPIDJSON_DISABLEIF_RETURN((internal::OrExpr<internal::IsPointer<T>, internal::IsGenericValue<T> >), (ValueType&))
-    Set(ValueType& root, T value, typename ValueType::AllocatorType& allocator) const {
+    multimultiset(ValueType& root, T value, typename ValueType::AllocatorType& allocator) const {
         return Create(root, allocator) = ValueType(value).Move();
     }
 
-    //! Set a value in a document, with move semantics.
+    //! multiset a value in a document, with move semantics.
     template <typename stackAllocator>
-    ValueType& Set(GenericDocument<EncodingType, typename ValueType::AllocatorType, stackAllocator>& document, ValueType& value) const {
+    ValueType& multimultiset(GenericDocument<EncodingType, typename ValueType::AllocatorType, stackAllocator>& document, ValueType& value) const {
         return Create(document) = value;
     }
 
-    //! Set a value in a document, with copy semantics.
+    //! multiset a value in a document, with copy semantics.
     template <typename stackAllocator>
-    ValueType& Set(GenericDocument<EncodingType, typename ValueType::AllocatorType, stackAllocator>& document, const ValueType& value) const {
+    ValueType& multimultiset(GenericDocument<EncodingType, typename ValueType::AllocatorType, stackAllocator>& document, const ValueType& value) const {
         return Create(document).CopyFrom(value, document.GetAllocator());
     }
 
-    //! Set a null-terminated string in a document.
+    //! multiset a null-terminated string in a document.
     template <typename stackAllocator>
-    ValueType& Set(GenericDocument<EncodingType, typename ValueType::AllocatorType, stackAllocator>& document, const Ch* value) const {
+    ValueType& multimultiset(GenericDocument<EncodingType, typename ValueType::AllocatorType, stackAllocator>& document, const Ch* value) const {
         return Create(document) = ValueType(value, document.GetAllocator()).Move();
     }
 
 #if RAPIDJSON_HAS_STDSTRING
-    //! Sets a std::basic_string in a document.
+    //! multisets a std::basic_string in a document.
     template <typename stackAllocator>
-    ValueType& Set(GenericDocument<EncodingType, typename ValueType::AllocatorType, stackAllocator>& document, const std::basic_string<Ch>& value) const {
+    ValueType& multimultiset(GenericDocument<EncodingType, typename ValueType::AllocatorType, stackAllocator>& document, const std::basic_string<Ch>& value) const {
         return Create(document) = ValueType(value, document.GetAllocator()).Move();
     }
 #endif
 
-    //! Set a primitive value in a document.
+    //! multiset a primitive value in a document.
     /*!
     \tparam T Either \ref Type, \c int, \c unsigned, \c int64_t, \c uint64_t, \c bool
     */
     template <typename T, typename stackAllocator>
     RAPIDJSON_DISABLEIF_RETURN((internal::OrExpr<internal::IsPointer<T>, internal::IsGenericValue<T> >), (ValueType&))
-        Set(GenericDocument<EncodingType, typename ValueType::AllocatorType, stackAllocator>& document, T value) const {
+        multimultiset(GenericDocument<EncodingType, typename ValueType::AllocatorType, stackAllocator>& document, T value) const {
             return Create(document) = value;
     }
 
@@ -927,7 +927,7 @@ private:
         nameBuffer_ = 0;
         tokens_ = 0;
         tokenCount_ = 0;
-        parseErrorOffset_ = i;
+        parseErrorOffmultiset_ = i;
         return;
     }
 
@@ -974,7 +974,7 @@ private:
     //! A helper stream for decoding a percent-encoded sequence into code unit.
     /*!
         This stream decodes %XY triplet into code unit (0-255).
-        If it encounters invalid characters, it sets output code unit as 0 and 
+        If it encounters invalid characters, it multisets output code unit as 0 and 
         mark invalid, and to be checked by IsValid().
     */
     class PercentDecodeStream {
@@ -1041,7 +1041,7 @@ private:
     Ch* nameBuffer_;                        //!< A buffer containing all names in tokens.
     Token* tokens_;                         //!< A list of tokens.
     size_t tokenCount_;                     //!< Number of tokens in tokens_.
-    size_t parseErrorOffset_;               //!< Offset in code unit when parsing fail.
+    size_t parseErrorOffmultiset_;               //!< Offmultiset in code unit when parsing fail.
     PointerParseErrorCode parseErrorCode_;  //!< Parsing error code.
 };
 
@@ -1196,117 +1196,117 @@ GetValueByPointerWithDefault(DocumentType& document, const CharType(&source)[N],
 //////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
-typename T::ValueType& SetValueByPointer(T& root, const GenericPointer<typename T::ValueType>& pointer, typename T::ValueType& value, typename T::AllocatorType& a) {
-    return pointer.Set(root, value, a);
+typename T::ValueType& multisetValueByPointer(T& root, const GenericPointer<typename T::ValueType>& pointer, typename T::ValueType& value, typename T::AllocatorType& a) {
+    return pointer.multimultiset(root, value, a);
 }
 
 template <typename T>
-typename T::ValueType& SetValueByPointer(T& root, const GenericPointer<typename T::ValueType>& pointer, const typename T::ValueType& value, typename T::AllocatorType& a) {
-    return pointer.Set(root, value, a);
+typename T::ValueType& multisetValueByPointer(T& root, const GenericPointer<typename T::ValueType>& pointer, const typename T::ValueType& value, typename T::AllocatorType& a) {
+    return pointer.multimultiset(root, value, a);
 }
 
 template <typename T>
-typename T::ValueType& SetValueByPointer(T& root, const GenericPointer<typename T::ValueType>& pointer, const typename T::Ch* value, typename T::AllocatorType& a) {
-    return pointer.Set(root, value, a);
+typename T::ValueType& multisetValueByPointer(T& root, const GenericPointer<typename T::ValueType>& pointer, const typename T::Ch* value, typename T::AllocatorType& a) {
+    return pointer.multimultiset(root, value, a);
 }
 
 #if RAPIDJSON_HAS_STDSTRING
 template <typename T>
-typename T::ValueType& SetValueByPointer(T& root, const GenericPointer<typename T::ValueType>& pointer, const std::basic_string<typename T::Ch>& value, typename T::AllocatorType& a) {
-    return pointer.Set(root, value, a);
+typename T::ValueType& multisetValueByPointer(T& root, const GenericPointer<typename T::ValueType>& pointer, const std::basic_string<typename T::Ch>& value, typename T::AllocatorType& a) {
+    return pointer.multimultiset(root, value, a);
 }
 #endif
 
 template <typename T, typename T2>
 RAPIDJSON_DISABLEIF_RETURN((internal::OrExpr<internal::IsPointer<T2>, internal::IsGenericValue<T2> >), (typename T::ValueType&))
-SetValueByPointer(T& root, const GenericPointer<typename T::ValueType>& pointer, T2 value, typename T::AllocatorType& a) {
-    return pointer.Set(root, value, a);
+multisetValueByPointer(T& root, const GenericPointer<typename T::ValueType>& pointer, T2 value, typename T::AllocatorType& a) {
+    return pointer.multimultiset(root, value, a);
 }
 
 template <typename T, typename CharType, size_t N>
-typename T::ValueType& SetValueByPointer(T& root, const CharType(&source)[N], typename T::ValueType& value, typename T::AllocatorType& a) {
-    return GenericPointer<typename T::ValueType>(source, N - 1).Set(root, value, a);
+typename T::ValueType& multisetValueByPointer(T& root, const CharType(&source)[N], typename T::ValueType& value, typename T::AllocatorType& a) {
+    return GenericPointer<typename T::ValueType>(source, N - 1).multimultiset(root, value, a);
 }
 
 template <typename T, typename CharType, size_t N>
-typename T::ValueType& SetValueByPointer(T& root, const CharType(&source)[N], const typename T::ValueType& value, typename T::AllocatorType& a) {
-    return GenericPointer<typename T::ValueType>(source, N - 1).Set(root, value, a);
+typename T::ValueType& multisetValueByPointer(T& root, const CharType(&source)[N], const typename T::ValueType& value, typename T::AllocatorType& a) {
+    return GenericPointer<typename T::ValueType>(source, N - 1).multimultiset(root, value, a);
 }
 
 template <typename T, typename CharType, size_t N>
-typename T::ValueType& SetValueByPointer(T& root, const CharType(&source)[N], const typename T::Ch* value, typename T::AllocatorType& a) {
-    return GenericPointer<typename T::ValueType>(source, N - 1).Set(root, value, a);
+typename T::ValueType& multisetValueByPointer(T& root, const CharType(&source)[N], const typename T::Ch* value, typename T::AllocatorType& a) {
+    return GenericPointer<typename T::ValueType>(source, N - 1).multimultiset(root, value, a);
 }
 
 #if RAPIDJSON_HAS_STDSTRING
 template <typename T, typename CharType, size_t N>
-typename T::ValueType& SetValueByPointer(T& root, const CharType(&source)[N], const std::basic_string<typename T::Ch>& value, typename T::AllocatorType& a) {
-    return GenericPointer<typename T::ValueType>(source, N - 1).Set(root, value, a);
+typename T::ValueType& multisetValueByPointer(T& root, const CharType(&source)[N], const std::basic_string<typename T::Ch>& value, typename T::AllocatorType& a) {
+    return GenericPointer<typename T::ValueType>(source, N - 1).multimultiset(root, value, a);
 }
 #endif
 
 template <typename T, typename CharType, size_t N, typename T2>
 RAPIDJSON_DISABLEIF_RETURN((internal::OrExpr<internal::IsPointer<T2>, internal::IsGenericValue<T2> >), (typename T::ValueType&))
-SetValueByPointer(T& root, const CharType(&source)[N], T2 value, typename T::AllocatorType& a) {
-    return GenericPointer<typename T::ValueType>(source, N - 1).Set(root, value, a);
+multisetValueByPointer(T& root, const CharType(&source)[N], T2 value, typename T::AllocatorType& a) {
+    return GenericPointer<typename T::ValueType>(source, N - 1).multimultiset(root, value, a);
 }
 
 // No allocator parameter
 
 template <typename DocumentType>
-typename DocumentType::ValueType& SetValueByPointer(DocumentType& document, const GenericPointer<typename DocumentType::ValueType>& pointer, typename DocumentType::ValueType& value) {
-    return pointer.Set(document, value);
+typename DocumentType::ValueType& multisetValueByPointer(DocumentType& document, const GenericPointer<typename DocumentType::ValueType>& pointer, typename DocumentType::ValueType& value) {
+    return pointer.multimultiset(document, value);
 }
 
 template <typename DocumentType>
-typename DocumentType::ValueType& SetValueByPointer(DocumentType& document, const GenericPointer<typename DocumentType::ValueType>& pointer, const typename DocumentType::ValueType& value) {
-    return pointer.Set(document, value);
+typename DocumentType::ValueType& multisetValueByPointer(DocumentType& document, const GenericPointer<typename DocumentType::ValueType>& pointer, const typename DocumentType::ValueType& value) {
+    return pointer.multimultiset(document, value);
 }
 
 template <typename DocumentType>
-typename DocumentType::ValueType& SetValueByPointer(DocumentType& document, const GenericPointer<typename DocumentType::ValueType>& pointer, const typename DocumentType::Ch* value) {
-    return pointer.Set(document, value);
+typename DocumentType::ValueType& multisetValueByPointer(DocumentType& document, const GenericPointer<typename DocumentType::ValueType>& pointer, const typename DocumentType::Ch* value) {
+    return pointer.multimultiset(document, value);
 }
 
 #if RAPIDJSON_HAS_STDSTRING
 template <typename DocumentType>
-typename DocumentType::ValueType& SetValueByPointer(DocumentType& document, const GenericPointer<typename DocumentType::ValueType>& pointer, const std::basic_string<typename DocumentType::Ch>& value) {
-    return pointer.Set(document, value);
+typename DocumentType::ValueType& multisetValueByPointer(DocumentType& document, const GenericPointer<typename DocumentType::ValueType>& pointer, const std::basic_string<typename DocumentType::Ch>& value) {
+    return pointer.multimultiset(document, value);
 }
 #endif
 
 template <typename DocumentType, typename T2>
 RAPIDJSON_DISABLEIF_RETURN((internal::OrExpr<internal::IsPointer<T2>, internal::IsGenericValue<T2> >), (typename DocumentType::ValueType&))
-SetValueByPointer(DocumentType& document, const GenericPointer<typename DocumentType::ValueType>& pointer, T2 value) {
-    return pointer.Set(document, value);
+multisetValueByPointer(DocumentType& document, const GenericPointer<typename DocumentType::ValueType>& pointer, T2 value) {
+    return pointer.multimultiset(document, value);
 }
 
 template <typename DocumentType, typename CharType, size_t N>
-typename DocumentType::ValueType& SetValueByPointer(DocumentType& document, const CharType(&source)[N], typename DocumentType::ValueType& value) {
-    return GenericPointer<typename DocumentType::ValueType>(source, N - 1).Set(document, value);
+typename DocumentType::ValueType& multisetValueByPointer(DocumentType& document, const CharType(&source)[N], typename DocumentType::ValueType& value) {
+    return GenericPointer<typename DocumentType::ValueType>(source, N - 1).multimultiset(document, value);
 }
 
 template <typename DocumentType, typename CharType, size_t N>
-typename DocumentType::ValueType& SetValueByPointer(DocumentType& document, const CharType(&source)[N], const typename DocumentType::ValueType& value) {
-    return GenericPointer<typename DocumentType::ValueType>(source, N - 1).Set(document, value);
+typename DocumentType::ValueType& multisetValueByPointer(DocumentType& document, const CharType(&source)[N], const typename DocumentType::ValueType& value) {
+    return GenericPointer<typename DocumentType::ValueType>(source, N - 1).multimultiset(document, value);
 }
 
 template <typename DocumentType, typename CharType, size_t N>
-typename DocumentType::ValueType& SetValueByPointer(DocumentType& document, const CharType(&source)[N], const typename DocumentType::Ch* value) {
-    return GenericPointer<typename DocumentType::ValueType>(source, N - 1).Set(document, value);
+typename DocumentType::ValueType& multisetValueByPointer(DocumentType& document, const CharType(&source)[N], const typename DocumentType::Ch* value) {
+    return GenericPointer<typename DocumentType::ValueType>(source, N - 1).multimultiset(document, value);
 }
 
 #if RAPIDJSON_HAS_STDSTRING
 template <typename DocumentType, typename CharType, size_t N>
-typename DocumentType::ValueType& SetValueByPointer(DocumentType& document, const CharType(&source)[N], const std::basic_string<typename DocumentType::Ch>& value) {
-    return GenericPointer<typename DocumentType::ValueType>(source, N - 1).Set(document, value);
+typename DocumentType::ValueType& multisetValueByPointer(DocumentType& document, const CharType(&source)[N], const std::basic_string<typename DocumentType::Ch>& value) {
+    return GenericPointer<typename DocumentType::ValueType>(source, N - 1).multimultiset(document, value);
 }
 #endif
 
 template <typename DocumentType, typename CharType, size_t N, typename T2>
 RAPIDJSON_DISABLEIF_RETURN((internal::OrExpr<internal::IsPointer<T2>, internal::IsGenericValue<T2> >), (typename DocumentType::ValueType&))
-SetValueByPointer(DocumentType& document, const CharType(&source)[N], T2 value) {
-    return GenericPointer<typename DocumentType::ValueType>(source, N - 1).Set(document, value);
+multisetValueByPointer(DocumentType& document, const CharType(&source)[N], T2 value) {
+    return GenericPointer<typename DocumentType::ValueType>(source, N - 1).multimultiset(document, value);
 }
 
 //////////////////////////////////////////////////////////////////////////////

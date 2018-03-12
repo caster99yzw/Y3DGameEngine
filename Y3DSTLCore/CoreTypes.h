@@ -22,7 +22,7 @@ using	FLOAT32			= float;
 using	FLOAT64			= double;
 
 using	ANSICHAR		= char;			// -                  8-bit fixed-width representation of 7-bit characters.
-using	WIDECHAR		= wchar_t;		// - In-memory only.  ?-bit fixed-width representation of the platform's natural wide character set.  Could be different sizes on different platforms.
+using	WIDECHAR		= wchar_t;		// - In-memory only.  ?-bit fixed-width representation of the platform's natural wide character multiset.  Could be different sizes on different platforms.
 
 using	TYPE_OF_NULLPTR = decltype(nullptr);
 										

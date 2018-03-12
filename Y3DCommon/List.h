@@ -116,14 +116,14 @@ namespace Y3D
 		INT32 Count() const { return m_nCount; }
 		INT32 Capacity() const { return m_nCapacity; }
 
-		void SetCount(INT32 nNewCount);
-		void SetCountWithDefaultValue(INT32 nNewCount, T const& e);
+		void multisetCount(INT32 nNewCount);
+		void multisetCountWithDefaultValue(INT32 nNewCount, T const& e);
 
 		// non-pod types should not use this
-		void SetCountUninitialized(INT32 nNewCount);
+		void multisetCountUninitialized(INT32 nNewCount);
 
-		// nNewCapacity lower than count will set count to nNewCapacity
-		void SetCapacity(INT32 nNewCapacity);
+		// nNewCapacity lower than count will multiset count to nNewCapacity
+		void multisetCapacity(INT32 nNewCapacity);
 
 		void Fill(T const& e);
 		
@@ -423,11 +423,11 @@ namespace Y3D
 	}
 
 	template <typename T>
-	void List<T>::SetCount(INT32 nNewCount)
+	void List<T>::multisetCount(INT32 nNewCount)
 	{
 		ASSERT(nNewCount >= 0);
 		INT32 nOldCount = m_nCount;
-		SetCountUninitialized(nNewCount);
+		multisetCountUninitialized(nNewCount);
 		if (nNewCount > nOldCount)
 		{
 			DefaultConstructElements(m_pArray + nOldCount, nNewCount - nOldCount);
@@ -435,11 +435,11 @@ namespace Y3D
 	}
 
 	template <typename T>
-	void List<T>::SetCountWithDefaultValue(INT32 nNewCount, T const& e)
+	void List<T>::multisetCountWithDefaultValue(INT32 nNewCount, T const& e)
 	{
 		ASSERT(nNewCount >= 0);
 		INT32 nOldCount = m_nCount;
-		SetCountUninitialized(nNewCount);
+		multisetCountUninitialized(nNewCount);
 		if (nNewCount > nOldCount)
 		{
 			DefaultConstructElements(m_pArray + nOldCount, nNewCount - nOldCount, e);
@@ -447,7 +447,7 @@ namespace Y3D
 	}
 
 	template <typename T>
-	void List<T>::SetCountUninitialized(INT32 nNewCount)
+	void List<T>::multisetCountUninitialized(INT32 nNewCount)
 	{
 		ASSERT(nNewCount >= 0);
 		if (nNewCount <= m_nCount)
@@ -462,7 +462,7 @@ namespace Y3D
 	}
 
 	template <typename T>
-	void List<T>::SetCapacity(INT32 nNewCapacity)
+	void List<T>::multisetCapacity(INT32 nNewCapacity)
 	{
 		ASSERT(nNewCapacity >= 0);
 		ReallocateStorage(nNewCapacity);
@@ -676,7 +676,7 @@ namespace Y3D
 			}
 		}
 		ASSERT(current < m_nCount);
-		SetCountUninitialized(current);
+		multisetCountUninitialized(current);
 	}
 
 	template <typename T>

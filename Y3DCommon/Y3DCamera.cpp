@@ -16,7 +16,7 @@ namespace Y3D
 		//
 	}
 
-	void Camera::Reset()
+	void Camera::Remultimultiset()
 	{
 		//m_camPostProjectTM.
 		//m_camViewTM

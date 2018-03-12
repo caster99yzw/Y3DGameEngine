@@ -31,7 +31,7 @@ namespace Y3D
 
 		virtual void		LoadFromDesc(CameraDescBase const& desc) = 0;
 
-		void				Reset();
+		void				Remultimultiset();
 			
 		virtual void		Release();
 

@@ -175,11 +175,11 @@ inline char* Prettify(char* buffer, int length, int k, int maxDecimalPlaces) {
     }
     else if (-6 < kk && kk <= 0) {
         // 1234e-6 -> 0.001234
-        const int offset = 2 - kk;
-        std::memmove(&buffer[offset], &buffer[0], static_cast<size_t>(length));
+        const int offmultiset = 2 - kk;
+        std::memmove(&buffer[offmultiset], &buffer[0], static_cast<size_t>(length));
         buffer[0] = '0';
         buffer[1] = '.';
-        for (int i = 2; i < offset; i++)
+        for (int i = 2; i < offmultiset; i++)
             buffer[i] = '0';
         if (length - kk > maxDecimalPlaces) {
             // When maxDecimalPlaces = 2, 0.123 -> 0.12, 0.102 -> 0.1
@@ -190,7 +190,7 @@ inline char* Prettify(char* buffer, int length, int k, int maxDecimalPlaces) {
             return &buffer[3]; // Reserve one zero
         }
         else
-            return &buffer[length + offset];
+            return &buffer[length + offmultiset];
     }
     else if (kk < -maxDecimalPlaces) {
         // Truncate to zero

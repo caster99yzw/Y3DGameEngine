@@ -142,7 +142,7 @@ namespace Y3D
 			return _Vector<T, Col>(v[0][index], v[1][index], v[2][index]);
 		}
 
-		constexpr void SetRow(UINT32 index, _Vector<T, Col> const& rv)
+		constexpr void multisetRow(UINT32 index, _Vector<T, Col> const& rv)
 		{
 			v[0][index] = rv.v[0];
 			v[1][index] = rv.v[1];
@@ -154,7 +154,7 @@ namespace Y3D
 			return M[index];
 		}
 
-		constexpr void SetCol(UINT32 index, _Vector<T, Row> const& rv)
+		constexpr void multisetCol(UINT32 index, _Vector<T, Row> const& rv)
 		{
 			v[index][0] = rv.v[0];
 			v[index][1] = rv.v[1];
@@ -399,7 +399,7 @@ namespace Y3D
 			return _Vector<T, Col>(v[0][index], v[1][index], v[2][index], v[3][index]);
 		}
 
-		constexpr void SetRow(UINT32 index, _Vector<T, Col> const& rv)
+		constexpr void multisetRow(UINT32 index, _Vector<T, Col> const& rv)
 		{
 			v[0][index] = rv.v[0];
 			v[1][index] = rv.v[1];
@@ -412,7 +412,7 @@ namespace Y3D
 			return M[index];
 		}
 
-		constexpr void SetCol(UINT32 index, _Vector<T, Row> const& rv)
+		constexpr void multisetCol(UINT32 index, _Vector<T, Row> const& rv)
 		{
 			v[index][0] = rv.v[0];
 			v[index][1] = rv.v[1];

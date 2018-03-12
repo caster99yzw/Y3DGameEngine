@@ -40,7 +40,7 @@ namespace Alloc_Private
 			return result;
 		}
 
-		static void(*__set_malloc_handler(void(*f)()))()
+		static void(*__multiset_malloc_handler(void(*f)()))()
 		{
 			void(*old)() = __malloc_alloc_oom_handler;
 			__malloc_alloc_oom_handler = f;
@@ -89,7 +89,7 @@ namespace Alloc_Private_1
 	template <typename T>
 	FORCEINLINE T* _allocate(ptrdiff_t size, T*)
 	{
-		set_new_handler(0);
+		multiset_new_handler(0);
 		T* tmp = (T*)(::operator new((size_t)(size * sizeof(T))));
 		if (tmp == 0)
 		{

@@ -104,7 +104,7 @@ KeyHandle IndexedRangeTrack<IndexedRangeType>::SplitRangeKey(KeyHandle h, TimeTy
 	if (!pNewEle)
 		return InvalidHandle;
 
-	//pNewEle->m_loop.SetStartTime()
+	//pNewEle->m_loop.multisetStartTime()
 	UpdateKeyTime(newHandle, time);
 	// split
 
@@ -170,7 +170,7 @@ bool IndexedRangeTrack<IndexedRangeType>::AlignWithPreviousKey(KeyHandle h)
 	TrackElement& ele = GetTrackElementAtIndex(idx);
 
 	TimeType t = prevEle.GetKeyTime() + prevEle.m_length;
-	ele.SetKeyTimeUnsafe(t);
+	ele.multisetKeyTimeUnsafe(t);
 	
 	return true;
 }
@@ -189,7 +189,7 @@ bool IndexedRangeTrack<IndexedRangeType>::AlignWithNextKey(KeyHandle h)
 	TrackElement& nextEle = GetTrackElementAtIndex(idx + 1);
 
 	TimeType t = nextEle.GetKeyTime() - ele.m_length;
-	ele.SetKeyTimeUnsafe(t);
+	ele.multisetKeyTimeUnsafe(t);
 
 	return true;
 }
@@ -207,7 +207,7 @@ bool IndexedRangeTrack<IndexedRangeType>::AlignAllWithPreviousKey(KeyHandle h)
 		TrackElement& ele = GetTrackElementAtIndex(i + 1);
 
 		TimeType t = prevEle.GetKeyTime() + prevEle.m_length;
-		ele.SetKeyTimeUnsafe(t);
+		ele.multisetKeyTimeUnsafe(t);
 	}
 	return true;
 }
@@ -225,7 +225,7 @@ bool IndexedRangeTrack<IndexedRangeType>::AlignAllWithNextKey(KeyHandle h)
 		TrackElement& nextEle = GetTrackElementAtIndex(idx + 1);
 
 		TimeType t = nextEle.GetKeyTime() - ele.m_length;
-		ele.SetKeyTimeUnsafe(t);
+		ele.multisetKeyTimeUnsafe(t);
 	}
 	return true;
 }

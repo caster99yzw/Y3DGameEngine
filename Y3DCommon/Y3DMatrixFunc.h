@@ -27,12 +27,12 @@ namespace Y3D
 
 	// mat4's _11,_12,_13,_21,_22,_23,_31,_32,_33 is mat3
 	// mat4's is _41,_42,_43 is vec3
-	Mat4F32 _Set_Mat3_Vec3_To_Mat4(Mat3F32 const& mat, Vec3F32 const& vec);
+	Mat4F32 _multiset_Mat3_Vec3_To_Mat4(Mat3F32 const& mat, Vec3F32 const& vec);
 
 	// Generate mat3 by (vec3).transpose * vec3
-	Mat3F32 _Set_Vec3Tr_Vec3_To_Mat3(Vec3F32 const& vecTp, Vec3F32 const& vec);
+	Mat3F32 _multiset_Vec3Tr_Vec3_To_Mat3(Vec3F32 const& vecTp, Vec3F32 const& vec);
 	// Generate mat4 by (vec4).transpose * vec4
-	Mat4F32 _Set_Vec4Tr_Vec4_To_Mat4(Vec4F32 const& vecTp, Vec4F32 const& vec);
+	Mat4F32 _multiset_Vec4Tr_Vec4_To_Mat4(Vec4F32 const& vecTp, Vec4F32 const& vec);
 
 	// Calculate the different between two matrix
 	// If right matrix is orthogonal, use transpose version

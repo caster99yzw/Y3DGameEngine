@@ -37,7 +37,7 @@ public:
 	virtual bool			Load() { return true; };
 	virtual bool			Serialize() { return true; }; 	//	This function is used in UI, such as unity
 
-	void					SetKeyTimeUnsafe(TimeType t) { m_time = t; };
+	void					multisetKeyTimeUnsafe(TimeType t) { m_time = t; };
 
 private:
 
@@ -73,7 +73,7 @@ public:
 	bool					IsScale() const { return 0; }
 
 
-	void					SetLength(TimeType len);
+	void					multisetLength(TimeType len);
 	//void					ScaleToLength(TimeType len);
 	//void					LoopToLength(TimeType len);
 	void					RestoreLengthByDelta(TimeType len);

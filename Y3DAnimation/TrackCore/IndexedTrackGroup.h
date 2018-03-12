@@ -47,17 +47,17 @@ public:
 	virtual bool					Load() = 0;
 	virtual bool					Serialize() = 0; 	//	This function is used in UI, such as unity
 
-	inline void						SetGrounType();
+	inline void						multisetGrounType();
 	inline INT32					GetGroupType();
 
-	inline void						SetGroupFlags();
+	inline void						multisetGroupFlags();
 	inline void						GetGroupFlags();
 
-	inline void						SetName(std::string const& name);
+	inline void						multisetName(std::string const& name);
 	inline std::string const&		GetName();
 
 	// GetGroup
-	// SetGroup
+	// multisetGroup
 	// RemoveFromGroup
 
 	virtual bool					HasChild(IndexedTrack* pTrack);

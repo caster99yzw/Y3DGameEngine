@@ -433,56 +433,56 @@ template<typename ValueType>
 struct TypeHelper<ValueType, bool> {
     static bool Is(const ValueType& v) { return v.Isbool(); }
     static bool Get(const ValueType& v) { return v.Getbool(); }
-    static ValueType& Set(ValueType& v, bool data) { return v.Setbool(data); }
-    static ValueType& Set(ValueType& v, bool data, typename ValueType::AllocatorType&) { return v.Setbool(data); }
+    static ValueType& multiset(ValueType& v, bool data) { return v.Setbool(data); }
+    static ValueType& multiset(ValueType& v, bool data, typename ValueType::AllocatorType&) { return v.Setbool(data); }
 };
 
 template<typename ValueType> 
 struct TypeHelper<ValueType, int> {
     static bool Is(const ValueType& v) { return v.IsInt(); }
     static int Get(const ValueType& v) { return v.GetInt(); }
-    static ValueType& Set(ValueType& v, int data) { return v.SetInt(data); }
-    static ValueType& Set(ValueType& v, int data, typename ValueType::AllocatorType&) { return v.SetInt(data); }
+    static ValueType& multiset(ValueType& v, int data) { return v.SetInt(data); }
+    static ValueType& multiset(ValueType& v, int data, typename ValueType::AllocatorType&) { return v.SetInt(data); }
 };
 
 template<typename ValueType> 
 struct TypeHelper<ValueType, unsigned> {
     static bool Is(const ValueType& v) { return v.IsUint(); }
     static unsigned Get(const ValueType& v) { return v.GetUint(); }
-    static ValueType& Set(ValueType& v, unsigned data) { return v.SetUint(data); }
-    static ValueType& Set(ValueType& v, unsigned data, typename ValueType::AllocatorType&) { return v.SetUint(data); }
+    static ValueType& multiset(ValueType& v, unsigned data) { return v.SetUint(data); }
+    static ValueType& multiset(ValueType& v, unsigned data, typename ValueType::AllocatorType&) { return v.SetUint(data); }
 };
 
 template<typename ValueType> 
 struct TypeHelper<ValueType, int64_t> {
     static bool Is(const ValueType& v) { return v.IsInt64(); }
     static int64_t Get(const ValueType& v) { return v.GetInt64(); }
-    static ValueType& Set(ValueType& v, int64_t data) { return v.SetInt64(data); }
-    static ValueType& Set(ValueType& v, int64_t data, typename ValueType::AllocatorType&) { return v.SetInt64(data); }
+    static ValueType& multiset(ValueType& v, int64_t data) { return v.SetInt64(data); }
+    static ValueType& multiset(ValueType& v, int64_t data, typename ValueType::AllocatorType&) { return v.SetInt64(data); }
 };
 
 template<typename ValueType> 
 struct TypeHelper<ValueType, uint64_t> {
     static bool Is(const ValueType& v) { return v.IsUint64(); }
     static uint64_t Get(const ValueType& v) { return v.GetUint64(); }
-    static ValueType& Set(ValueType& v, uint64_t data) { return v.SetUint64(data); }
-    static ValueType& Set(ValueType& v, uint64_t data, typename ValueType::AllocatorType&) { return v.SetUint64(data); }
+    static ValueType& multiset(ValueType& v, uint64_t data) { return v.SetUint64(data); }
+    static ValueType& multiset(ValueType& v, uint64_t data, typename ValueType::AllocatorType&) { return v.SetUint64(data); }
 };
 
 template<typename ValueType> 
 struct TypeHelper<ValueType, double> {
     static bool Is(const ValueType& v) { return v.IsDouble(); }
     static double Get(const ValueType& v) { return v.GetDouble(); }
-    static ValueType& Set(ValueType& v, double data) { return v.SetDouble(data); }
-    static ValueType& Set(ValueType& v, double data, typename ValueType::AllocatorType&) { return v.SetDouble(data); }
+    static ValueType& multiset(ValueType& v, double data) { return v.SetDouble(data); }
+    static ValueType& multiset(ValueType& v, double data, typename ValueType::AllocatorType&) { return v.SetDouble(data); }
 };
 
 template<typename ValueType> 
 struct TypeHelper<ValueType, float> {
     static bool Is(const ValueType& v) { return v.IsFloat(); }
     static float Get(const ValueType& v) { return v.GetFloat(); }
-    static ValueType& Set(ValueType& v, float data) { return v.SetFloat(data); }
-    static ValueType& Set(ValueType& v, float data, typename ValueType::AllocatorType&) { return v.SetFloat(data); }
+    static ValueType& multiset(ValueType& v, float data) { return v.SetFloat(data); }
+    static ValueType& multiset(ValueType& v, float data, typename ValueType::AllocatorType&) { return v.SetFloat(data); }
 };
 
 template<typename ValueType> 
@@ -490,8 +490,8 @@ struct TypeHelper<ValueType, const typename ValueType::Ch*> {
     typedef const typename ValueType::Ch* StringType;
     static bool Is(const ValueType& v) { return v.IsString(); }
     static StringType Get(const ValueType& v) { return v.GetString(); }
-    static ValueType& Set(ValueType& v, const StringType data) { return v.SetString(typename ValueType::StringRefType(data)); }
-    static ValueType& Set(ValueType& v, const StringType data, typename ValueType::AllocatorType& a) { return v.SetString(data, a); }
+    static ValueType& multiset(ValueType& v, const StringType data) { return v.SetString(typename ValueType::StringRefType(data)); }
+    static ValueType& multiset(ValueType& v, const StringType data, typename ValueType::AllocatorType& a) { return v.SetString(data, a); }
 };
 
 #if RAPIDJSON_HAS_STDSTRING
@@ -500,7 +500,7 @@ struct TypeHelper<ValueType, std::basic_string<typename ValueType::Ch> > {
     typedef std::basic_string<typename ValueType::Ch> StringType;
     static bool Is(const ValueType& v) { return v.IsString(); }
     static StringType Get(const ValueType& v) { return StringType(v.GetString(), v.GetStringLength()); }
-    static ValueType& Set(ValueType& v, const StringType& data, typename ValueType::AllocatorType& a) { return v.SetString(data, a); }
+    static ValueType& multiset(ValueType& v, const StringType& data, typename ValueType::AllocatorType& a) { return v.SetString(data, a); }
 };
 #endif
 
@@ -509,8 +509,8 @@ struct TypeHelper<ValueType, typename ValueType::Array> {
     typedef typename ValueType::Array ArrayType;
     static bool Is(const ValueType& v) { return v.IsArray(); }
     static ArrayType Get(ValueType& v) { return v.GetArray(); }
-    static ValueType& Set(ValueType& v, ArrayType data) { return v = data; }
-    static ValueType& Set(ValueType& v, ArrayType data, typename ValueType::AllocatorType&) { return v = data; }
+    static ValueType& multiset(ValueType& v, ArrayType data) { return v = data; }
+    static ValueType& multiset(ValueType& v, ArrayType data, typename ValueType::AllocatorType&) { return v = data; }
 };
 
 template<typename ValueType> 
@@ -525,8 +525,8 @@ struct TypeHelper<ValueType, typename ValueType::Object> {
     typedef typename ValueType::Object ObjectType;
     static bool Is(const ValueType& v) { return v.IsObject(); }
     static ObjectType Get(ValueType& v) { return v.GetObject(); }
-    static ValueType& Set(ValueType& v, ObjectType data) { return v = data; }
-    static ValueType& Set(ValueType& v, ObjectType data, typename ValueType::AllocatorType&) { return v = data; }
+    static ValueType& multiset(ValueType& v, ObjectType data) { return v = data; }
+    static ValueType& multiset(ValueType& v, ObjectType data, typename ValueType::AllocatorType&) { return v = data; }
 };
 
 template<typename ValueType> 
@@ -1821,10 +1821,10 @@ public:
     T Get() { return internal::TypeHelper<ValueType, T>::Get(*this); }
 
     template<typename T>
-    ValueType& Set(const T& data) { return internal::TypeHelper<ValueType, T>::Set(*this, data); }
+    ValueType& multiset(const T& data) { return internal::TypeHelper<ValueType, T>::multiset(*this, data); }
 
     template<typename T>
-    ValueType& Set(const T& data, AllocatorType& allocator) { return internal::TypeHelper<ValueType, T>::Set(*this, data, allocator); }
+    ValueType& multiset(const T& data, AllocatorType& allocator) { return internal::TypeHelper<ValueType, T>::multiset(*this, data, allocator); }
 
     //@}
 
@@ -2362,7 +2362,7 @@ public:
     ParseErrorCode GetParseError() const { return parseResult_.Code(); }
 
     //! Get the position of last parsing error in input, 0 otherwise.
-    size_t GetErrorOffset() const { return parseResult_.Offset(); }
+    size_t GetErrorOffmultiset() const { return parseResult_.Offmultiset(); }
 
     //! Implicit conversion to get the last parse result
 #ifndef __clang // -Wdocumentation
@@ -2372,7 +2372,7 @@ public:
           Document doc;
           ParseResult ok = doc.Parse(json);
           if (!ok)
-            printf( "JSON parse error: %s (%u)\n", GetParseError_En(ok.Code()), ok.Offset());
+            printf( "JSON parse error: %s (%u)\n", GetParseError_En(ok.Code()), ok.Offmultiset());
         \endcode
      */
 #endif

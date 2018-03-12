@@ -102,6 +102,12 @@
     <ClInclude Include="SGISTL\RBTree.h">
       <Filter>SGISTL</Filter>
     </ClInclude>
+    <ClInclude Include="SGISTL\Set.h">
+      <Filter>SGISTL</Filter>
+    </ClInclude>
+    <ClInclude Include="SGISTL\map.h">
+      <Filter>SGISTL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Template">

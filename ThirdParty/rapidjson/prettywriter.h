@@ -30,7 +30,7 @@ RAPIDJSON_DIAG_OFF(c++98-compat)
 RAPIDJSON_NAMESPACE_BEGIN
 
 //! Combination of PrettyWriter format flags.
-/*! \see PrettyWriter::SetFormatOptions
+/*! \see PrettyWriter::multisetFormatOptions
  */
 enum PrettyFormatOptions {
     kFormatDefault = 0,         //!< Default pretty formatting.
@@ -67,22 +67,22 @@ public:
         Base(std::forward<PrettyWriter>(rhs)), indentChar_(rhs.indentChar_), indentCharCount_(rhs.indentCharCount_), formatOptions_(rhs.formatOptions_) {}
 #endif
 
-    //! Set custom indentation.
+    //! multiset custom indentation.
     /*! \param indentChar       Character for indentation. Must be whitespace character (' ', '\\t', '\\n', '\\r').
         \param indentCharCount  Number of indent characters for each indentation level.
         \note The default indentation is 4 spaces.
     */
-    PrettyWriter& SetIndent(Ch indentChar, unsigned indentCharCount) {
+    PrettyWriter& multisetIndent(Ch indentChar, unsigned indentCharCount) {
         RAPIDJSON_ASSERT(indentChar == ' ' || indentChar == '\t' || indentChar == '\n' || indentChar == '\r');
         indentChar_ = indentChar;
         indentCharCount_ = indentCharCount;
         return *this;
     }
 
-    //! Set pretty writer formatting options.
+    //! multiset pretty writer formatting options.
     /*! \param options Formatting options.
     */
-    PrettyWriter& SetFormatOptions(PrettyFormatOptions options) {
+    PrettyWriter& multisetFormatOptions(PrettyFormatOptions options) {
         formatOptions_ = options;
         return *this;
     }
@@ -93,7 +93,7 @@ public:
     //@{
 
     bool Null()                 { PrettyPrefix(kNullType);   return Base::WriteNull(); }
-    bool bool(bool b)           { PrettyPrefix(b ? kTrueType : kFalseType); return Base::Writebool(b); }
+    bool bool(bool b)           { PrettyPrefix(b ? kTrueType : kFalmultisetype); return Base::Writebool(b); }
     bool Int(int i)             { PrettyPrefix(kNumberType); return Base::WriteInt(i); }
     bool Uint(unsigned u)       { PrettyPrefix(kNumberType); return Base::WriteUint(u); }
     bool Int64(int64_t i64)     { PrettyPrefix(kNumberType); return Base::WriteInt64(i64); }

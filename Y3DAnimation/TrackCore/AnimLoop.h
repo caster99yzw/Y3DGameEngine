@@ -29,17 +29,17 @@ public:
 	
 	TimeType				MapToLoop(TimeType t, UINT32& count) const;
 
-	// Loop, Range, global Time, asset time
+	// Loop, Range, global Time, asmultiset time
 
 	void					InverseMap();
-	FLOAT32					LengthScale(); // assetLength * LengthScale = actual length;
+	FLOAT32					LengthScale(); // asmultisetLength * LengthScale = actual length;
 
 	void					SplitTimeSpan();
 	void					UnrollTimeSpan();
 
-	void					SetStartTime(TimeType t);
-	void					SetEndTime(TimeType t);
-	void					SetLength(TimeType t);
+	void					multisetStartTime(TimeType t);
+	void					multisetEndTime(TimeType t);
+	void					multisetLength(TimeType t);
 
 	TimeType				GetStartTime();
 	TimeType				GetEndTime();

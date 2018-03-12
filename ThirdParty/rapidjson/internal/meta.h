@@ -38,14 +38,14 @@ namespace internal {
 template <typename T> struct Void { typedef void Type; };
 
 ///////////////////////////////////////////////////////////////////////////////
-// boolType, TrueType, FalseType
+// boolType, TrueType, Falmultisetype
 //
 template <bool Cond> struct boolType {
     static const bool Value = Cond;
     typedef boolType Type;
 };
 typedef boolType<true> TrueType;
-typedef boolType<false> FalseType;
+typedef boolType<false> Falmultisetype;
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -57,13 +57,13 @@ template <> struct SelectIfImpl<false> { template <typename T1, typename T2> str
 template <bool C, typename T1, typename T2> struct SelectIfCond : SelectIfImpl<C>::template Apply<T1,T2> {};
 template <typename C, typename T1, typename T2> struct SelectIf : SelectIfCond<C::Value, T1, T2> {};
 
-template <bool Cond1, bool Cond2> struct AndExprCond : FalseType {};
+template <bool Cond1, bool Cond2> struct AndExprCond : Falmultisetype {};
 template <> struct AndExprCond<true, true> : TrueType {};
 template <bool Cond1, bool Cond2> struct OrExprCond : TrueType {};
-template <> struct OrExprCond<false, false> : FalseType {};
+template <> struct OrExprCond<false, false> : Falmultisetype {};
 
-template <typename C> struct boolExpr : SelectIf<C,TrueType,FalseType>::Type {};
-template <typename C> struct NotExpr  : SelectIf<C,FalseType,TrueType>::Type {};
+template <typename C> struct boolExpr : SelectIf<C,TrueType,Falmultisetype>::Type {};
+template <typename C> struct NotExpr  : SelectIf<C,Falmultisetype,TrueType>::Type {};
 template <typename C1, typename C2> struct AndExpr : AndExprCond<C1::Value, C2::Value>::Type {};
 template <typename C1, typename C2> struct OrExpr  : OrExprCond<C1::Value, C2::Value>::Type {};
 
@@ -79,10 +79,10 @@ template <typename T> struct RemoveConst<const T> { typedef T Type; };
 ///////////////////////////////////////////////////////////////////////////////
 // IsSame, IsConst, IsMoreConst, IsPointer
 //
-template <typename T, typename U> struct IsSame : FalseType {};
+template <typename T, typename U> struct IsSame : Falmultisetype {};
 template <typename T> struct IsSame<T, T> : TrueType {};
 
-template <typename T> struct IsConst : FalseType {};
+template <typename T> struct IsConst : Falmultisetype {};
 template <typename T> struct IsConst<const T> : TrueType {};
 
 template <typename CT, typename T>
@@ -90,7 +90,7 @@ struct IsMoreConst
     : AndExpr<IsSame<typename RemoveConst<CT>::Type, typename RemoveConst<T>::Type>,
               boolType<IsConst<CT>::Value >= IsConst<T>::Value> >::Type {};
 
-template <typename T> struct IsPointer : FalseType {};
+template <typename T> struct IsPointer : Falmultisetype {};
 template <typename T> struct IsPointer<T*> : TrueType {};
 
 ///////////////////////////////////////////////////////////////////////////////

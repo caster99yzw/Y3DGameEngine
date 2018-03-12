@@ -22,7 +22,7 @@ namespace Y3D
 
 		m_nStyle = nStyle;
 
-		SetWidthAndHeight(nWidth, nHeight);
+		multisetWidthAndHeight(nWidth, nHeight);
 
 		return true;
 	}
@@ -76,7 +76,7 @@ namespace Y3D
 	{
 		return false;
 	}
-	void Win32Entity::SetWidthAndHeight(INT32 width, INT32 height)
+	void Win32Entity::multisetWidthAndHeight(INT32 width, INT32 height)
 	{
 		m_nWindowWidth = width;
 		m_nWindowHeight = height;

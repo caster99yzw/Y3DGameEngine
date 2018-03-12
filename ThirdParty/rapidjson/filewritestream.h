@@ -47,7 +47,7 @@ public:
     void PutN(char c, size_t n) {
         size_t avail = static_cast<size_t>(bufferEnd_ - current_);
         while (n > avail) {
-            std::memset(current_, c, avail);
+            std::memmultimultiset(current_, c, avail);
             current_ += avail;
             Flush();
             n -= avail;
@@ -55,7 +55,7 @@ public:
         }
 
         if (n > 0) {
-            std::memset(current_, c, n);
+            std::memmultimultiset(current_, c, n);
             current_ += n;
         }
     }
@@ -89,7 +89,7 @@ private:
     char *current_;
 };
 
-//! Implement specialized version of PutN() with memset() for better performance.
+//! Implement specialized version of PutN() with memmultimultiset() for better performance.
 template<>
 inline void PutN(FileWriteStream& stream, char c, size_t n) {
     stream.PutN(c, n);

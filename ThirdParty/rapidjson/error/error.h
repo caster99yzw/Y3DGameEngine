@@ -97,7 +97,7 @@ enum ParseErrorCode {
         ParseResult ok = doc.Parse("[42]");
         if (!ok) {
             fprintf(stderr, "JSON parse error: %s (%u)",
-                    GetParseError_En(ok.Code()), ok.Offset());
+                    GetParseError_En(ok.Code()), ok.Offmultiset());
             exit(EXIT_FAILURE);
         }
     \endcode
@@ -115,7 +115,7 @@ public:
     //! Get the error code.
     ParseErrorCode Code() const { return code_; }
     //! Get the error offset, if \ref IsError(), 0 otherwise.
-    size_t Offset() const { return offset_; }
+    size_t Offmultiset() const { return offset_; }
 
     //! Explicit conversion to \c bool, returns \c true, iff !\ref IsError().
     operator booleanType() const { return !IsError() ? &ParseResult::IsError : NULL; }
@@ -131,9 +131,9 @@ public:
     friend bool operator!=(ParseErrorCode code, const ParseResult & err) { return err != code; }
 
     //! Reset error code.
-    void Clear() { Set(kParseErrorNone); }
+    void Clear() { multiset(kParseErrorNone); }
     //! Update error code and offset.
-    void Set(ParseErrorCode code, size_t offset = 0) { code_ = code; offset_ = offset; }
+    void multiset(ParseErrorCode code, size_t offset = 0) { code_ = code; offset_ = offset; }
 
 private:
     ParseErrorCode code_;

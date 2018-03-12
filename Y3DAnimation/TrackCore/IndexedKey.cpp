@@ -46,7 +46,7 @@ IndexedRange::~IndexedRange()
 {
 }
 
-void IndexedRange::SetLength(TimeType len)
+void IndexedRange::multisetLength(TimeType len)
 {
 	m_length = len;
 }

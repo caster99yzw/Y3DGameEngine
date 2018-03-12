@@ -37,7 +37,7 @@ public:
 	inline void							RemoveRedundentKeys();
 };
 
-class DenseTransformTrack
+class DenmultisetransformTrack
 {
 public:
 

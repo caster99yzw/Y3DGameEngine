@@ -36,7 +36,7 @@ public:
 	virtual bool					SplitRangeKey() = 0;
 
 	virtual char const*				GetName() const = 0;
-	virtual void					SetName(char const* name) = 0;
+	virtual void					multisetName(char const* name) = 0;
 
 public:
 
@@ -65,7 +65,7 @@ public:
 	virtual	IndexedKey const*		GetKeyAtHandle(KeyHandle h) const override;
 
 	virtual UINT32					Num() const override;
-	virtual void					SetNum(UINT32 num) const override;
+	virtual void					multisetNum(UINT32 num) const override;
 
 	//	Min/Max time in track
 	virtual TimeType				GetMinKeyTime() const;

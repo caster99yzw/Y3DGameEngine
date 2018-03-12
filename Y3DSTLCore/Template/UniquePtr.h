@@ -198,7 +198,7 @@ public:
 		return Result;
 	}
 
-	FORCEINLINE void Reset(T* InPtr = nullptr)
+	FORCEINLINE void Remultimultiset(T* InPtr = nullptr)
 	{
 		T* OldPtr = Ptr;
 		Ptr = InPtr;

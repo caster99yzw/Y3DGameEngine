@@ -18,38 +18,38 @@ namespace Y3D
 	{
 		std::string hrValue = std::to_string(hr);
 		std::wstring hrMessage = TextFromHResult(hr);
-		//	Set a breakpoint on this line to catch win32 API errors
+		//	multiset a breakpoint on this line to catch win32 API errors
 		throw std::exception(hrValue.c_str());
 	}
 
 	template <UINT32 stringLen>
-	inline void SetDebugName(ID3D11DeviceChild* obj, char(&name)[stringLen])
+	inline void multisetDebugName(ID3D11DeviceChild* obj, char(&name)[stringLen])
 	{
-		obj->SetPrivateData(WKPDID_D3DDebugObjectName, stringLen, name);
+		obj->multisetPrivateData(WKPDID_D3DDebugObjectName, stringLen, name);
 	}
 
 	template <UINT32 stringLen>
-	inline void SetDebugName(ComPtr<ID3D11DeviceChild> const& obj, char(&name)[stringLen])
+	inline void multisetDebugName(ComPtr<ID3D11DeviceChild> const& obj, char(&name)[stringLen])
 	{
-		obj->SetPrivateData(WKPDID_D3DDebugObjectName, stringLen, name);
+		obj->multisetPrivateData(WKPDID_D3DDebugObjectName, stringLen, name);
 	}
 
-	inline void SetDebugName(ID3D11DeviceChild* obj, std::string const& name)
-	{
-		obj->SetPrivateData(WKPDID_D3DDebugObjectName, UINT(name.size()), name.c_str());
-	}
-
-	inline void SetDebugName(ComPtr<ID3D11DeviceChild> const& obj, std::string const& name)
+	inline void multisetDebugName(ID3D11DeviceChild* obj, std::string const& name)
 	{
 		obj->SetPrivateData(WKPDID_D3DDebugObjectName, UINT(name.size()), name.c_str());
 	}
 
-	inline void SetDebugName(ID3D11Device* obj, std::string const& name)
+	inline void multisetDebugName(ComPtr<ID3D11DeviceChild> const& obj, std::string const& name)
 	{
 		obj->SetPrivateData(WKPDID_D3DDebugObjectName, UINT(name.size()), name.c_str());
 	}
 
-	inline void SetDebugName(ComPtr<ID3D11Device> const& obj, std::string const& name)
+	inline void multisetDebugName(ID3D11Device* obj, std::string const& name)
+	{
+		obj->SetPrivateData(WKPDID_D3DDebugObjectName, UINT(name.size()), name.c_str());
+	}
+
+	inline void multisetDebugName(ComPtr<ID3D11Device> const& obj, std::string const& name)
 	{
 		obj->SetPrivateData(WKPDID_D3DDebugObjectName, UINT(name.size()), name.c_str());
 	}

@@ -20,7 +20,7 @@ char const* TrackBase<_K, _E>::GetName() const
 }
 
 template <typename _K, typename _E>
-void TrackBase<_K, _E>::SetName(char const* name)
+void TrackBase<_K, _E>::multisetName(char const* name)
 {
 	m_strName = name;
 }
@@ -87,7 +87,7 @@ bool TrackBase<_K, _E>::UpdateKeyTime(KeyHandle h, TimeType time)
 	INT32 newIdx = FindIndexByTime(time);
 
 	TrackElement newEle = std::move(*pEle);
-	newEle.SetKeyTimeUnsafe(time);
+	newEle.multisetKeyTimeUnsafe(time);
 
 	if (idx < newIdx)
 	{
@@ -223,7 +223,7 @@ UINT32 TrackBase<_K, _E>::Num() const
 }
 
 template <typename _K, typename _E>
-void TrackBase<_K, _E>::SetNum(UINT32 num) const
+void TrackBase<_K, _E>::multisetNum(UINT32 num) const
 {
 	//m_arrTrackData.
 }
@@ -264,7 +264,7 @@ void TrackBase<_K, _E>::ScaleTime(FLOAT32 factor)
 
 	for (INT32 i = 0; i < m_arrTrackData.size(); ++i)
 	{
-		m_arrTrackData[i].SetKeyTimeUnsafe(m_arrTrackData[i].GetKeyTime() * factor);
+		m_arrTrackData[i].multisetKeyTimeUnsafe(m_arrTrackData[i].GetKeyTime() * factor);
 	}
 
 	if (factor < 0)
@@ -292,7 +292,7 @@ KeyHandle TrackBase<_K, _E>::AddKeyNoOverride(TimeType t, KeyType const& key)
 	FindIndexByTime(t, i);
 	TrackElement e;
 	e.Value = key;
-	e.SetKeyTimeUnsafe(t);
+	e.multisetKeyTimeUnsafe(t);
 	auto handle = e.GetHandle();
 	m_arrTrackData.insert(i, std::move(e));
 	return handle;
@@ -311,7 +311,7 @@ KeyHandle TrackBase<_K, _E>::AddOrUpdateKey(TimeType t, KeyType const& key)
 	{
 		TrackElement e;
 		e.Value = key;
-		e.SetKeyTimeUnsafe(t);
+		e.multisetKeyTimeUnsafe(t);
 		auto handle = e.GetHandle();
 		m_arrTrackData.insert(i, std::move(e));
 		return handle;
@@ -332,7 +332,7 @@ KeyHandle TrackBase<_K, _E>::AddOrUpdateKey(TimeType t, KeyType && key)
 	{
 		TrackElement e;
 		e.Value = std::move(key);
-		e.SetKeyTimeUnsafe(t);
+		e.multisetKeyTimeUnsafe(t);
 		auto handle = e.GetHandle();
 		m_arrTrackData.insert(i, std::move(e));
 		return handle;

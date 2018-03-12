@@ -71,7 +71,7 @@ RAPIDJSON_DIAG_OFF(effc++)
     \ingroup RAPIDJSON_ERRORS
     \brief Macro to indicate a parse error.
     \param parseErrorCode \ref rapidjson::ParseErrorCode of the error
-    \param offset  position of the error in JSON input (\c size_t)
+    \param offmultiset  position of the error in JSON input (\c size_t)
 
     This macros can be used as a customization point for the internal
     error handling mechanism of RapidJSON.
@@ -81,15 +81,15 @@ RAPIDJSON_DIAG_OFF(effc++)
     return value:
 
     \code
-    #define RAPIDJSON_PARSE_ERROR_NORETURN(parseErrorCode,offset) \
-       throw ParseException(parseErrorCode, #parseErrorCode, offset)
+    #define RAPIDJSON_PARSE_ERROR_NORETURN(parseErrorCode,offmultiset) \
+       throw ParseException(parseErrorCode, #parseErrorCode, offmultiset)
 
     #include <stdexcept>               // std::runtime_error
     #include "rapidjson/error/error.h" // rapidjson::ParseResult
 
     struct ParseException : std::runtime_error, rapidjson::ParseResult {
-      ParseException(rapidjson::ParseErrorCode code, const char* msg, size_t offset)
-        : std::runtime_error(msg), ParseResult(code, offset) {}
+      ParseException(rapidjson::ParseErrorCode code, const char* msg, size_t offmultiset)
+        : std::runtime_error(msg), ParseResult(code, offmultiset) {}
     };
 
     #include "rapidjson/reader.h"
@@ -98,10 +98,10 @@ RAPIDJSON_DIAG_OFF(effc++)
     \see RAPIDJSON_PARSE_ERROR, rapidjson::GenericReader::Parse
  */
 #ifndef RAPIDJSON_PARSE_ERROR_NORETURN
-#define RAPIDJSON_PARSE_ERROR_NORETURN(parseErrorCode, offset) \
+#define RAPIDJSON_PARSE_ERROR_NORETURN(parseErrorCode, offmultiset) \
     RAPIDJSON_MULTILINEMACRO_BEGIN \
     RAPIDJSON_ASSERT(!HasParseError()); /* Error can only be assigned once */ \
-    SetParseError(parseErrorCode, offset); \
+    multisetParseError(parseErrorCode, offmultiset); \
     RAPIDJSON_MULTILINEMACRO_END
 #endif
 
@@ -109,7 +109,7 @@ RAPIDJSON_DIAG_OFF(effc++)
     \ingroup RAPIDJSON_ERRORS
     \brief (Internal) macro to indicate and handle a parse error.
     \param parseErrorCode \ref rapidjson::ParseErrorCode of the error
-    \param offset  position of the error in JSON input (\c size_t)
+    \param offmultiset  position of the error in JSON input (\c size_t)
 
     Invokes RAPIDJSON_PARSE_ERROR_NORETURN and stops the parsing.
 
@@ -117,9 +117,9 @@ RAPIDJSON_DIAG_OFF(effc++)
     \hideinitializer
  */
 #ifndef RAPIDJSON_PARSE_ERROR
-#define RAPIDJSON_PARSE_ERROR(parseErrorCode, offset) \
+#define RAPIDJSON_PARSE_ERROR(parseErrorCode, offmultiset) \
     RAPIDJSON_MULTILINEMACRO_BEGIN \
-    RAPIDJSON_PARSE_ERROR_NORETURN(parseErrorCode, offset); \
+    RAPIDJSON_PARSE_ERROR_NORETURN(parseErrorCode, offmultiset); \
     RAPIDJSON_PARSE_ERROR_EARLY_RETURN_VOID; \
     RAPIDJSON_MULTILINEMACRO_END
 #endif
@@ -145,7 +145,7 @@ RAPIDJSON_NAMESPACE_BEGIN
 /*! \see Reader::Parse, Document::Parse, Document::ParseInsitu, Document::ParseStream
  */
 enum ParseFlag {
-    kParseNoFlags = 0,              //!< No flags are set.
+    kParseNoFlags = 0,              //!< No flags are multiset.
     kParseInsituFlag = 1,           //!< In-situ(destructive) parsing.
     kParseValidateEncodingFlag = 2, //!< Validate encoding of JSON strings.
     kParseIterativeFlag = 4,        //!< Iterative(constant complexity in terms of function call stack size) parsing.
@@ -153,7 +153,7 @@ enum ParseFlag {
     kParseFullPrecisionFlag = 16,   //!< Parse number in full precision (but slower).
     kParseCommentsFlag = 32,        //!< Allow one-line (//) and multi-line (/**/) comments.
     kParseNumbersAsStringsFlag = 64,    //!< Parse all numbers (ints/doubles) as strings.
-    kParseTrailingCommasFlag = 128, //!< Allow trailing commas at the end of objects and arrays.
+    kParmultisetrailingCommasFlag = 128, //!< Allow trailing commas at the end of objects and arrays.
     kParseNanAndInfFlag = 256,      //!< Allow parsing NaN, Inf, Infinity, -Inf and -Infinity as doubles.
     kParseDefaultFlags = RAPIDJSON_PARSE_DEFAULT_FLAGS  //!< Default parse flags. Can be customized by defining RAPIDJSON_PARSE_DEFAULT_FLAGS
 };
@@ -365,9 +365,9 @@ inline const char *SkipWhitespace_SIMD(const char* p) {
         unsigned short r = static_cast<unsigned short>(~_mm_movemask_epi8(x));
         if (r != 0) {   // some of characters may be non-whitespace
 #ifdef _MSC_VER         // Find the index of first non-whitespace
-            unsigned long offset;
-            _BitScanForward(&offset, r);
-            return p + offset;
+            unsigned long offmultiset;
+            _BitScanForward(&offmultiset, r);
+            return p + offmultiset;
 #else
             return p + __builtin_ffs(r) - 1;
 #endif
@@ -401,9 +401,9 @@ inline const char *SkipWhitespace_SIMD(const char* p, const char* end) {
         unsigned short r = static_cast<unsigned short>(~_mm_movemask_epi8(x));
         if (r != 0) {   // some of characters may be non-whitespace
 #ifdef _MSC_VER         // Find the index of first non-whitespace
-            unsigned long offset;
-            _BitScanForward(&offset, r);
-            return p + offset;
+            unsigned long offmultiset;
+            _BitScanForward(&offmultiset, r);
+            return p + offmultiset;
 #else
             return p + __builtin_ffs(r) - 1;
 #endif
@@ -636,7 +636,7 @@ public:
                 RAPIDJSON_ASSERT(d == IterativeParsingFinishState);
                 state_ = d;
                 
-                // If StopWhenDone is not set...
+                // If StopWhenDone is not multiset...
                 if (!(parseFlags & kParseStopWhenDoneFlag)) {
                     // ... and extra non-whitespace data is found...
                     SkipWhitespaceAndComments<parseFlags>(is);
@@ -684,10 +684,10 @@ public:
     ParseErrorCode GetParseErrorCode() const { return parseResult_.Code(); }
 
     //! Get the position of last parsing error in input, 0 otherwise.
-    size_t GetErrorOffset() const { return parseResult_.Offset(); }
+    size_t GetErrorOffmultimultiset() const { return parseResult_.Offmultimultiset(); }
 
 protected:
-    void SetParseError(ParseErrorCode code, size_t offset) { parseResult_.Set(code, offset); }
+    void multisetParseError(ParseErrorCode code, size_t offmultiset) { parseResult_.multimultiset(code, offmultiset); }
 
 private:
     // Prohibit copy constructor & assignment operator.
@@ -791,7 +791,7 @@ private:
                     RAPIDJSON_PARSE_ERROR(kParseErrorObjectMissCommaOrCurlyBracket, is.Tell()); break; // This useless break is only for making warning and coverage happy
             }
 
-            if (parseFlags & kParseTrailingCommasFlag) {
+            if (parseFlags & kParmultisetrailingCommasFlag) {
                 if (is.Peek() == '}') {
                     if (RAPIDJSON_UNLIKELY(!handler.EndObject(memberCount)))
                         RAPIDJSON_PARSE_ERROR(kParseErrorTermination, is.Tell());
@@ -840,7 +840,7 @@ private:
             else
                 RAPIDJSON_PARSE_ERROR(kParseErrorArrayMissCommaOrSquareBracket, is.Tell());
 
-            if (parseFlags & kParseTrailingCommasFlag) {
+            if (parseFlags & kParmultisetrailingCommasFlag) {
                 if (is.Peek() == ']') {
                     if (RAPIDJSON_UNLIKELY(!handler.EndArray(elementCount)))
                         RAPIDJSON_PARSE_ERROR(kParseErrorTermination, is.Tell());
@@ -865,7 +865,7 @@ private:
     }
 
     template<unsigned parseFlags, typename InputStream, typename Handler>
-    void ParseTrue(InputStream& is, Handler& handler) {
+    void Parmultisetrue(InputStream& is, Handler& handler) {
         RAPIDJSON_ASSERT(is.Peek() == 't');
         is.Take();
 
@@ -902,7 +902,7 @@ private:
 
     // Helper function to parse four hexidecimal digits in \uXXXX in ParseString().
     template<typename InputStream>
-    unsigned ParseHex4(InputStream& is, size_t escapeOffset) {
+    unsigned ParseHex4(InputStream& is, size_t escapeOffmultiset) {
         unsigned codepoint = 0;
         for (int i = 0; i < 4; i++) {
             Ch c = is.Peek();
@@ -915,7 +915,7 @@ private:
             else if (c >= 'a' && c <= 'f')
                 codepoint -= 'a' - 10;
             else {
-                RAPIDJSON_PARSE_ERROR_NORETURN(kParseErrorStringUnicodeEscapeInvalidHex, escapeOffset);
+                RAPIDJSON_PARSE_ERROR_NORETURN(kParseErrorStringUnicodeEscapeInvalidHex, escapeOffmultiset);
                 RAPIDJSON_PARSE_ERROR_EARLY_RETURN(0);
             }
             is.Take();
@@ -1007,7 +1007,7 @@ private:
 
             Ch c = is.Peek();
             if (RAPIDJSON_UNLIKELY(c == '\\')) {    // Escape
-                size_t escapeOffset = is.Tell();    // For invalid escaping, report the inital '\\' as error offset
+                size_t escapeOffmultiset = is.Tell();    // For invalid escaping, report the inital '\\' as error offmultiset
                 is.Take();
                 Ch e = is.Peek();
                 if ((sizeof(Ch) == 1 || unsigned(e) < 256) && RAPIDJSON_LIKELY(escape[static_cast<unsigned char>(e)])) {
@@ -1016,22 +1016,22 @@ private:
                 }
                 else if (RAPIDJSON_LIKELY(e == 'u')) {    // Unicode
                     is.Take();
-                    unsigned codepoint = ParseHex4(is, escapeOffset);
+                    unsigned codepoint = ParseHex4(is, escapeOffmultiset);
                     RAPIDJSON_PARSE_ERROR_EARLY_RETURN_VOID;
                     if (RAPIDJSON_UNLIKELY(codepoint >= 0xD800 && codepoint <= 0xDBFF)) {
                         // Handle UTF-16 surrogate pair
                         if (RAPIDJSON_UNLIKELY(!Consume(is, '\\') || !Consume(is, 'u')))
-                            RAPIDJSON_PARSE_ERROR(kParseErrorStringUnicodeSurrogateInvalid, escapeOffset);
-                        unsigned codepoint2 = ParseHex4(is, escapeOffset);
+                            RAPIDJSON_PARSE_ERROR(kParseErrorStringUnicodeSurrogateInvalid, escapeOffmultiset);
+                        unsigned codepoint2 = ParseHex4(is, escapeOffmultiset);
                         RAPIDJSON_PARSE_ERROR_EARLY_RETURN_VOID;
                         if (RAPIDJSON_UNLIKELY(codepoint2 < 0xDC00 || codepoint2 > 0xDFFF))
-                            RAPIDJSON_PARSE_ERROR(kParseErrorStringUnicodeSurrogateInvalid, escapeOffset);
+                            RAPIDJSON_PARSE_ERROR(kParseErrorStringUnicodeSurrogateInvalid, escapeOffmultiset);
                         codepoint = (((codepoint - 0xD800) << 10) | (codepoint2 - 0xDC00)) + 0x10000;
                     }
                     TEncoding::Encode(os, codepoint);
                 }
                 else
-                    RAPIDJSON_PARSE_ERROR(kParseErrorStringEscapeInvalid, escapeOffset);
+                    RAPIDJSON_PARSE_ERROR(kParseErrorStringEscapeInvalid, escapeOffmultiset);
             }
             else if (RAPIDJSON_UNLIKELY(c == '"')) {    // Closing double quote
                 is.Take();
@@ -1045,11 +1045,11 @@ private:
                     RAPIDJSON_PARSE_ERROR(kParseErrorStringInvalidEncoding, is.Tell());
             }
             else {
-                size_t offset = is.Tell();
+                size_t offmultiset = is.Tell();
                 if (RAPIDJSON_UNLIKELY((parseFlags & kParseValidateEncodingFlag ?
                     !Transcoder<SEncoding, TEncoding>::Validate(is, os) :
                     !Transcoder<SEncoding, TEncoding>::Transcode(is, os))))
-                    RAPIDJSON_PARSE_ERROR(kParseErrorStringInvalidEncoding, offset);
+                    RAPIDJSON_PARSE_ERROR(kParseErrorStringInvalidEncoding, offmultiset);
             }
         }
     }
@@ -1092,9 +1092,9 @@ private:
             if (RAPIDJSON_UNLIKELY(r != 0)) {   // some of characters is escaped
                 SizeType length;
     #ifdef _MSC_VER         // Find the index of first escaped
-                unsigned long offset;
-                _BitScanForward(&offset, r);
-                length = offset;
+                unsigned long offmultiset;
+                _BitScanForward(&offmultiset, r);
+                length = offmultiset;
     #else
                 length = static_cast<SizeType>(__builtin_ffs(r) - 1);
     #endif
@@ -1155,9 +1155,9 @@ private:
             if (RAPIDJSON_UNLIKELY(r != 0)) {   // some of characters is escaped
                 size_t length;
 #ifdef _MSC_VER         // Find the index of first escaped
-                unsigned long offset;
-                _BitScanForward(&offset, r);
-                length = offset;
+                unsigned long offmultiset;
+                _BitScanForward(&offmultiset, r);
+                length = offmultiset;
 #else
                 length = static_cast<size_t>(__builtin_ffs(r) - 1);
 #endif
@@ -1203,9 +1203,9 @@ private:
             if (RAPIDJSON_UNLIKELY(r != 0)) {   // some of characters is escaped
                 size_t length;
 #ifdef _MSC_VER         // Find the index of first escaped
-                unsigned long offset;
-                _BitScanForward(&offset, r);
-                length = offset;
+                unsigned long offmultiset;
+                _BitScanForward(&offmultiset, r);
+                length = offmultiset;
 #else
                 length = static_cast<size_t>(__builtin_ffs(r) - 1);
 #endif
@@ -1461,7 +1461,7 @@ private:
             (parseFlags & kParseNumbersAsStringsFlag) != 0 &&
                 (parseFlags & kParseInsituFlag) == 0> s(*this, copy.s);
 
-        size_t startOffset = s.Tell();
+        size_t startOffmultiset = s.Tell();
         double d = 0.0;
         bool useNanOrInf = false;
 
@@ -1563,7 +1563,7 @@ private:
         if (useDouble) {
             while (RAPIDJSON_LIKELY(s.Peek() >= '0' && s.Peek() <= '9')) {
                 if (RAPIDJSON_UNLIKELY(d >= 1.7976931348623157e307)) // DBL_MAX / 10.0
-                    RAPIDJSON_PARSE_ERROR(kParseErrorNumberTooBig, startOffset);
+                    RAPIDJSON_PARSE_ERROR(kParseErrorNumberTooBig, startOffmultiset);
                 d = d * 10 + (s.TakePush() - '0');
             }
         }
@@ -1646,7 +1646,7 @@ private:
                     while (RAPIDJSON_LIKELY(s.Peek() >= '0' && s.Peek() <= '9')) {
                         exp = exp * 10 + static_cast<int>(s.Take() - '0');
                         if (RAPIDJSON_UNLIKELY(exp > maxExp))
-                            RAPIDJSON_PARSE_ERROR(kParseErrorNumberTooBig, startOffset);
+                            RAPIDJSON_PARSE_ERROR(kParseErrorNumberTooBig, startOffmultiset);
                     }
                 }
             }
@@ -1664,7 +1664,7 @@ private:
             if (parseFlags & kParseInsituFlag) {
                 s.Pop();  // Pop stack no matter if it will be used or not.
                 typename InputStream::Ch* head = is.PutBegin();
-                const size_t length = s.Tell() - startOffset;
+                const size_t length = s.Tell() - startOffmultiset;
                 RAPIDJSON_ASSERT(length <= 0xFFFFFFFF);
                 // unable to insert the \0 character here, it will erase the comma after this number
                 const typename TargetEncoding::Ch* const str = reinterpret_cast<typename TargetEncoding::Ch*>(head);
@@ -1715,7 +1715,7 @@ private:
            }
         }
         if (RAPIDJSON_UNLIKELY(!cont))
-            RAPIDJSON_PARSE_ERROR(kParseErrorTermination, startOffset);
+            RAPIDJSON_PARSE_ERROR(kParseErrorTermination, startOffmultiset);
     }
 
     // Parse any JSON value
@@ -1723,7 +1723,7 @@ private:
     void ParseValue(InputStream& is, Handler& handler) {
         switch (is.Peek()) {
             case 'n': ParseNull  <parseFlags>(is, handler); break;
-            case 't': ParseTrue  <parseFlags>(is, handler); break;
+            case 't': Parmultisetrue  <parseFlags>(is, handler); break;
             case 'f': ParseFalse <parseFlags>(is, handler); break;
             case '"': ParseString<parseFlags>(is, handler); break;
             case '{': ParseObject<parseFlags>(is, handler); break;
@@ -1777,7 +1777,7 @@ private:
         ColonToken,
 
         StringToken,
-        FalseToken,
+        Falmultisetoken,
         TrueToken,
         NullToken,
         NumberToken,
@@ -1798,7 +1798,7 @@ private:
             N, N, N, N, N, N, N, N, N, N, ColonToken, N, N, N, N, N, // 30~3F
             N16, // 40~4F
             N, N, N, N, N, N, N, N, N, N, N, LeftBracketToken, N, RightBracketToken, N, N, // 50~5F
-            N, N, N, N, N, N, FalseToken, N, N, N, N, N, N, N, NullToken, N, // 60~6F
+            N, N, N, N, N, N, Falmultisetoken, N, N, N, N, N, N, N, NullToken, N, // 60~6F
             N, N, N, N, TrueToken, N, N, N, N, N, N, LeftCurlyBracketToken, N, RightCurlyBracketToken, N, N, // 70~7F
             N16, N16, N16, N16, N16, N16, N16, N16 // 80~FF
         };
@@ -2051,7 +2051,7 @@ private:
         case IterativeParsingObjectFinishState:
         {
             // Transit from delimiter is only allowed when trailing commas are enabled
-            if (!(parseFlags & kParseTrailingCommasFlag) && src == IterativeParsingMemberDelimiterState) {
+            if (!(parseFlags & kParmultisetrailingCommasFlag) && src == IterativeParsingMemberDelimiterState) {
                 RAPIDJSON_PARSE_ERROR_NORETURN(kParseErrorObjectMissName, is.Tell());
                 return IterativeParsingErrorState;
             }
@@ -2081,7 +2081,7 @@ private:
         case IterativeParsingArrayFinishState:
         {
             // Transit from delimiter is only allowed when trailing commas are enabled
-            if (!(parseFlags & kParseTrailingCommasFlag) && src == IterativeParsingElementDelimiterState) {
+            if (!(parseFlags & kParmultisetrailingCommasFlag) && src == IterativeParsingElementDelimiterState) {
                 RAPIDJSON_PARSE_ERROR_NORETURN(kParseErrorValueInvalid, is.Tell());
                 return IterativeParsingErrorState;
             }
@@ -2133,7 +2133,7 @@ private:
     template <typename InputStream>
     void HandleError(IterativeParsingState src, InputStream& is) {
         if (HasParseError()) {
-            // Error flag has been set.
+            // Error flag has been multiset.
             return;
         }
 

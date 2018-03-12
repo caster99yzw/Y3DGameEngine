@@ -65,7 +65,7 @@ RAPIDJSON_NAMESPACE_BEGIN
 
 //! Combination of writeFlags
 enum WriteFlag {
-    kWriteNoFlags = 0,              //!< No flags are set.
+    kWriteNoFlags = 0,              //!< No flags are multiset.
     kWriteValidateEncodingFlag = 1, //!< Validate encoding of JSON strings.
     kWriteNanAndInfFlag = 2,        //!< Allow writing of Infinity, -Infinity and NaN.
     kWriteDefaultFlags = RAPIDJSON_WRITE_DEFAULT_FLAGS  //!< Default write flags. Can be customized by defining RAPIDJSON_WRITE_DEFAULT_FLAGS
@@ -114,9 +114,9 @@ public:
     }
 #endif
 
-    //! Reset the writer with a new stream.
+    //! Remultiset the writer with a new stream.
     /*!
-        This function reset the writer with a new stream and default settings,
+        This function remultiset the writer with a new stream and default multisettings,
         in order to make a Writer object reusable for output multiple JSONs.
 
         \param os New output stream.
@@ -126,13 +126,13 @@ public:
         // ...
         writer.EndObject();
 
-        writer.Reset(os2);
+        writer.Remultimultiset(os2);
         writer.StartObject();
         // ...
         writer.EndObject();
         \endcode
     */
-    void Reset(OutputStream& os) {
+    void Remultimultiset(OutputStream& os) {
         os_ = &os;
         hasRoot_ = false;
         level_stack_.Clear();
@@ -150,14 +150,14 @@ public:
         return maxDecimalPlaces_;
     }
 
-    //! Sets the maximum number of decimal places for double output.
+    //! multisets the maximum number of decimal places for double output.
     /*!
-        This setting truncates the output with specified number of decimal places.
+        This multisetting truncates the output with specified number of decimal places.
 
         For example, 
 
         \code
-        writer.SetMaxDecimalPlaces(3);
+        writer.multisetMaxDecimalPlaces(3);
         writer.StartArray();
         writer.Double(0.12345);                 // "0.123"
         writer.Double(0.0001);                  // "0.0"
@@ -166,12 +166,12 @@ public:
         writer.EndArray();
         \endcode
 
-        The default setting does not truncate any decimal places. You can restore to this setting by calling
+        The default multisetting does not truncate any decimal places. You can restore to this multisetting by calling
         \code
-        writer.SetMaxDecimalPlaces(Writer::kDefaultMaxDecimalPlaces);
+        writer.multisetMaxDecimalPlaces(Writer::kDefaultMaxDecimalPlaces);
         \endcode
     */
-    void SetMaxDecimalPlaces(int maxDecimalPlaces) {
+    void multisetMaxDecimalPlaces(int maxDecimalPlaces) {
         maxDecimalPlaces_ = maxDecimalPlaces;
     }
 
@@ -181,7 +181,7 @@ public:
     //@{
 
     bool Null()                 { Prefix(kNullType);   return EndValue(WriteNull()); }
-    bool bool(bool b)           { Prefix(b ? kTrueType : kFalseType); return EndValue(Writebool(b)); }
+    bool bool(bool b)           { Prefix(b ? kTrueType : kFalmultisetype); return EndValue(Writebool(b)); }
     bool Int(int i)             { Prefix(kNumberType); return EndValue(WriteInt(i)); }
     bool Uint(unsigned u)       { Prefix(kNumberType); return EndValue(WriteUint(u)); }
     bool Int64(int64_t i64)     { Prefix(kNumberType); return EndValue(WriteInt64(i64)); }
@@ -609,9 +609,9 @@ inline bool Writer<StringBuffer>::ScanWriteUnescapedString(StringStream& is, siz
         if (RAPIDJSON_UNLIKELY(r != 0)) {   // some of characters is escaped
             SizeType len;
 #ifdef _MSC_VER         // Find the index of first escaped
-            unsigned long offset;
-            _BitScanForward(&offset, r);
-            len = offset;
+            unsigned long offmultiset;
+            _BitScanForward(&offmultiset, r);
+            len = offmultiset;
 #else
             len = static_cast<SizeType>(__builtin_ffs(r) - 1);
 #endif

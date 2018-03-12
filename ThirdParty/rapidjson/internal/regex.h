@@ -80,7 +80,7 @@ static const SizeType kRegexInvalidRange = ~SizeType(0);
 template <typename Encoding, typename Allocator>
 class GenericRegexSearch;
 
-//! Regular expression engine with subset of ECMAscript grammar.
+//! Regular expression engine with submultiset of ECMAscript grammar.
 /*!
     Supported regular expression syntax:
     - \c ab     Concatenation
@@ -605,18 +605,18 @@ public:
 
     GenericRegexSearch(const RegexType& regex, Allocator* allocator = 0) : 
         regex_(regex), allocator_(allocator), ownAllocator_(0),
-        state0_(allocator, 0), state1_(allocator, 0), stateSet_()
+        state0_(allocator, 0), state1_(allocator, 0), statemultiset_()
     {
         RAPIDJSON_ASSERT(regex_.IsValid());
         if (!allocator_)
             ownAllocator_ = allocator_ = RAPIDJSON_NEW(Allocator)();
-        stateSet_ = static_cast<unsigned*>(allocator_->Malloc(GetStateSetSize()));
+        statemultiset_ = static_cast<unsigned*>(allocator_->Malloc(GetStatemultisetSize()));
         state0_.template Reserve<SizeType>(regex_.stateCount_);
         state1_.template Reserve<SizeType>(regex_.stateCount_);
     }
 
     ~GenericRegexSearch() {
-        Allocator::Free(stateSet_);
+        Allocator::Free(statemultiset_);
         RAPIDJSON_DELETE(ownAllocator_);
     }
 
@@ -650,13 +650,13 @@ private:
 
         state0_.Clear();
         Stack<Allocator> *current = &state0_, *next = &state1_;
-        const size_t stateSetSize = GetStateSetSize();
-        std::memset(stateSet_, 0, stateSetSize);
+        const size_t statemultisetSize = GetStatemultisetSize();
+        std::memmultimultiset(statemultiset_, 0, statemultisetSize);
 
         bool matched = AddState(*current, regex_.root_);
         unsigned codepoint;
         while (!current->Empty() && (codepoint = ds.Take()) != 0) {
-            std::memset(stateSet_, 0, stateSetSize);
+            std::memmultimultiset(statemultiset_, 0, statemultisetSize);
             next->Clear();
             matched = false;
             for (const SizeType* s = current->template Bottom<SizeType>(); s != current->template End<SizeType>(); ++s) {
@@ -678,7 +678,7 @@ private:
         return matched;
     }
 
-    size_t GetStateSetSize() const {
+    size_t GetStatemultisetSize() const {
         return (regex_.stateCount_ + 31) / 32 * 4;
     }
 
@@ -691,8 +691,8 @@ private:
             bool matched = AddState(l, s.out);
             return AddState(l, s.out1) || matched;
         }
-        else if (!(stateSet_[index >> 5] & (1u << (index & 31)))) {
-            stateSet_[index >> 5] |= (1u << (index & 31));
+        else if (!(statemultiset_[index >> 5] & (1u << (index & 31)))) {
+            statemultiset_[index >> 5] |= (1u << (index & 31));
             *l.template PushUnsafe<SizeType>() = index;
         }
         return s.out == kRegexInvalidState; // by using PushUnsafe() above, we can ensure s is not validated due to reallocation.
@@ -714,7 +714,7 @@ private:
     Allocator* ownAllocator_;
     Stack<Allocator> state0_;
     Stack<Allocator> state1_;
-    uint32_t* stateSet_;
+    uint32_t* statemultiset_;
 };
 
 typedef GenericRegex<UTF8<> > Regex;

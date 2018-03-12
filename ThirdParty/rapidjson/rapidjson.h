@@ -37,7 +37,7 @@
  */
 
 #include <cstdlib>  // malloc(), realloc(), free(), size_t
-#include <cstring>  // memset(), memcpy(), memmove(), memcmp()
+#include <cstring>  // memmultimultiset(), memcpy(), memmove(), memcmp()
 
 ///////////////////////////////////////////////////////////////////////////////
 // RAPIDJSON_VERSION_STRING
@@ -315,12 +315,12 @@
 
 #if RAPIDJSON_48BITPOINTER_OPTIMIZATION == 1
 #if RAPIDJSON_64BIT != 1
-#error RAPIDJSON_48BITPOINTER_OPTIMIZATION can only be set to 1 when RAPIDJSON_64BIT=1
+#error RAPIDJSON_48BITPOINTER_OPTIMIZATION can only be multiset to 1 when RAPIDJSON_64BIT=1
 #endif
-#define RAPIDJSON_SETPOINTER(type, p, x) (p = reinterpret_cast<type *>((reinterpret_cast<uintptr_t>(p) & static_cast<uintptr_t>(RAPIDJSON_UINT64_C2(0xFFFF0000, 0x00000000))) | reinterpret_cast<uintptr_t>(reinterpret_cast<const void*>(x))))
+#define RAPIDJSON_multisetPOINTER(type, p, x) (p = reinterpret_cast<type *>((reinterpret_cast<uintptr_t>(p) & static_cast<uintptr_t>(RAPIDJSON_UINT64_C2(0xFFFF0000, 0x00000000))) | reinterpret_cast<uintptr_t>(reinterpret_cast<const void*>(x))))
 #define RAPIDJSON_GETPOINTER(type, p) (reinterpret_cast<type *>(reinterpret_cast<uintptr_t>(p) & static_cast<uintptr_t>(RAPIDJSON_UINT64_C2(0x0000FFFF, 0xFFFFFFFF))))
 #else
-#define RAPIDJSON_SETPOINTER(type, p, x) (p = (x))
+#define RAPIDJSON_multisetPOINTER(type, p, x) (p = (x))
 #define RAPIDJSON_GETPOINTER(type, p) (p)
 #endif
 
@@ -615,7 +615,7 @@ RAPIDJSON_NAMESPACE_BEGIN
 //! Type of JSON value
 enum Type {
     kNullType = 0,      //!< null
-    kFalseType = 1,     //!< false
+    kFalmultisetype = 1,     //!< false
     kTrueType = 2,      //!< true
     kObjectType = 3,    //!< object
     kArrayType = 4,     //!< array 

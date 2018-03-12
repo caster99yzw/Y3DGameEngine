@@ -169,7 +169,7 @@ public:
     Hasher(Allocator* allocator = 0, size_t stackCapacity = kDefaultSize) : stack_(allocator, stackCapacity) {}
 
     bool Null() { return WriteType(kNullType); }
-    bool bool(bool b) { return WriteType(b ? kTrueType : kFalseType); }
+    bool bool(bool b) { return WriteType(b ? kTrueType : kFalmultisetype); }
     bool Int(int i) { Number n; n.u.i = i; n.d = static_cast<double>(i); return WriteNumber(n); }
     bool Uint(unsigned u) { Number n; n.u.u = u; n.d = static_cast<double>(u); return WriteNumber(n); }
     bool Int64(int64_t i) { Number n; n.u.i = i; n.d = static_cast<double>(i); return WriteNumber(n); }
@@ -499,7 +499,7 @@ public:
                 if (FindPropertyIndex(itr->name, &sourceIndex)) {
                     if (itr->value.IsArray()) {
                         properties_[sourceIndex].dependencies = static_cast<bool*>(allocator_->Malloc(sizeof(bool) * propertyCount_));
-                        std::memset(properties_[sourceIndex].dependencies, 0, sizeof(bool)* propertyCount_);
+                        std::memmultimultiset(properties_[sourceIndex].dependencies, 0, sizeof(bool)* propertyCount_);
                         for (ConstValueIterator targetItr = itr->value.Begin(); targetItr != itr->value.End(); ++targetItr) {
                             SizeType targetIndex;
                             if (FindPropertyIndex(*targetItr, &targetIndex))
@@ -766,14 +766,14 @@ public:
 
         if (hasDependencies_ || hasRequired_) {
             context.propertyExist = static_cast<bool*>(context.factory.MallocState(sizeof(bool) * propertyCount_));
-            std::memset(context.propertyExist, 0, sizeof(bool) * propertyCount_);
+            std::memmultimultiset(context.propertyExist, 0, sizeof(bool) * propertyCount_);
         }
 
         if (patternProperties_) { // pre-allocate schema array
             SizeType count = patternPropertyCount_ + 1; // extra for valuePatternValidatorType
             context.patternPropertiesSchemas = static_cast<const SchemaType**>(context.factory.MallocState(sizeof(const SchemaType*) * count));
             context.patternPropertiesSchemaCount = 0;
-            std::memset(context.patternPropertiesSchemas, 0, sizeof(SchemaType*) * count);
+            std::memmultimultiset(context.patternPropertiesSchemas, 0, sizeof(SchemaType*) * count);
         }
 
         return CreateParallelValidator(context);
@@ -982,7 +982,7 @@ private:
                 PointerType q = p.Append(name, allocator_);
                 out.count = v->Size();
                 out.schemas = static_cast<const Schema**>(allocator_->Malloc(out.count * sizeof(const Schema*)));
-                memset(out.schemas, 0, sizeof(Schema*)* out.count);
+                memmultimultiset(out.schemas, 0, sizeof(Schema*)* out.count);
                 for (SizeType i = 0; i < out.count; i++)
                     schemaDocument.CreateSchema(&out.schemas[i], q.Append(i, allocator_), (*v)[i], document);
                 out.begin = validatorCount_;
@@ -1555,7 +1555,7 @@ typedef IGenericRemoteSchemaDocumentProvider<SchemaDocument> IRemoteSchemaDocume
     It uses a \c GenericSchemaDocument to validate SAX events.
     It delegates the incoming SAX events to an output handler.
     The default output handler does nothing.
-    It can be reused multiple times by calling \c Reset().
+    It can be reused multiple times by calling \c Remultimultiset().
 
     \tparam SchemaDocumentType Type of schema document.
     \tparam OutputHandler Type of output handler. Default handler does nothing.
@@ -1632,12 +1632,12 @@ public:
 
     //! Destructor.
     ~GenericSchemaValidator() {
-        Reset();
+        Remultimultiset();
         RAPIDJSON_DELETE(ownStateAllocator_);
     }
 
-    //! Reset the internal states.
-    void Reset() {
+    //! Remultiset the internal states.
+    void Remultimultiset() {
         while (!schemaStack_.Empty())
             PopSchema();
         documentStack_.Clear();

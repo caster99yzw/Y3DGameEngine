@@ -128,25 +128,25 @@ public:
     BigInteger& operator<<=(size_t shift) {
         if (IsZero() || shift == 0) return *this;
 
-        size_t offset = shift / kTypeBit;
+        size_t offmultiset = shift / kTypeBit;
         size_t interShift = shift % kTypeBit;
-        RAPIDJSON_ASSERT(count_ + offset <= kCapacity);
+        RAPIDJSON_ASSERT(count_ + offmultiset <= kCapacity);
 
         if (interShift == 0) {
-            std::memmove(&digits_[count_ - 1 + offset], &digits_[count_ - 1], count_ * sizeof(Type));
-            count_ += offset;
+            std::memmove(&digits_[count_ - 1 + offmultiset], &digits_[count_ - 1], count_ * sizeof(Type));
+            count_ += offmultiset;
         }
         else {
             digits_[count_] = 0;
             for (size_t i = count_; i > 0; i--)
-                digits_[i + offset] = (digits_[i] << interShift) | (digits_[i - 1] >> (kTypeBit - interShift));
-            digits_[offset] = digits_[0] << interShift;
-            count_ += offset;
+                digits_[i + offmultiset] = (digits_[i] << interShift) | (digits_[i - 1] >> (kTypeBit - interShift));
+            digits_[offmultiset] = digits_[0] << interShift;
+            count_ += offmultiset;
             if (digits_[count_])
                 count_++;
         }
 
-        std::memset(digits_, 0, offset * sizeof(Type));
+        std::memmultimultiset(digits_, 0, offmultiset * sizeof(Type));
 
         return *this;
     }

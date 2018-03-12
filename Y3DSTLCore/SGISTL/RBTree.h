@@ -603,9 +603,6 @@ public:
 	std::pair<iterator, bool> insert_unique(ValueType const& Value);
 	iterator insert_equal(ValueType const& Value);
 
-	//iterator insert_unique(iterator position, const value_type& __x);
-	//iterator insert_equal(iterator position, const value_type& __x);
-
 	void insert_unique(const_iterator First, const_iterator Last);
 	void insert_unique(ValueType const* First, ValueType const* Last);
 	void insert_equal(const_iterator First, const_iterator Last);

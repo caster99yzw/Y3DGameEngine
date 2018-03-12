@@ -19,6 +19,6 @@ namespace Y3D
 		virtual INT32			GetMouseX() = 0;
 		virtual INT32			GetMouseY() = 0;
 
-		virtual void			SetWidthAndHeight(INT32 width, INT32 height) = 0;
+		virtual void			multisetWidthAndHeight(INT32 width, INT32 height) = 0;
 	};
 }

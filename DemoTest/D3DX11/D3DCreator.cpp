@@ -23,7 +23,7 @@ void D3DCreator::CreateDeviceAndContext()
 	creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-	//	This array defines the set of DirectX hardware feature levels this app will support.
+	//	This array defines the multiset of DirectX hardware feature levels this app will support.
 	//	Note the ordering should be preserved.
 	//	Don't forget to declare your application's minimum required feature level in its
 	//	description.  All applications are assumed to support 9.1 unless otherwise stated.
@@ -48,10 +48,10 @@ void D3DCreator::CreateDeviceAndContext()
 		nullptr,					// Specify nullptr to use the default adapter.
 		D3D_DRIVER_TYPE_HARDWARE,	// Create a device using the hardware graphics driver.
 		0,							// Should be 0 unless the driver is D3D_DRIVER_TYPE_SOFTWARE.
-		creationFlags,				// Set debug and Direct2D compatibility flags.
+		creationFlags,				// multiset debug and Direct2D compatibility flags.
 		featureLevels,				// List of feature levels this app can support.
 		ARRAYSIZE(featureLevels),	// Size of the list above.
-		D3D11_SDK_VERSION,			// Always set this to D3D11_SDK_VERSION for Windows Store apps.
+		D3D11_SDK_VERSION,			// Always multiset this to D3D11_SDK_VERSION for Windows Store apps.
 		&device,					// Returns the Direct3D device created.
 		&m_d3dFeatureLevel,			// Returns feature level of device created.
 		&context					// Returns the device immediate context.
@@ -111,7 +111,7 @@ void D3DCreator::CreateSwapChain()
 
 		//	Ensure that DXGI does not queue more than one frame at a time. This both reduces latency and
 		//	ensures that the application will only render after each VSync, minimizing power consumption.
-		//ThrowIfFailed(dxgiDevice->SetMaximumFrameLatency(1));
+		//ThrowIfFailed(dxgiDevice->multisetMaximumFrameLatency(1));
 	}
 
 	//	Create a render target view of the swap chain back buffer.
@@ -120,7 +120,7 @@ void D3DCreator::CreateSwapChain()
 
 	m_d3dDevice->CreateRenderTargetView1(backBuffer.Get(), nullptr, &m_d3dRenderTargetView);
 
-	//	Set the 3D rendering viewport to target the entire window.
+	//	multiset the 3D rendering viewport to target the entire window.
 	m_screenViewport = CD3D11_VIEWPORT(0.0f, 0.0f, (float)X, (float)Y);
 
 	m_d3dContext->RSSetViewports(1, &m_screenViewport);
@@ -189,7 +189,7 @@ void D3DCreator::FreeAllDXObjects()
 //	}
 //}
 //
-//// Recreate all device resources and set them back to the current state.
+//// Recreate all device resources and multiset them back to the current state.
 //void D3DCreator::HandleDeviceLost(HRESULT hr)
 //{
 //	ThrowIfFailed(hr); // TODO try to see when this will happen.
@@ -228,7 +228,7 @@ void D3DCreator::FreeAllDXObjects()
 //
 //	// If the device was removed either by a disconnection or a driver upgrade, we 
 //	// must recreate all device resources.
-//	if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
+//	if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_REmultiset)
 //	{
 //		HandleDeviceLost(hr);
 //	}
@@ -252,24 +252,24 @@ void D3DCreator::FreeAllDXObjects()
 //	ThrowIfFailed(_d3dDevice->QueryInterface<ID3D11InfoQueue>(&infoQueue));
 //	ThrowIfFailed(_d3dDevice->QueryInterface<ID3D11Debug>(&_debug));
 //
-//	// 	infoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_CORRUPTION, true);
-//	// 	infoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_ERROR, true);
-//	// 	infoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_WARNING, true);
-//	// 	infoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_INFO, true);
-//	// 	infoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_MESSAGE, true);
-//	// 	infoQueue->SetBreakOnCategory(D3D11_MESSAGE_CATEGORY_STATE_CREATION, false);
+//	// 	infoQueue->multisetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_CORRUPTION, true);
+//	// 	infoQueue->multisetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_ERROR, true);
+//	// 	infoQueue->multisetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_WARNING, true);
+//	// 	infoQueue->multisetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_INFO, true);
+//	// 	infoQueue->multisetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_MESSAGE, true);
+//	// 	infoQueue->multisetBreakOnCategory(D3D11_MESSAGE_CATEGORY_STATE_CREATION, false);
 //
 //
 //	ComPtr<IDXGIInfoQueue> dxgiInfoQueue;
 //	DXGIGetDebugInterface1(0, IID_PPV_ARGS(&_dxgiDebug));
 //	DXGIGetDebugInterface1(0, IID_PPV_ARGS(&dxgiInfoQueue));
 //
-//	dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_CORRUPTION, true);
-//	dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR, true);
-//	dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_WARNING, true);
-//	dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_INFO, true);
-//	dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_MESSAGE, true);
-//	dxgiInfoQueue->SetBreakOnCategory(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_CATEGORY_STATE_CREATION, false);
+//	dxgiInfoQueue->multisetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_CORRUPTION, true);
+//	dxgiInfoQueue->multisetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR, true);
+//	dxgiInfoQueue->multisetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_WARNING, true);
+//	dxgiInfoQueue->multisetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_INFO, true);
+//	dxgiInfoQueue->multisetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_MESSAGE, true);
+//	dxgiInfoQueue->multisetBreakOnCategory(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_CATEGORY_STATE_CREATION, false);
 //
 //	ThrowIfFailed(_d3dContext->QueryInterface<ID3DUserDefinedAnnotation>(&_annotation));
 //}

@@ -27,7 +27,7 @@ public:
 	virtual bool					SplitRangeKey() = 0;
 
 	virtual char const*				GetName() const = 0;
-	virtual void					SetName(char const* name) = 0;
+	virtual void					multisetName(char const* name) = 0;
 
 public:
 
@@ -56,5 +56,5 @@ public:
 	virtual	IndexedKey const*		GetKeyAtHandle(KeyHandle h) const = 0;
 
 	virtual UINT32					Num() const = 0;
-	virtual void					SetNum(UINT32 num) const = 0;
+	virtual void					multisetNum(UINT32 num) const = 0;
 };

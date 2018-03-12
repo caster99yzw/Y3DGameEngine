@@ -34,9 +34,9 @@ void IndexedTrackGroup::AddChildTrack(IndexedTrack* pTrack, std::string const& n
 	ChildTrack c;
 	c.Track = pTrack;
 	c.Name = name;
-	pTrack->SetName(name.c_str());
+	pTrack->multisetName(name.c_str());
 	m_ChildTracks.push_back(c);
-	//pTrack->SetGroup(this);
+	//pTrack->multisetGroup(this);
 }
 
 void IndexedTrackGroup::RemoveChildTrack(IndexedTrack* pTrack)
@@ -46,7 +46,7 @@ void IndexedTrackGroup::RemoveChildTrack(IndexedTrack* pTrack)
 		if (m_ChildTracks[i].Track == pTrack)
 		{
 			m_ChildTracks.erase(m_ChildTracks.begin() + i);
-			//pTrack->SetGroup(this);
+			//pTrack->multisetGroup(this);
 		}
 	}
 }
@@ -96,7 +96,7 @@ INT32 IndexedTrackGroup::FindGroupIndexByName(std::string const& name)
 	return -1;
 }
 
-void IndexedTrackGroup::SetName(std::string const& name)
+void IndexedTrackGroup::multisetName(std::string const& name)
 {
 	m_strName = name;
 }

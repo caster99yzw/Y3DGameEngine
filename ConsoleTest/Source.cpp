@@ -21,6 +21,8 @@
 #include "SGISTL/Heap.h"
 #include "SGISTL/Queue.h"
 #include "SGISTL/RBTree.h"
+#include "SGISTL/map.h"
+#include "SGISTL/set.h"
 #include <memory>
 
 int compare(int a)
