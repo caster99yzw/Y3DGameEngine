@@ -130,7 +130,8 @@
     <ClInclude Include="SGISTL\Allocator.h" />
     <ClInclude Include="SGISTL\Construct.h" />
     <ClInclude Include="SGISTL\Deque.h" />
-    <ClInclude Include="SGISTL\Heap.h" />
+    <ClInclude Include="SGISTL\HashTable.h" />
+    <ClInclude Include="SGISTL\BinaryHeap.h" />
     <ClInclude Include="SGISTL\map.h" />
     <ClInclude Include="SGISTL\Queue.h" />
     <ClInclude Include="SGISTL\RBTree.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="Template\RemoveCV.h" />
     <ClInclude Include="Template\RemoveReference.h" />
     <ClInclude Include="Template\Template.h" />
+    <ClInclude Include="Template\TypeHash.h" />
     <ClInclude Include="Template\TypeTraits.h" />
   </ItemGroup>
   <ItemGroup>

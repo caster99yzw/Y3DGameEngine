@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="BinarySearch.h" />
     <ClInclude Include="Template\Decay.h">
       <Filter>Template</Filter>
     </ClInclude>
@@ -34,16 +33,16 @@
       <Filter>Template</Filter>
     </ClInclude>
     <ClInclude Include="SGISTL\Allocator.h">
-      <Filter>SGISTL</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="SGISTL\Construct.h">
-      <Filter>SGISTL</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="SGISTL\IteratorBase.h">
-      <Filter>SGISTL</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="SGISTL\Vector.h">
-      <Filter>SGISTL</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="Template\Greater.h">
       <Filter>Template</Filter>
@@ -67,7 +66,7 @@
       <Filter>Template</Filter>
     </ClInclude>
     <ClInclude Include="SGISTL\Uninitialized.h">
-      <Filter>SGISTL</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="Template\Junction.h">
       <Filter>Template</Filter>
@@ -82,39 +81,51 @@
       <Filter>SGISTL</Filter>
     </ClInclude>
     <ClInclude Include="SGISTL\List.h">
-      <Filter>SGISTL</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="SGISTL\Deque.h">
-      <Filter>SGISTL</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="SGISTL\Stack.h">
-      <Filter>SGISTL</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="SGISTL\Queue.h">
-      <Filter>SGISTL</Filter>
-    </ClInclude>
-    <ClInclude Include="SGISTL\Heap.h">
-      <Filter>SGISTL</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="SGISTL\Slist.h">
-      <Filter>SGISTL</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="SGISTL\RBTree.h">
-      <Filter>SGISTL</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="SGISTL\Set.h">
-      <Filter>SGISTL</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="SGISTL\map.h">
-      <Filter>SGISTL</Filter>
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="SGISTL\HashTable.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Template\TypeHash.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="BinarySearch.h">
+      <Filter>Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="SGISTL\BinaryHeap.h">
+      <Filter>Algorithms</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Template">
       <UniqueIdentifier>{2d959ab6-8aa8-4c2e-b41f-dd2cb730cee1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SGISTL">
+    <Filter Include="Containers">
       <UniqueIdentifier>{8055c294-4c6b-4a15-beb8-c4b662d03ef5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Algorithms">
+      <UniqueIdentifier>{3471b9b1-3a96-44a9-a72c-ebe468993a48}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

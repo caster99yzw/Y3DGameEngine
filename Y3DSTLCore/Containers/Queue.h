@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SGISTL/Deque.h"
-#include "SGISTL/Heap.h"
+#include "Algorithms/BinaryHeap.h"
 #include "Template/Greater.h"
 
 template <typename T, typename Sequence = deque<T>>

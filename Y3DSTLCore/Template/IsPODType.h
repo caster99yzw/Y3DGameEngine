@@ -5,6 +5,12 @@
 #include "Template/AndOrNot.h"
 #include "Template/IsArithmetic.h"
 
+template <typename T>
+struct IsEnum
+{
+	enum { Value = __is_enum(T) };
+};
+
 /**
 * Traits class which tests if a type is POD.
 *
