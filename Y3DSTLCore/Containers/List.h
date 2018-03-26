@@ -1,8 +1,8 @@
 #pragma once
 
-#include "SGISTL/Allocator.h"
-#include "SGISTL/Construct.h"
-#include "SGISTL/Uninitialized.h"
+#include "Containers/Allocator.h"
+#include "Containers/Construct.h"
+#include "Containers/Uninitialized.h"
 
 /*
 * M_node of list is null node specifier, for begin is closed and end is open

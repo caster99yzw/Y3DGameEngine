@@ -32,18 +32,6 @@
     <ClInclude Include="Template\Less.h">
       <Filter>Template</Filter>
     </ClInclude>
-    <ClInclude Include="SGISTL\Allocator.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="SGISTL\Construct.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="SGISTL\IteratorBase.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="SGISTL\Vector.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
     <ClInclude Include="Template\Greater.h">
       <Filter>Template</Filter>
     </ClInclude>
@@ -80,40 +68,58 @@
     <ClInclude Include="SGISTL\IsSafetyFillMemset.h">
       <Filter>SGISTL</Filter>
     </ClInclude>
-    <ClInclude Include="SGISTL\List.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="SGISTL\Deque.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="SGISTL\Stack.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="SGISTL\Queue.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="SGISTL\Slist.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="SGISTL\RBTree.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="SGISTL\Set.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="SGISTL\map.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="SGISTL\HashTable.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
     <ClInclude Include="Template\TypeHash.h">
       <Filter>Template</Filter>
     </ClInclude>
-    <ClInclude Include="BinarySearch.h">
+    <ClInclude Include="Containers\Allocator.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\Construct.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\Deque.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\HashTable.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\IsSafetyFillMemset.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\IteratorBase.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\List.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\map.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\Queue.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\RBTree.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\Set.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\Slist.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\Stack.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\Uninitialized.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Containers\Vector.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Algorithms\BinaryHeap.h">
       <Filter>Algorithms</Filter>
     </ClInclude>
-    <ClInclude Include="SGISTL\BinaryHeap.h">
+    <ClInclude Include="Algorithms\BinarySearch.h">
       <Filter>Algorithms</Filter>
     </ClInclude>
   </ItemGroup>
@@ -121,11 +127,11 @@
     <Filter Include="Template">
       <UniqueIdentifier>{2d959ab6-8aa8-4c2e-b41f-dd2cb730cee1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Containers">
-      <UniqueIdentifier>{8055c294-4c6b-4a15-beb8-c4b662d03ef5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Algorithms">
-      <UniqueIdentifier>{3471b9b1-3a96-44a9-a72c-ebe468993a48}</UniqueIdentifier>
+      <UniqueIdentifier>{ca22323c-ae84-4b6a-a248-d35d3507a9cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Containers">
+      <UniqueIdentifier>{a18be984-e7da-4f0f-bea1-718adf69988d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "SGISTL/Deque.h"
+#include "Containers/Deque.h"
+#include "Containers/Vector.h"
 #include "Algorithms/BinaryHeap.h"
 #include "Template/Greater.h"
 

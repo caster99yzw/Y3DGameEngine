@@ -1,8 +1,8 @@
 #pragma once
 
-#include "SGISTL/Allocator.h"
-#include "SGISTL/Construct.h"
-#include "SGISTL/Uninitialized.h"
+#include "Containers/Allocator.h"
+#include "Containers/Construct.h"
+#include "Containers/Uninitialized.h"
 #include "Template/IsArithmetic.h"
 
 #include "Y3DMathFunc.h"

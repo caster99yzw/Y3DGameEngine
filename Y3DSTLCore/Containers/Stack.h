@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SGISTL/Deque.h"
+#include "Containers/Deque.h"
 
 template <typename T, typename Sequence = deque<T>>
 class Stack

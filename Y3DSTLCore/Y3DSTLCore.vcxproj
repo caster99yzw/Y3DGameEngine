@@ -125,24 +125,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="BinarySearch.h" />
+    <ClInclude Include="Algorithms\BinaryHeap.h" />
+    <ClInclude Include="Algorithms\BinarySearch.h" />
+    <ClInclude Include="Containers\Allocator.h" />
+    <ClInclude Include="Containers\Construct.h" />
+    <ClInclude Include="Containers\Deque.h" />
+    <ClInclude Include="Containers\HashTable.h" />
+    <ClInclude Include="Containers\IsSafetyFillMemset.h" />
+    <ClInclude Include="Containers\IteratorBase.h" />
+    <ClInclude Include="Containers\List.h" />
+    <ClInclude Include="Containers\map.h" />
+    <ClInclude Include="Containers\Queue.h" />
+    <ClInclude Include="Containers\RBTree.h" />
+    <ClInclude Include="Containers\Set.h" />
+    <ClInclude Include="Containers\Slist.h" />
+    <ClInclude Include="Containers\Stack.h" />
+    <ClInclude Include="Containers\Uninitialized.h" />
+    <ClInclude Include="Containers\Vector.h" />
     <ClInclude Include="CoreTypes.h" />
-    <ClInclude Include="SGISTL\Allocator.h" />
-    <ClInclude Include="SGISTL\Construct.h" />
-    <ClInclude Include="SGISTL\Deque.h" />
-    <ClInclude Include="SGISTL\HashTable.h" />
-    <ClInclude Include="SGISTL\BinaryHeap.h" />
-    <ClInclude Include="SGISTL\map.h" />
-    <ClInclude Include="SGISTL\Queue.h" />
-    <ClInclude Include="SGISTL\RBTree.h" />
-    <ClInclude Include="SGISTL\Set.h" />
-    <ClInclude Include="SGISTL\Slist.h" />
-    <ClInclude Include="SGISTL\Stack.h" />
-    <ClInclude Include="SGISTL\IsSafetyFillMemset.h" />
-    <ClInclude Include="SGISTL\IteratorBase.h" />
-    <ClInclude Include="SGISTL\List.h" />
-    <ClInclude Include="SGISTL\Uninitialized.h" />
-    <ClInclude Include="SGISTL\Vector.h" />
     <ClInclude Include="Template\AddReference.h" />
     <ClInclude Include="Template\AndOrNot.h" />
     <ClInclude Include="Template\Decay.h" />

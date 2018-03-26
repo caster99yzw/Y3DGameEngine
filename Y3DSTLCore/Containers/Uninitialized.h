@@ -2,8 +2,8 @@
 
 #include <vcruntime_string.h>
 #include "CoreTypes.h"
-#include "SGISTL/IteratorBase.h"
-#include "SGISTL/Construct.h"
+#include "Containers/IteratorBase.h"
+#include "Containers/Construct.h"
 #include "Template/IsPODType.h"
 
 namespace UninitializedCopy_Private

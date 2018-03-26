@@ -1,7 +1,7 @@
 #pragma once
 #include <new>
 #include "CoreTypes.h"
-#include "SGISTL/IteratorBase.h"
+#include "Containers/IteratorBase.h"
 #include "Template/EnableIf.h"
 #include "Template/IsTrivially.h"
 

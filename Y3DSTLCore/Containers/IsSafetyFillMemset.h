@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SGISTL/IteratorBase.h"
+#include "Containers/IteratorBase.h"
 #include "Template/TypeTraits.h"
 #include "Template/IsCharacter.h"
 #include "Template/IsPointer.h"

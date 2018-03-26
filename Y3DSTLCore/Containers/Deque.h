@@ -1,7 +1,7 @@
 #pragma once
 
-#include "SGISTL/IteratorBase.h"
-#include "SGISTL/Uninitialized.h"
+#include "Containers/IteratorBase.h"
+#include "Containers/Uninitialized.h"
 #include "Y3DMatrixFunc.h"
 
 inline size_t deque_buf_size(size_t sz)
@@ -153,7 +153,7 @@ protected:
 	typedef Alloc					allocator_type;
 	static allocator_type get_allocator() { return allocator_type(); }
 
-	deque_alloc_base(const allocator_type&) : Map(0), MapSize(0) {}
+	deque_alloc_base(allocator_type const&) : Map(0), MapSize(0) {}
 
 protected:
 
