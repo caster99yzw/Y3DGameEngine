@@ -1,6 +1,6 @@
 #pragma once
 #include "CoreTypes.h"
-#include "BinarySearch.h"
+#include "Algorithms/BinarySearch.h"
 
 struct IntervalType
 {

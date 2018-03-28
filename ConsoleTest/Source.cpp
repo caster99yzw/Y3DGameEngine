@@ -12,18 +12,11 @@
 #include <type_traits> 
 #include <iostream> 
 
-#include "SGISTL/Construct.h"
 #include "Template/AndOrNot.h"
-
-#include "SGISTL/Vector.h"
-#include "SGISTL/List.h"
-#include "SGISTL/Deque.h"
-#include "SGISTL/Heap.h"
-#include "SGISTL/Queue.h"
-#include "SGISTL/RBTree.h"
-#include "SGISTL/map.h"
-#include "SGISTL/set.h"
 #include <memory>
+
+#include "Containers/Vector.h"
+#include "Containers/Deque.h"
 
 int compare(int a)
 {
@@ -95,20 +88,20 @@ int main()
 	//std::cout << std::endl;
 
 	int ia[9] = { 0, 1, 2, 3, 4, 8, 9, 3, 5 };
-	priority_queue<int> ipq(ia, ia + 9);
+	//priority_queue<int> ipq(ia, ia + 9);
 
-	for (int i = 0; i < ipq.size(); i++)
-	{
-		std::cout << ipq.top()<< " ";
-	}
-	std::cout << std::endl;
+	//for (int i = 0; i < ipq.size(); i++)
+	//{
+	//	std::cout << ipq.top()<< " ";
+	//}
+	//std::cout << std::endl;
 
-	while (!ipq.empty())
-	{
-		std::cout << ipq.top() << " ";
-		ipq.pop();
-	}
-	std::cout << std::endl;
+	//while (!ipq.empty())
+	//{
+	//	std::cout << ipq.top() << " ";
+	//	ipq.pop();
+	//}
+	//std::cout << std::endl;
 
 	system("pause");
 
