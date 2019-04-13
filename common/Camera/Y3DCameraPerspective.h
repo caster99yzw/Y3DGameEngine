@@ -39,10 +39,10 @@ namespace Y3D
 		virtual void		Release() override;
 
 		// Manipulation about orthogonal camera
-		FLOAT32				GetProjFOV();
-		FLOAT32				GetProjRatio();
-		FLOAT32				GetProjNear();
-		FLOAT32				GetProjFar();
+		float32				GetProjFOV();
+		float32				GetProjRatio();
+		float32				GetProjNear();
+		float32				GetProjFar();
 
 		/* Calculate view frustum's 8 corners' position
 
@@ -54,7 +54,7 @@ namespace Y3D
 		bInViewSpace: in view space or in world space
 		fNear, fFar: near and far distance
 		*/
-		virtual UINT32		CalcFrustumCorners(Vec3F32* aCorners, bool bInViewSpace, FLOAT32 fNear, FLOAT32 fFar);
+		virtual uint32		CalcFrustumCorners(Vec3F32* aCorners, bool bInViewSpace, float32 fNear, float32 fFar);
 	};
 }
 

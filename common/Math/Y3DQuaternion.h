@@ -85,7 +85,7 @@ namespace Y3D
 
 		constexpr _Quaternion const& operator /= (T const& rhs)
 		{
-			FLOAT32 reciprocal = 1.f / rhs;
+			float32 reciprocal = 1.f / rhs;
 			*this *= reciprocal;
 			return *this;
 		}
@@ -105,13 +105,13 @@ namespace Y3D
 			return Quaternion(-w, -x, -y, -z);
 		}
 
-		constexpr T & operator[](UINT32 index) 
+		constexpr T & operator[](uint32 index) 
 		{ 
 			assert(index < Count); 
 			return v[index]; 
 		}
 
-		constexpr T const& operator[](UINT32 index) const
+		constexpr T const& operator[](uint32 index) const
 		{
 			assert(index < Count);
 			return v[index];
@@ -326,6 +326,6 @@ namespace Y3D
 	//	return _Rotate_Vector(*this, vec);
 	//}
 
-	using QuatF32 = _Quaternion<FLOAT32>;
-	using QuatF64 = _Quaternion<FLOAT64>;
+	using QuatF32 = _Quaternion<float32>;
+	using QuatF64 = _Quaternion<float64>;
 }

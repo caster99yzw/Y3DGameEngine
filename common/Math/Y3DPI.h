@@ -1,21 +1,21 @@
 #pragma once
 
-#include "common/Y3DTypes.h"
+#include "common/type.h"
 
 
 // The constexpr declaration and definition must be together
 
 namespace Y3D
 {
-	const FLOAT64 Y3D_PI_F64		= 3.1415926535897932385;
-	const FLOAT64 Y3D_PI_TWO_F64	= 6.2831853071795864769;
-	const FLOAT64 Y3D_PI_HALF_F64	= 1.5707963267948966192;
-	const FLOAT64 Y3D_PI_INV_F64	= 0.3183098861837906715;
+	const float64 Y3D_PI_F64		= 3.1415926535897932385;
+	const float64 Y3D_PI_TWO_F64	= 6.2831853071795864769;
+	const float64 Y3D_PI_HALF_F64	= 1.5707963267948966192;
+	const float64 Y3D_PI_INV_F64	= 0.3183098861837906715;
 
-	const FLOAT32 Y3D_PI_F32		= 3.1415926535897932385f;
-	const FLOAT32 Y3D_PI_TWO_F32	= 6.2831853071795864769f;
-	const FLOAT32 Y3D_PI_HALF_F32	= 1.5707963267948966192f;
-	const FLOAT32 Y3D_PI_INV_F32	= 0.3183098861837906715f;
+	const float32 Y3D_PI_F32		= 3.1415926535897932385f;
+	const float32 Y3D_PI_TWO_F32	= 6.2831853071795864769f;
+	const float32 Y3D_PI_HALF_F32	= 1.5707963267948966192f;
+	const float32 Y3D_PI_INV_F32	= 0.3183098861837906715f;
 
 	template <class T>
 	constexpr static T DEGREE_2_RADIAN(T const& degree)
@@ -256,6 +256,6 @@ namespace Y3D
 		return Degree<T>(radValue);
 	}
 
-	using RadianF32 = Radian<FLOAT32>;
-	using DegreeF32 = Degree<FLOAT32>;
+	using RadianF32 = Radian<float32>;
+	using DegreeF32 = Degree<float32>;
 }

@@ -62,15 +62,15 @@ namespace Y3D
 	constexpr static bool Equi(T const& lhs, T const& rhs) { return lhs == rhs; }
 
 	template <>
-	static bool Equi<FLOAT32>(FLOAT32 const& lhs, FLOAT32 const& rhs)
+	static bool Equi<float32>(float32 const& lhs, float32 const& rhs)
 	{
-		return std::abs(lhs - rhs) <= std::numeric_limits<FLOAT32>::epsilon();
+		return std::abs(lhs - rhs) <= std::numeric_limits<float32>::epsilon();
 	}
 
 	template <>
-	static bool Equi<FLOAT64>(FLOAT64 const& lhs, FLOAT64 const& rhs)
+	static bool Equi<float64>(float64 const& lhs, float64 const& rhs)
 	{
-		return std::abs(lhs - rhs) <= std::numeric_limits<FLOAT64>::epsilon();
+		return std::abs(lhs - rhs) <= std::numeric_limits<float64>::epsilon();
 	}
 
 	template <class T>
@@ -102,6 +102,7 @@ namespace Y3D
 	template <class T>
 	static Radian<T> ASin(T const& rhs) 
 	{ 
+
 		return Radian<T>(
 			static_cast<T>(std::asin(rhs))
 			); 

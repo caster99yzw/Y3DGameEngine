@@ -53,7 +53,7 @@ namespace Y3D
 		virtual bool		InvTransform(Vec3F32 const& vecIn, Vec3F32 const& vecOut);
 
 		// Frustum operation
-		virtual UINT32		CalcFrustumCorners(Vec3F32* aCorners, bool bInViewSpace, FLOAT32 fNear, FLOAT32 fFar);
+		virtual uint32		CalcFrustumCorners(Vec3F32* aCorners, bool bInViewSpace, float32 fNear, float32 fFar);
 
 	protected:
 

@@ -25,7 +25,7 @@ namespace Y3D
 	bInViewSpace: in view space or in world space
 	fNear, fFar: near and far distance
 	*/
-	UINT32 CameraPerspective::CalcFrustumCorners(Vec3F32* aCorners, bool bInViewSpace, FLOAT32 fNear, FLOAT32 fFar)
+	uint32 CameraPerspective::CalcFrustumCorners(Vec3F32* aCorners, bool bInViewSpace, float32 fNear, float32 fFar)
 	{
 
 		if (!aCorners)

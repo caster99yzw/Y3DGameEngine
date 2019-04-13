@@ -1,5 +1,5 @@
 #pragma once
-#include "common/Y3DTypes.h"
+#include "common/type.h"
 #include "common/Math/Y3DVector.h"
 
 
@@ -13,7 +13,7 @@ namespace Y3D
 	//////////////////////////////////////////////////////////////////////////
 
 	//Template declaration 
-	template <class T, UINT32 Row, UINT32 Col>
+	template <class T, uint32 Row, uint32 Col>
 	class _Matrix;
 
 	//////////////////////////////////////////////////////////////////////////
@@ -30,9 +30,9 @@ namespace Y3D
 		static _Matrix const ZERO;
 		static _Matrix const IDENTITY;
 
-		static constexpr UINT32 Row = 3;
-		static constexpr UINT32 Col = 3;
-		static constexpr UINT32 Count = Row * Col;
+		static constexpr uint32 Row = 3;
+		static constexpr uint32 Col = 3;
+		static constexpr uint32 Count = Row * Col;
 
 
 	public: //	Constructions and Destructions
@@ -125,36 +125,36 @@ namespace Y3D
 			return *this;
 		}
 
-		constexpr _Vector<T, Col> const& operator[](UINT32 index) const
+		constexpr _Vector<T, Col> const& operator[](uint32 index) const
 		{
 			assert(index < Row);
 			return M[index];
 		} 
 
-		constexpr _Vector<T, Col>& operator[](UINT32 index)
+		constexpr _Vector<T, Col>& operator[](uint32 index)
 		{
 			assert(index < Row);
 			return M[index];
 		}
 
-		constexpr _Vector<T, Col> const GetRow(UINT32 index) const 
+		constexpr _Vector<T, Col> const GetRow(uint32 index) const 
 		{
 			return _Vector<T, Col>(v[0][index], v[1][index], v[2][index]);
 		}
 
-		constexpr void multisetRow(UINT32 index, _Vector<T, Col> const& rv)
+		constexpr void multisetRow(uint32 index, _Vector<T, Col> const& rv)
 		{
 			v[0][index] = rv.v[0];
 			v[1][index] = rv.v[1];
 			v[2][index] = rv.v[2];
 		}
 
-		constexpr _Vector<T, Row> const& GetColumn(UINT32 index) const 
+		constexpr _Vector<T, Row> const& GetColumn(uint32 index) const 
 		{
 			return M[index];
 		}
 
-		constexpr void multisetCol(UINT32 index, _Vector<T, Row> const& rv)
+		constexpr void multisetCol(uint32 index, _Vector<T, Row> const& rv)
 		{
 			v[index][0] = rv.v[0];
 			v[index][1] = rv.v[1];
@@ -272,9 +272,9 @@ namespace Y3D
 		static _Matrix const ZERO;
 		static _Matrix const IDENTITY;
 
-		static constexpr UINT32 Row = 4;
-		static constexpr UINT32 Col = 4;
-		static constexpr UINT32 Count = Row * Col;
+		static constexpr uint32 Row = 4;
+		static constexpr uint32 Col = 4;
+		static constexpr uint32 Count = Row * Col;
 
 
 	public: //	Constructions and Destructions
@@ -382,24 +382,24 @@ namespace Y3D
 			return *this;
 		}
 
-		constexpr _Vector<T, Col> const& operator[](UINT32 index) const
+		constexpr _Vector<T, Col> const& operator[](uint32 index) const
 		{
 			assert(index < Row);
 			return M[index];
 		}
 
-		constexpr _Vector<T, Col>& operator[](UINT32 index)
+		constexpr _Vector<T, Col>& operator[](uint32 index)
 		{
 			assert(index < Row);
 			return M[index];
 		}
 
-		constexpr _Vector<T, Col> const GetRow(UINT32 index) const
+		constexpr _Vector<T, Col> const GetRow(uint32 index) const
 		{
 			return _Vector<T, Col>(v[0][index], v[1][index], v[2][index], v[3][index]);
 		}
 
-		constexpr void multisetRow(UINT32 index, _Vector<T, Col> const& rv)
+		constexpr void multisetRow(uint32 index, _Vector<T, Col> const& rv)
 		{
 			v[0][index] = rv.v[0];
 			v[1][index] = rv.v[1];
@@ -407,12 +407,12 @@ namespace Y3D
 			v[3][index] = rv.v[3];
 		}
 
-		constexpr _Vector<T, Row> const& GetColumn(UINT32 index) const
+		constexpr _Vector<T, Row> const& GetColumn(uint32 index) const
 		{
 			return M[index];
 		}
 
-		constexpr void multisetCol(UINT32 index, _Vector<T, Row> const& rv)
+		constexpr void multisetCol(uint32 index, _Vector<T, Row> const& rv)
 		{
 			v[index][0] = rv.v[0];
 			v[index][1] = rv.v[1];
@@ -559,44 +559,44 @@ namespace Y3D
 			|| lhs.M[3][0] != rhs.M[3][0] || lhs.M[3][1] != rhs.M[3][1] || lhs.M[3][2] != rhs.M[3][2] || lhs.M[3][3] != rhs.M[3][3]);
 	}
 
-	template<class T, UINT32 Row, UINT32 Col>
+	template<class T, uint32 Row, uint32 Col>
 	constexpr _Matrix<T, Row, Col> operator + (_Matrix<T, Row, Col> const& lhs, _Matrix<T, Row, Col> const& rhs) 
 	{
 		return _Matrix<T, Row, Col>(lhs) += rhs;
 	}
-	template<class T, UINT32 Row, UINT32 Col>
+	template<class T, uint32 Row, uint32 Col>
 	constexpr _Matrix<T, Row, Col> operator - (_Matrix<T, Row, Col> const& lhs, _Matrix<T, Row, Col> const& rhs) 
 	{
 		return _Matrix<T, Row, Col>(lhs) -= rhs;
 	}
 
-	template<class T, UINT32 Row, UINT32 Col>
+	template<class T, uint32 Row, uint32 Col>
 	constexpr _Matrix<T, Row, Col> operator *(_Matrix<T, Row, Col> const& lhs, T const& rhs) 
 	{
 		return _Matrix<T, Row, Col>(lhs) *= rhs;
 	}
-	template<class T, UINT32 Row, UINT32 Col>
+	template<class T, uint32 Row, uint32 Col>
 	constexpr _Matrix<T, Row, Col> operator * (T const& lhs, _Matrix<T, Row, Col> const& rhs) 
 	{
 		return _Matrix<T, Row, Col>(rhs) *= lhs;
 	}
 
-	template<class T, UINT32 Row, UINT32 Col>
+	template<class T, uint32 Row, uint32 Col>
 	constexpr _Matrix<T, Row, Col> operator * (_Matrix<T, Row, Col>  const& lhs, _Matrix<T, Row, Col> const& rhs)
 	{
 		return _Matrix<T, Row, Col>(rhs) *= lhs;
 	}
 
-	template<class T, UINT32 Row, UINT32 Col>
+	template<class T, uint32 Row, uint32 Col>
 	constexpr _Matrix<T, Row, Col> operator / (_Matrix<T, Row, Col> const& lhs, T const& rhs) 
 	{
 		return _Matrix<T, Row, Col>(lhs) / rhs;
 	}
 
-	using Mat3F32 = _Matrix<FLOAT32, 3, 3>;
-	using Mat3F64 = _Matrix<FLOAT64, 3, 3>;
+	using Mat3F32 = _Matrix<float32, 3, 3>;
+	using Mat3F64 = _Matrix<float64, 3, 3>;
 
-	using Mat4F32 = _Matrix<FLOAT32, 4, 4>;
-	using Mat4F64 = _Matrix<FLOAT64, 4, 4>;
+	using Mat4F32 = _Matrix<float32, 4, 4>;
+	using Mat4F64 = _Matrix<float64, 4, 4>;
 }
 

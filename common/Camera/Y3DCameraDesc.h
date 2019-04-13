@@ -45,17 +45,17 @@ namespace Y3D
 	{
 		struct LTNVec3
 		{
-			FLOAT32		xLeft;
-			FLOAT32		yTop;
-			FLOAT32		zNear;
+			float32		xLeft;
+			float32		yTop;
+			float32		zNear;
 
 		};
 
 		struct RBFVec3
 		{
-			FLOAT32		xRight;
-			FLOAT32		yBottom;
-			FLOAT32		zNear;
+			float32		xRight;
+			float32		yBottom;
+			float32		zNear;
 		};
 
 		LTNVec3			vLTNPos;
@@ -75,10 +75,10 @@ namespace Y3D
 
 		struct PersProjInfo
 		{
-			FLOAT32		fFOV;
-			FLOAT32		fRatio;
-			FLOAT32		zNear;
-			FLOAT32		zFar;
+			float32		fFOV;
+			float32		fRatio;
+			float32		zNear;
+			float32		zFar;
 		};
 
 		PersProjInfo	pProjInfo;

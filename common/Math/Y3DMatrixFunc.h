@@ -64,16 +64,16 @@ namespace Y3D
 	Mat4F32 InitiateTransform(Vec3F32 const& dir, Vec3F32 const& up, Vec3F32 const& pos);
 	
 	// Translation matrix initialize
-	Mat4F32 InitiateTranslationMatrix(FLOAT32 x, FLOAT32 y, FLOAT32 z);
+	Mat4F32 InitiateTranslationMatrix(float32 x, float32 y, float32 z);
 	Mat4F32 InitiateTranslationMatrix(Vec3F32 tv);
 
 	// Scale matrix initialize
-	Mat4F32 InitiateScaleMatrix(FLOAT32 s);
-	Mat4F32 InitiateScaleMatrix(FLOAT32 sx, FLOAT32 sy, FLOAT32 sz);
+	Mat4F32 InitiateScaleMatrix(float32 s);
+	Mat4F32 InitiateScaleMatrix(float32 sx, float32 sy, float32 sz);
 	Mat4F32 InitiateScaleMatrix(Vec3F32 const& sv);
 	
 	// Scale matrix by arbitrary axis initialize
-	Mat4F32 IntitateAlongAxisScaleMatrix(Vec3F32 const& axis, FLOAT32 s);
+	Mat4F32 IntitateAlongAxisScaleMatrix(Vec3F32 const& axis, float32 s);
 
 	// Rotate matrix initialize
 	// Euler form : X,Y,Z three version
@@ -83,7 +83,7 @@ namespace Y3D
 	Mat4F32 InitiateEulerYMatrix(RadianF32 const& angle);
 	Mat4F32 InitiateEulerZMatrix(RadianF32 const& angle);
 	Mat4F32 InitiateAxisAngleMatrix(RadianF32 const& angle, Vec3F32 const& axis);
-	Mat4F32 InitiateAxisAngleMatrix(RadianF32 const& angle, FLOAT32 x, FLOAT32 y, FLOAT32 z);
+	Mat4F32 InitiateAxisAngleMatrix(RadianF32 const& angle, float32 x, float32 y, float32 z);
 	Mat4F32 InitiateQuaternionMatrx(QuatF32 const& qt);
 
 	// Reflection matrix initialize
@@ -116,16 +116,16 @@ namespace Y3D
 	// 2. Parameter is six bound in frustum
 	//
 
-	Mat4F32 FrustumProjectionMatrix(RadianF32 const& fFOV, FLOAT32  fRatio, FLOAT32 fNear, FLOAT32 fFar);
-	Mat4F32 FrustumProjectionMatrix(FLOAT32 fLeft, FLOAT32 fRight, FLOAT32 fBottom, FLOAT32 fTop, FLOAT32 fNear, FLOAT32 fFar);
+	Mat4F32 FrustumProjectionMatrix(RadianF32 const& fFOV, float32  fRatio, float32 fNear, float32 fFar);
+	Mat4F32 FrustumProjectionMatrix(float32 fLeft, float32 fRight, float32 fBottom, float32 fTop, float32 fNear, float32 fFar);
 
 	//
 	// Orthogonal Projection Matrix desc:
 	// 1. Parameter is orthogonal projection describe
 	// 2. Parameter are width and height in screen
 	//
-	Mat4F32 OrthogonalProjectionMatrix(FLOAT32 fLeft, FLOAT32 fRight, FLOAT32 fBottom, FLOAT32 fTop, FLOAT32 fNear, FLOAT32 fFar);
-	Mat4F32 OrthogonalProjectionMatrix(FLOAT32 fWidth, FLOAT32 fHeight, FLOAT32 fNear, FLOAT32 fFar);
+	Mat4F32 OrthogonalProjectionMatrix(float32 fLeft, float32 fRight, float32 fBottom, float32 fTop, float32 fNear, float32 fFar);
+	Mat4F32 OrthogonalProjectionMatrix(float32 fWidth, float32 fHeight, float32 fNear, float32 fFar);
 
 	//////////////////////////////////////////////////////////////////////////
 	//
@@ -154,7 +154,7 @@ namespace Y3D
 		QuatF32 const& scaleRot,
 		QuatF32 const& rot,
 		Vec3F32 const& pos,
-		FLOAT32& sign);
+		float32& sign);
 
-	void DecomposeStrechedMatrixNoScale(Mat4F32 const& mat,	QuatF32 const& rot,	Vec3F32 const& pos,	FLOAT32& sign);
+	void DecomposeStrechedMatrixNoScale(Mat4F32 const& mat,	QuatF32 const& rot,	Vec3F32 const& pos,	float32& sign);
 }

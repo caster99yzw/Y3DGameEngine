@@ -1,6 +1,6 @@
 #pragma once
 #include "common/Math/Y3DMathFunc.h"
-#include "common/Y3DTypes.h"
+#include "common/type.h"
 #include <xtr1common>
 #include <assert.h>
 
@@ -8,7 +8,7 @@
 namespace Y3D
 {
 	//Template declaration 
-	template <class T, UINT32 Count>
+	template <class T, uint32 Count>
 	class _Vector;
 
 	//////////////////////////////////////////////////////////////////////////
@@ -22,7 +22,7 @@ namespace Y3D
 	{
 	public: // Static and Macro
 
-		static constexpr UINT32 Count = 1;
+		static constexpr uint32 Count = 1;
 		static _Vector const IDENTITY;
 
 	public: //	Constructions and Destructions
@@ -86,13 +86,13 @@ namespace Y3D
 			return *this;
 		}
 
-		constexpr T const& operator [] (UINT32 index) const
+		constexpr T const& operator [] (uint32 index) const
 		{ 
 			assert(index < Count);
 			return v[index];
 		}
 
-		constexpr T& operator [] (UINT32 index)
+		constexpr T& operator [] (uint32 index)
 		{ 
 			assert(index < Count);
 			return v[index]; 
@@ -134,7 +134,7 @@ namespace Y3D
 
 		constexpr void Clamp()
 		{
-			for (UINT32 i = 0; i < 1; i++)
+			for (uint32 i = 0; i < 1; i++)
 			{
 				if (v[i] > T(1.f - 1e-5f))
 				{
@@ -184,7 +184,7 @@ namespace Y3D
 	public: // Static and Macro
 
 		static _Vector const IDENTITY;
-		static constexpr UINT32 Count = 2;
+		static constexpr uint32 Count = 2;
 
 	public: //	Constructions and Destructions
 
@@ -249,13 +249,13 @@ namespace Y3D
 			return *this;
 		}
 
-		constexpr T const& operator [] (UINT32 index) const
+		constexpr T const& operator [] (uint32 index) const
 		{
 			assert(index < Count);
 			return v[index];
 		}
 
-		constexpr T& operator [] (UINT32 index)
+		constexpr T& operator [] (uint32 index)
 		{
 			assert(index < Count);
 			return v[index];
@@ -297,7 +297,7 @@ namespace Y3D
 
 		constexpr void Clamp()
 		{
-			for (UINT32 i = 0; i < Count; i++)
+			for (uint32 i = 0; i < Count; i++)
 			{
 				if (v[i] > T(1.f - 1e-5f))
 				{
@@ -348,7 +348,7 @@ namespace Y3D
 	public: // Static and Macro
 
 		static _Vector const IDENTITY;
-		static constexpr UINT32 Count = 3;
+		static constexpr uint32 Count = 3;
 
 	public: //	Constructions and Destructions
 
@@ -413,13 +413,13 @@ namespace Y3D
 			return *this;
 		}
 
-		constexpr T const& operator [] (UINT32 index) const
+		constexpr T const& operator [] (uint32 index) const
 		{
 			assert(index < Count);
 			return v[index];
 		}
 
-		constexpr T& operator [] (UINT32 index)
+		constexpr T& operator [] (uint32 index)
 		{
 			assert(index < Count);
 			return v[index];
@@ -461,7 +461,7 @@ namespace Y3D
 
 		constexpr void Clamp()
 		{
-			for (UINT32 i = 0; i < Count; i++)
+			for (uint32 i = 0; i < Count; i++)
 			{
 				if (v[i] > T(1.f - 1e-5f))
 				{
@@ -523,7 +523,7 @@ namespace Y3D
 	public: // Static and Macro
 
 		static _Vector const IDENTITY;
-		static constexpr UINT32 Count = 4;
+		static constexpr uint32 Count = 4;
 
 	public: //	Constructions and Destructions
 
@@ -589,13 +589,13 @@ namespace Y3D
 			return *this;
 		}
 
-		constexpr T const& operator [] (UINT32 index) const
+		constexpr T const& operator [] (uint32 index) const
 		{
 			assert(index < Count);
 			return v[index];
 		}
 
-		constexpr T& operator [] (UINT32 index)
+		constexpr T& operator [] (uint32 index)
 		{
 			assert(index < Count);
 			return v[index];
@@ -637,7 +637,7 @@ namespace Y3D
 
 		constexpr void Clamp()
 		{
-			for (UINT32 i = 0; i < Count; i++)
+			for (uint32 i = 0; i < Count; i++)
 			{
 				if (v[i] > T(1.f - 1e-5f))
 				{
@@ -686,76 +686,76 @@ namespace Y3D
 	//
 	//////////////////////////////////////////////////////////////////////////
 
-	template <class T, UINT32 nCount>
+	template <class T, uint32 nCount>
 	constexpr _Vector<T, nCount> operator + (_Vector<T, nCount> const& lhs, _Vector<T, nCount> const& rhs)
 	{ 
 		return _Vector<T, nCount>(lhs) += rhs;
 	}
 
-	template <class T, UINT32 nCount>
+	template <class T, uint32 nCount>
 	constexpr _Vector<T, nCount> operator - (_Vector<T, nCount> const& lhs, _Vector<T, nCount> const& rhs)
 	{
 		return _Vector<T, nCount>(lhs) -= rhs;
 	}
 
 	// Convention that multiply by _Vector is one by one
-	template <class T, UINT32 nCount>
+	template <class T, uint32 nCount>
 	constexpr _Vector<T, nCount> operator * (_Vector<T, nCount> const& lhs, _Vector<T, nCount> const& rhs)
 	{
 		return _Vector<T, nCount>(lhs) *= rhs;
 	}
 
-	template <class T, UINT32 nCount>
+	template <class T, uint32 nCount>
 	constexpr _Vector<T, nCount> operator * (_Vector<T, nCount> const& lhs, T const& rhs)
 	{
 		return _Vector<T, nCount>(lhs) *= rhs;
 	}
 
-	template <class T, UINT32 nCount>
+	template <class T, uint32 nCount>
 	constexpr _Vector<T, nCount> operator * (T const& lhs, _Vector<T, nCount> const& rhs)
 	{
 		return _Vector<T, nCount>(rhs) *= lhs;
 	}
 	
 	// Convention that divide by _Vector is one by one
-	template <class T, UINT32 nCount>
+	template <class T, uint32 nCount>
 	constexpr _Vector<T, nCount> operator / (_Vector<T, nCount> const& lhs, _Vector<T, nCount> const& rhs)
 	{
 		return _Vector<T, nCount>(lhs) /= rhs;
 	}
 
-	template <class T, UINT32 nCount>
+	template <class T, uint32 nCount>
 	constexpr _Vector<T, nCount> operator / (_Vector<T, nCount> const& lhs, T const& rhs)
 	{
 		return _Vector<T, nCount>(lhs) /= rhs;
 	}
 
-	template <class T, UINT32 nCount>
+	template <class T, uint32 nCount>
 	constexpr _Vector<T, nCount> Lerp(_Vector<T, nCount> const& lhs, _Vector<T, nCount> const& rhs, T const& fraction)
 	{
 		return (lhs * (1 - fraction) + rhs * fraction);
 	}
 
 
-	using	Vec1F32 = _Vector<FLOAT32, 1>;
-	using	Vec2F32 = _Vector<FLOAT32, 2>;
-	using	Vec3F32 = _Vector<FLOAT32, 3>;
-	using	Vec4F32 = _Vector<FLOAT32, 4>;
+	using	Vec1F32 = _Vector<float32, 1>;
+	using	Vec2F32 = _Vector<float32, 2>;
+	using	Vec3F32 = _Vector<float32, 3>;
+	using	Vec4F32 = _Vector<float32, 4>;
 
-	using	Vec1F64 = _Vector<FLOAT64, 1>;
-	using	Vec2F64 = _Vector<FLOAT64, 2>;
-	using	Vec3F64 = _Vector<FLOAT64, 3>;
-	using	Vec4F64 = _Vector<FLOAT64, 4>;
+	using	Vec1F64 = _Vector<float64, 1>;
+	using	Vec2F64 = _Vector<float64, 2>;
+	using	Vec3F64 = _Vector<float64, 3>;
+	using	Vec4F64 = _Vector<float64, 4>;
 
-	using	Vec1I32 = _Vector<INT32, 1>;
-	using	Vec2I32 = _Vector<INT32, 2>;
-	using	Vec3I32 = _Vector<INT32, 3>;
-	using	Vec4I32 = _Vector<INT32, 4>;
+	using	Vec1I32 = _Vector<int32, 1>;
+	using	Vec2I32 = _Vector<int32, 2>;
+	using	Vec3I32 = _Vector<int32, 3>;
+	using	Vec4I32 = _Vector<int32, 4>;
 
-	using	Vec1U32 = _Vector<UINT32, 1>;
-	using	Vec2U32 = _Vector<UINT32, 2>;
-	using	Vec3U32 = _Vector<UINT32, 3>;
-	using	Vec4U32 = _Vector<UINT32, 4>;
+	using	Vec1U32 = _Vector<uint32, 1>;
+	using	Vec2U32 = _Vector<uint32, 2>;
+	using	Vec3U32 = _Vector<uint32, 3>;
+	using	Vec4U32 = _Vector<uint32, 4>;
 
 	Vec3F32 const g_vAxisX = Vec3F32(1.f, 0.f, 0.f);
 	Vec3F32 const g_vAxisY = Vec3F32(0.f, 1.f, 0.f);

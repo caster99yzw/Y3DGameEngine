@@ -172,7 +172,7 @@ namespace Y3D
 		Vec3F32 yAxis = up.Normalized();
 		Vec3F32 zAxis = dir.Normalized();
 
-		FLOAT32 aDirAndUp = Dot(yAxis, zAxis);
+		float32 aDirAndUp = Dot(yAxis, zAxis);
 		if (aDirAndUp != 0)
 		{
 			xAxis = Cross(yAxis, xAxis).Normalized();
@@ -188,7 +188,7 @@ namespace Y3D
 	}
 
 	// Translation matrix initialize
-	Mat4F32 InitiateTranslationMatrix(FLOAT32 x, FLOAT32 y, FLOAT32 z)
+	Mat4F32 InitiateTranslationMatrix(float32 x, float32 y, float32 z)
 	{
 		Mat4F32 mat = Mat4F32::IDENTITY;
 
@@ -205,12 +205,12 @@ namespace Y3D
 	}
 
 	// Scale matrix initialize
-	Mat4F32 InitiateScaleMatrix(FLOAT32 s)
+	Mat4F32 InitiateScaleMatrix(float32 s)
 	{
 		return InitiateScaleMatrix(s, s, s);
 	}
 
-	Mat4F32 InitiateScaleMatrix(FLOAT32 sx, FLOAT32 sy, FLOAT32 sz)
+	Mat4F32 InitiateScaleMatrix(float32 sx, float32 sy, float32 sz)
 	{
 		Mat4F32 mat = Mat4F32::IDENTITY;
 
@@ -226,7 +226,7 @@ namespace Y3D
 	}
 
 	// Scale matrix by arbitrary axis initialize
-	Mat4F32 IntitateAlongAxisScaleMatrix(Vec3F32 const& axis, FLOAT32 s)
+	Mat4F32 IntitateAlongAxisScaleMatrix(Vec3F32 const& axis, float32 s)
 	{
 		// M = R * S * (R)^-1
 		// **
@@ -260,8 +260,8 @@ namespace Y3D
 	// quaternion form : one version
 	Mat4F32 InitiateEulerXMatrix(RadianF32 const& angle)
 	{
-		FLOAT32 fCosX = Cos(angle);
-		FLOAT32 fSinX = Sin(angle);
+		float32 fCosX = Cos(angle);
+		float32 fSinX = Sin(angle);
 
 		Mat4F32 mat = Mat4F32::IDENTITY;
 
@@ -275,8 +275,8 @@ namespace Y3D
 
 	Mat4F32 InitiateEulerYMatrix(RadianF32 const& angle)
 	{
-		FLOAT32 fCosX = Cos(angle);
-		FLOAT32 fSinX = Sin(angle);
+		float32 fCosX = Cos(angle);
+		float32 fSinX = Sin(angle);
 
 		Mat4F32 mat = Mat4F32::IDENTITY;
 
@@ -290,8 +290,8 @@ namespace Y3D
 
 	Mat4F32 InitiateEulerZMatrix(RadianF32 const& angle)
 	{
-		FLOAT32 fCosX = Cos(angle);
-		FLOAT32 fSinX = Sin(angle);
+		float32 fCosX = Cos(angle);
+		float32 fSinX = Sin(angle);
 
 		Mat4F32 mat = Mat4F32::IDENTITY;
 
@@ -303,7 +303,7 @@ namespace Y3D
 		return mat;
 	}
 
-	Mat4F32 InitiateAxisAngleMatrix(RadianF32 const& angle, FLOAT32 x, FLOAT32 y, FLOAT32 z)
+	Mat4F32 InitiateAxisAngleMatrix(RadianF32 const& angle, float32 x, float32 y, float32 z)
 	{
 		return InitiateAxisAngleMatrix(angle, Vec3F32(x, y, z));
 	}
@@ -322,13 +322,13 @@ namespace Y3D
 
 		Vec3F32 axisNorm = axis.Normalized();
 
-		FLOAT32 fCosX = Cos(angle);
-		FLOAT32 fSinX = Sin(angle);
-		FLOAT32 tfCosX = 1 - fCosX;
+		float32 fCosX = Cos(angle);
+		float32 fSinX = Sin(angle);
+		float32 tfCosX = 1 - fCosX;
 
-		FLOAT32 rx = axis.x;
-		FLOAT32 ry = axis.y;
-		FLOAT32 rz = axis.z;
+		float32 rx = axis.x;
+		float32 ry = axis.y;
+		float32 rz = axis.z;
 
 		Mat4F32 mat;
 
@@ -435,15 +435,15 @@ namespace Y3D
 	// 1. Parameter is perspective projection describe
 	// 2. Parameter is six bound in frustum
 	//
-	Mat4F32 FrustumProjectionMatrix(RadianF32 const& fFOV, FLOAT32 fRatio, FLOAT32 fNear, FLOAT32 fFar)
+	Mat4F32 FrustumProjectionMatrix(RadianF32 const& fFOV, float32 fRatio, float32 fNear, float32 fFar)
 	{
-		FLOAT32 fTop = Tan(fFOV * 0.5f) * fNear;
-		FLOAT32 fRight = fTop * fRatio;
+		float32 fTop = Tan(fFOV * 0.5f) * fNear;
+		float32 fRight = fTop * fRatio;
 
 		return FrustumProjectionMatrix(-fRight, fRight, -fTop, fTop, fNear, fFar);
 	}
 
-	Mat4F32 FrustumProjectionMatrix(FLOAT32 fLeft, FLOAT32 fRight, FLOAT32 fBottom, FLOAT32 fTop, FLOAT32 fNear, FLOAT32 fFar)
+	Mat4F32 FrustumProjectionMatrix(float32 fLeft, float32 fRight, float32 fBottom, float32 fTop, float32 fNear, float32 fFar)
 	{
 		Mat4F32 mat;
 
@@ -476,7 +476,7 @@ namespace Y3D
 	// 1. Parameter is orthogonal projection describe
 	// 2. Parameter are width and height in screen
 	//
-	Mat4F32 OrthogonalProjectionMatrix(FLOAT32 fLeft, FLOAT32 fRight, FLOAT32 fBottom, FLOAT32 fTop, FLOAT32 fNear, FLOAT32 fFar)
+	Mat4F32 OrthogonalProjectionMatrix(float32 fLeft, float32 fRight, float32 fBottom, float32 fTop, float32 fNear, float32 fFar)
 	{
 		Mat4F32 mat;
 
@@ -503,12 +503,12 @@ namespace Y3D
 		return mat;
 	}
 
-	Mat4F32 OrthogonalProjectionMatrix(FLOAT32 fWidth, FLOAT32 fHeight, FLOAT32 fNear, FLOAT32 fFar)
+	Mat4F32 OrthogonalProjectionMatrix(float32 fWidth, float32 fHeight, float32 fNear, float32 fFar)
 	{
-		FLOAT32 fLeft = fWidth * -0.5f;
-		FLOAT32 fRight = fWidth * 0.5f;
-		FLOAT32 fBottom = fHeight * -0.5f;
-		FLOAT32 fTop = fHeight * 0.5f;
+		float32 fLeft = fWidth * -0.5f;
+		float32 fRight = fWidth * 0.5f;
+		float32 fBottom = fHeight * -0.5f;
+		float32 fTop = fHeight * 0.5f;
 
 		return OrthogonalProjectionMatrix(fLeft, fRight, fBottom, fLeft, 0.f, fFar - fNear);
 	}
@@ -555,12 +555,12 @@ namespace Y3D
 		Vec3F32 _to = to.Normalized();
 
 		Vec3F32 axis = Cross(_from, _to);
-		FLOAT32 e = Dot(_from, _to);
-		FLOAT32 h = 1.f / (1.f + e);
+		float32 e = Dot(_from, _to);
+		float32 h = 1.f / (1.f + e);
 
-		FLOAT32 vx = _from.y * _to.z - _from.z * _to.y;
-		FLOAT32 vy = _from.z * _to.x - _from.x * _to.z;
-		FLOAT32 vz = _from.x * _to.y - _from.y * _to.x;
+		float32 vx = _from.y * _to.z - _from.z * _to.y;
+		float32 vy = _from.z * _to.x - _from.x * _to.z;
+		float32 vz = _from.x * _to.y - _from.y * _to.x;
 
 		Mat4F32 mat;
 
