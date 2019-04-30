@@ -28,7 +28,7 @@ set (COMMON_CAMERA
 source_group ("Math" FILES ${COMMON_MATH})
 source_group ("Camera" FILES ${COMMON_CAMERA})
 
-set (COMMON_TEMPRORY Y3DMacro.h Y3DTypes.h)
+set (COMMON_TEMPRORY Y3DMacro.h Y3DTypes.h BitContainer.h DurationForProfile.h)
 
 # all source files of stl project
 set (SOURCE_FILES
