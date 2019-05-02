@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Containers/Deque.h"
-#include "Containers/Vector.h"
+#include "Containers/Array.h"
 #include "Algorithms/BinaryHeap.h"
 #include "Template/Greater.h"
 
@@ -53,7 +53,7 @@ bool operator < (Queue<T, Sequence> const& lhs, Queue<T, Sequence> const& rhs)
 }
 
 template <typename T, 
-		typename Sequence = vector<T>,
+		typename Sequence = Array<T>,
 		typename Compare = Greater<typename Sequence::value_type>>
 class priority_queue
 {

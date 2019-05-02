@@ -109,4 +109,133 @@ FORCEINLINE ForwardIterator UninitializedFill_n(ForwardIterator First, SizeType 
 	return UninitializedFill_Private::UninitializedFillImpl_n(First, Count, Value, iterator_category(First));
 }
 
+		// STRUCT TEMPLATE _Uninitialized_backout_al
+template<class _FwdIt,
+	class _Alloc>
+	class _Uninitialized_backout_al
+	{	// struct to undo partially constructed ranges in _Uninitialized_xxx_al algorithms
+public:
+	_Uninitialized_backout_al(_FwdIt _Dest, _Alloc& _Al_)
+		: _First(_Dest),
+		_Last(_Dest),
+		_Al(_Al_)
+		{
+		}
+
+	_Uninitialized_backout_al(const _Uninitialized_backout_al&) = delete;
+	_Uninitialized_backout_al& operator=(const _Uninitialized_backout_al&) = delete;
+
+	~_Uninitialized_backout_al()
+		{	// destroy all elements guarded by this instance
+		_Destroy_range(_First, _Last, _Al);
+		}
+
+	template<class... _Types>
+		void _Emplace_back(_Types&&... _Vals)
+		{	// construct a new element at *_Last and increment
+		allocator_traits<_Alloc>::construct(_Al, _Unfancy(_Last), _STD forward<_Types>(_Vals)...);
+		++_Last;
+		}
+
+	_FwdIt _Release()
+		{	// suppress any exception handling backout and return _Last
+		_First = _Last;
+		return (_Last);
+		}
+
+private:
+	_FwdIt _First;
+	_FwdIt _Last;
+	_Alloc& _Al;
+	};
+
+
+		// FUNCTION TEMPLATE _Uninitialized_fill_n WITH ALLOCATOR
+template<class _FwdIt,
+	class _Diff,
+	class _Alloc> inline
+	_FwdIt _Uninit_alloc_fill_n1(const _FwdIt _First, _Diff _Count, const _Iter_value_t<_FwdIt>& _Val,
+		_Alloc& _Al, std::false_type)
+	{	// copy _Count copies of _Val to raw _First, using _Al, no special optimization
+	_Uninitialized_backout_al<_FwdIt, _Alloc> _Backout{_First, _Al};
+	for (; 0 < _Count; --_Count)
+		{
+		_Backout._Emplace_back(_Val);
+		}
+
+	return (_Backout._Release());
+	}
+
+template<class _FwdIt,
+	class _Diff,
+	class _Alloc> inline
+	_FwdIt _Uninit_alloc_fill_n1(const _FwdIt _First, const _Diff _Count, const _Iter_value_t<_FwdIt>& _Val,
+		_Alloc&, std::true_type)
+	{	// copy _Count copies of _Val to raw _First, using default _Alloc construct, memset optimization
+	memset(_First, static_cast<unsigned char>(_Val), _Count);
+	return (_First + _Count);
+	}
+
+template<class _FwdIt,
+	class _Diff,
+	class _Alloc> inline
+	_FwdIt _Uninitialized_fill_n(const _FwdIt _First, const _Diff _Count, const _Iter_value_t<_FwdIt>& _Val,
+		_Alloc& _Al)
+	{	// copy _Count copies of _Val to raw _First, using _Al
+	return (_Uninit_alloc_fill_n1(_First, _Count, _Val, _Al,
+		std::_Conjunction_t<decltype(std:; _Fill_memset_is_safe(_First, _Val)),
+			std::_Uses_default_construct<_Alloc, decltype((_First)), decltype(_Val)>>()));
+	}
+
+template<class _FwdIt,
+	class _Diff,
+	class _Alloc> inline
+	_FwdIt _Uninitialized_value_construct_n1(const _FwdIt _First, _Diff _Count, _Alloc& _Al, std::false_type)
+	{	// value-initialize _Count objects to raw _First, using _Al, no special optimization
+	_Uninitialized_backout_al<_FwdIt, _Alloc> _Backout{_First, _Al};
+	for (; 0 < _Count; --_Count)
+		{
+		_Backout._Emplace_back();
+		}
+
+	return (_Backout._Release());
+	}
+
+
+template<class _FwdIt> inline
+	_FwdIt _Zero_range(const _FwdIt _First, const _FwdIt _Last)
+	{	// fill [_First, _Last) with zeroes
+	char * const _First_ch = reinterpret_cast<char *>(_First);
+	char * const _Last_ch = reinterpret_cast<char *>(_Last);
+	memset(_First_ch, 0, _Last_ch - _First_ch);
+	return (_Last);
+	}
+
+template<class _FwdIt,
+	class _Diff,
+	class _Alloc> inline
+	_FwdIt _Uninitialized_value_construct_n1(_FwdIt _First, _Diff _Count, _Alloc&, std::true_type)
+	{	// value-initialize _Count objects to raw _First, using default _Alloc construct, all-bits-zero type
+	return (_Zero_range(_First, _First + _Count));
+	}
+
+		// FUNCTION TEMPLATE _Uninitialized_value_construct_n WITH ALLOCATOR
+template<class _FwdIt>
+	using _Use_memset_value_construct_t = std::_Conjunction_t<
+		std::is_pointer<_FwdIt>,
+		std::is_scalar<_Iter_value_t<_FwdIt>>,
+		std::negation<std::is_volatile<_Iter_value_t<_FwdIt>>>,
+		std::negation<std::is_member_pointer<_Iter_value_t<_FwdIt>>>>;
+
+template<class _FwdIt,
+	class _Diff,
+	class _Alloc> inline
+	_FwdIt _Uninitialized_value_construct_n(_FwdIt _First, _Diff _Count, _Alloc& _Al)
+	{	// value-initialize _Count objects to raw _First, using _Al
+	return (_Uninitialized_value_construct_n1(_First, _Count, _Al,
+		std::_Conjunction_t<_Use_memset_value_construct_t<_FwdIt>,
+			std::_Uses_default_construct<_Alloc, decltype(_First)>>()));
+	}
+
+
 //////////////////////////////////////////////////////////////////////////

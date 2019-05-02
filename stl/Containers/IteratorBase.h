@@ -140,3 +140,13 @@ distance(InputIterator first, InputIterator last)
 	typedef typename iterator_traits<InputIterator>::iterator_category category;
 	return __distance(first, last, category());
 }
+
+		// ALIAS TEMPLATE _Iter_value_t
+template<class _Iter>
+	using _Iter_value_t = typename iterator_traits<_Iter>::value_type;
+
+		// ALIAS TEMPLATE _Iter_diff_t
+template<class _Iter>
+	using _Iter_diff_t = typename iterator_traits<_Iter>::difference_type;
+
+

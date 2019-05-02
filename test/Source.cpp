@@ -6,7 +6,7 @@
 #include "stl/Template/AndOrNot.h"
 #include "stl/Containers/Allocator.h"
 #include "stl/Containers/Deque.h"
-#include "stl/Containers/Vector.h"
+#include "stl/Containers/Array.h"
 #include <vector>
 #include <type_traits> 
 #include <iostream> 
@@ -78,7 +78,18 @@ int main()
 	Vector2 yz = vvvvv.yz;
 	Vector2 zx = vvvvv.zx;
 
+	struct A
+	{
+		float a;
+		int   b;
+	};
 	TestBitAndDuration();
+
+	Array<int> temp1(10);
+	Array<float> temp2(10);
+	Array<A> temp3(10);
+	Array<char> temp4(10);
+	Array<A *> temp5(10);
 
 	system("pause");
 

@@ -159,7 +159,7 @@ private:
 	EqualKeyType			EqualKey;
 	ExtractKeyType			ExtractKey;
 		
-	vector<Node*, Alloc>	Buckets;
+	Array<Node*, Alloc>	Buckets;
 	size_type				ElementsNum;
 
 	Node* new_node(ValueType const& Value)
@@ -303,7 +303,7 @@ void HashTable<ValueType, KeyType, HashFunction, ExtractKeyType, EqualKeyType, A
 		size_type NewBucketsNum = next_size(ElementsNum);
 		if (NewBucketsNum > OldBucketsNum)
 		{
-			vector<Node*, Alloc> tmpBuckets(NewBucketsNum, (Node*)0);
+			Array<Node*, Alloc> tmpBuckets(NewBucketsNum, (Node*)0);
 			for (size_type iBucketIndex = 0; iBucketIndex < OldBucketsNum; ++iBucketIndex)
 			{
 				Node* Cur = Buckets[iBucketIndex];
