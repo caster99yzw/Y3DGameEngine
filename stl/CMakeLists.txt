@@ -20,7 +20,7 @@ set (STL_CONTAINERS
 		Containers/Slist.h
 		Containers/Stack.h
 		Containers/Uninitialized.h
-		Containers/Vector.h
+		Containers/Array.h
 	)
 
 set (STL_TEMPLATE

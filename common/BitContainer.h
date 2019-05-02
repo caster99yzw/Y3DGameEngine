@@ -1,13 +1,5 @@
 #pragma once
-#include "Y3DTypes.h"
-#include <limits>
-#include <assert.h>
-#include <memory>
-
-using uint8 = uint8_t;
-using uint16 = uint16_t;
-using uint32 = uint32_t;
-using uint64 = uint64_t;
+#include "Type.h"
 
 namespace y3dcommon
 {

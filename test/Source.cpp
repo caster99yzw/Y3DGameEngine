@@ -83,13 +83,14 @@ int main()
 		float a;
 		int   b;
 	};
-	TestBitAndDuration();
 
-	Array<int> temp1(10);
-	Array<float> temp2(10);
-	Array<A> temp3(10);
-	Array<char> temp4(10);
-	Array<A *> temp5(10);
+	Array<int> temp1(10, 1);
+	Array<float> temp2(10, 2.f);
+	Array<A> temp3(10, A{3.f, 4});
+	Array<char> temp4(10, 'g');
+	Array<A *> temp5(10, nullptr);
+
+	TestBitAndDuration();
 
 	system("pause");
 

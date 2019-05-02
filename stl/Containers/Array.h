@@ -73,7 +73,7 @@ namespace y3dcommon
 		{
 			return (*this += -offset);
 		}
-
+			
 		ArrayConstIterator operator+(difference_type offset) const
 		{
 			ArrayConstIterator tmp = *this;
@@ -109,7 +109,7 @@ namespace y3dcommon
 
 	template<class ValueType>
 	class ArrayIterator : public ArrayConstIterator<ValueType>
-	{
+	{	
 	public:
 		using Base = ArrayConstIterator<ValueType>;
 		using iterator_category = random_access_iterator_tag;
@@ -140,7 +140,7 @@ namespace y3dcommon
 		//	return (*this);
 		//}
 
-		//ArrayIterator operator++(int)
+		//ArrayIterator operator++(int)	
 		//{
 		//	ArrayIterator tmp = *this;
 		//	++*this;
@@ -167,7 +167,7 @@ namespace y3dcommon
 		//	return (*this);
 		//}
 		
-		//ArrayIterator operator+(difference_type offset) const
+		//ArrayIterator operator+(difference_	type offset) const
 		//{
 		//	ArrayIterator tmp = *this;
 		//	return (tmp += offset);
@@ -299,13 +299,13 @@ private:
 	typedef y3dcommon::ArrayBase<y3dcommon::Item_t<ValueType>, AllocType>	Base;
 
 public:
-	typedef ValueType						_Value;
+	typedef ValueType			_Value;
 	typedef _Value const*		const_pointer;
 	typedef _Value*				iterator;
 	typedef _Value const*		const_iterator;
 	typedef _Value&				reference;
 	typedef _Value const&		const_reference;
-	typedef ptrdiff_t				difference_type;
+	typedef ptrdiff_t			difference_type;
 
 	using _Pointer	= typename Base::_Pointer;
 	using _Size		= size_t;
@@ -351,7 +351,7 @@ public:
 		Last() = UninitializedCopy(first, last, First());
 	}
 
-	~Array() { Destroy(First(), Last()); }
+	~Array() { DestroyRange(First(), Last()); }
 
 
 
@@ -359,7 +359,7 @@ private:
 
 	_Pointer DefaultConstruct(_Pointer target, _Size const inCount)
 	{
-		return _Uninitialized_value_construct_n(First(), inCount, this->get_allocator());
+		return y3dcommon::UninitializedConstruct(First(), inCount);
 	}
 
 	_Pointer FillConstruct(_Pointer target, _Size const inCount, _Value const inValue)

@@ -19,6 +19,7 @@ namespace UninitializedCopy_Private
 	template <typename InputIterator, typename ForwardIterator, typename SourceElementType>
 	FORCEINLINE auto UninitializedCopyImpl(InputIterator First, InputIterator Last, ForwardIterator Result, SourceElementType* Point)
 		-> typename EnableIf<!IsPODType<SourceElementType>::Value, ForwardIterator>::Type
+#include "Allocator.h"
 	{
 		ForwardIterator Cur = Result;
 		for (; First != Last; ++First, ++Cur)
@@ -46,7 +47,7 @@ namespace UninitializedCopy_Private
 template <typename InputIterator, typename ForwardIterator>
 FORCEINLINE ForwardIterator UninitializedCopy(InputIterator First, InputIterator Last, ForwardIterator Result)
 {
-	 return UninitializedCopy_Private::UninitializedCopyImpl(First, Last, Result, value_type(Result));
+	 return UninitializedCopy_P	rivate::UninitializedCopyImpl(First, Last, Result, value_type(Result));
 }
 
 template <typename InputIterator, typename SizeType, typename ForwardIterator>
@@ -65,7 +66,7 @@ namespace UninitializedFill_Private
 	{
 		  for (; First != Last; ++First) 
 			*First = Value;
-	}
+	}	
 
 	template <typename ForwardIterator, typename ValueType>
 	FORCEINLINE auto UninitializedFillImpl(ForwardIterator First, ForwardIterator Last, ValueType const& Value)
@@ -83,7 +84,7 @@ namespace UninitializedFill_Private
 		ForwardIterator Cur = First;
 		for (; Count > 0; --Count, ++Cur)
 		{
-			Construct(&*Cur, Value);
+			Construct(&*Cur, Value);	
 		}
 		return Cur;
 	}
@@ -109,55 +110,15 @@ FORCEINLINE ForwardIterator UninitializedFill_n(ForwardIterator First, SizeType 
 	return UninitializedFill_Private::UninitializedFillImpl_n(First, Count, Value, iterator_category(First));
 }
 
-		// STRUCT TEMPLATE _Uninitialized_backout_al
-template<class _FwdIt,
-	class _Alloc>
-	class _Uninitialized_backout_al
-	{	// struct to undo partially constructed ranges in _Uninitialized_xxx_al algorithms
-public:
-	_Uninitialized_backout_al(_FwdIt _Dest, _Alloc& _Al_)
-		: _First(_Dest),
-		_Last(_Dest),
-		_Al(_Al_)
-		{
-		}
-
-	_Uninitialized_backout_al(const _Uninitialized_backout_al&) = delete;
-	_Uninitialized_backout_al& operator=(const _Uninitialized_backout_al&) = delete;
-
-	~_Uninitialized_backout_al()
-		{	// destroy all elements guarded by this instance
-		_Destroy_range(_First, _Last, _Al);
-		}
-
-	template<class... _Types>
-		void _Emplace_back(_Types&&... _Vals)
-		{	// construct a new element at *_Last and increment
-		allocator_traits<_Alloc>::construct(_Al, _Unfancy(_Last), _STD forward<_Types>(_Vals)...);
-		++_Last;
-		}
-
-	_FwdIt _Release()
-		{	// suppress any exception handling backout and return _Last
-		_First = _Last;
-		return (_Last);
-		}
-
-private:
-	_FwdIt _First;
-	_FwdIt _Last;
-	_Alloc& _Al;
-	};
-
-
+	
 		// FUNCTION TEMPLATE _Uninitialized_fill_n WITH ALLOCATOR
-template<class _FwdIt,
-	class _Diff,
-	class _Alloc> inline
-	_FwdIt _Uninit_alloc_fill_n1(const _FwdIt _First, _Diff _Count, const _Iter_value_t<_FwdIt>& _Val,
-		_Alloc& _Al, std::false_type)
+template<class FowardIterator,
+	class DifferenceType,
+	class AllocType> inline
+	FowardIterator _Uninit_alloc_fill_n1(const FowardIterator _First, DifferenceType _Count, const _Iter_value_t<FowardIterator>& _Val,
+		AllocType& _Al, std::false_type)
 	{	// copy _Count copies of _Val to raw _First, using _Al, no special optimization
-	_Uninitialized_backout_al<_FwdIt, _Alloc> _Backout{_First, _Al};
+	UninitializedHepler<FowardIterator, AllocType> _Backout{_First, _Al};
 	for (; 0 < _Count; --_Count)
 		{
 		_Backout._Emplace_back(_Val);
@@ -166,76 +127,113 @@ template<class _FwdIt,
 	return (_Backout._Release());
 	}
 
-template<class _FwdIt,
-	class _Diff,
-	class _Alloc> inline
-	_FwdIt _Uninit_alloc_fill_n1(const _FwdIt _First, const _Diff _Count, const _Iter_value_t<_FwdIt>& _Val,
-		_Alloc&, std::true_type)
+template<class FowardIterator,
+	class DifferenceType,
+	class AllocType> inline
+	FowardIterator _Uninit_alloc_fill_n1(const FowardIterator _First, const DifferenceType _Count, const _Iter_value_t<FowardIterator>& _Val,
+		AllocType&, std::true_type)
 	{	// copy _Count copies of _Val to raw _First, using default _Alloc construct, memset optimization
 	memset(_First, static_cast<unsigned char>(_Val), _Count);
 	return (_First + _Count);
 	}
 
-template<class _FwdIt,
-	class _Diff,
-	class _Alloc> inline
-	_FwdIt _Uninitialized_fill_n(const _FwdIt _First, const _Diff _Count, const _Iter_value_t<_FwdIt>& _Val,
-		_Alloc& _Al)
+template<class FowardIterator,
+	class DifferenceType,
+	class AllocType> inline
+	FowardIterator _Uninitialized_fill_n(const FowardIterator _First, const DifferenceType _Count, const _Iter_value_t<FowardIterator>& _Val,
+		AllocType& _Al)
 	{	// copy _Count copies of _Val to raw _First, using _Al
-	return (_Uninit_alloc_fill_n1(_First, _Count, _Val, _Al,
+	return (_Uninit_alloc_fill_n1(_First, _Count, _Val,	 _Al,
 		std::_Conjunction_t<decltype(std:; _Fill_memset_is_safe(_First, _Val)),
-			std::_Uses_default_construct<_Alloc, decltype((_First)), decltype(_Val)>>()));
+			std::_Uses_default_construct<AllocType, decltype((_First)), decltype(_Val)>>()));
 	}
 
-template<class _FwdIt,
-	class _Diff,
-	class _Alloc> inline
-	_FwdIt _Uninitialized_value_construct_n1(const _FwdIt _First, _Diff _Count, _Alloc& _Al, std::false_type)
-	{	// value-initialize _Count objects to raw _First, using _Al, no special optimization
-	_Uninitialized_backout_al<_FwdIt, _Alloc> _Backout{_First, _Al};
-	for (; 0 < _Count; --_Count)
+
+
+namespace y3dcommon
+{
+	//////////////////////////////////////////////////////////////////////////
+
+	template<class FowardIterator>
+	using UseMemsetValue_t = std::_Conjunction_t<
+		std::is_pointer<FowardIterator>,
+		std::is_scalar<_Iter_value_t<FowardIterator>>,
+		std::negation<std::is_volatile<_Iter_value_t<FowardIterator>>>,
+		std::negation<std::is_member_pointer<_Iter_value_t<FowardIterator>>>>;
+
+	//////////////////////////////////////////////////////////////////////////
+
+	template<class FowardIterator>
+	class UninitializedHepler
+	{	
+	public:
+		UninitializedHepler(FowardIterator inFirst)
+			: first(inFirst)
+			, last(inFirst)
 		{
-		_Backout._Emplace_back();
 		}
 
-	return (_Backout._Release());
+		UninitializedHepler(const UninitializedHepler&) = delete;
+		UninitializedHepler& operator=(const UninitializedHepler&) = delete;
+
+		~UninitializedHepler()
+		{	
+			DestroyRange(first, last);
+		}
+
+		template<class... U>
+		void Emplace(U &&... inValues)
+		{	
+			Construct(last, std::forward<U1>(inValues)...);
+			++last;
+		}
+
+		FowardIterator Release()
+		{	
+			first = last;
+			return (last);
+		}
+
+	private:
+		FowardIterator first;
+		FowardIterator last;
+	};
+
+
+	template<class FowardIterator>
+	FORCEINLINE FowardIterator AssignRangeWithZero(FowardIterator const firstIter, FowardIterator const lastIter)
+	{
+	std::vector<int> sfs;
+		char * const first = reinterpret_cast<char *>(firstIter);
+		char * const last = reinterpret_cast<char *>(lastIter);
+		memset(first, 0, last - first);
+		return (lastIter);
 	}
 
-
-template<class _FwdIt> inline
-	_FwdIt _Zero_range(const _FwdIt _First, const _FwdIt _Last)
-	{	// fill [_First, _Last) with zeroes
-	char * const _First_ch = reinterpret_cast<char *>(_First);
-	char * const _Last_ch = reinterpret_cast<char *>(_Last);
-	memset(_First_ch, 0, _Last_ch - _First_ch);
-	return (_Last);
+	template<class FowardIterator, class DifferenceType>
+	FORCEINLINE FowardIterator UninitializedConstructImpl(FowardIterator const first, DifferenceType count, std::false_type)
+	{
+		UninitializedHepler<FowardIterator> helper(first);
+		for (; 0 < count; --count)
+		{
+			helper.Emplace();
+		}
+		return (helper.Release());
 	}
 
-template<class _FwdIt,
-	class _Diff,
-	class _Alloc> inline
-	_FwdIt _Uninitialized_value_construct_n1(_FwdIt _First, _Diff _Count, _Alloc&, std::true_type)
-	{	// value-initialize _Count objects to raw _First, using default _Alloc construct, all-bits-zero type
-	return (_Zero_range(_First, _First + _Count));
+	template<class FowardIterator, class DifferenceType>
+	FORCEINLINE FowardIterator UninitializedConstructImpl(FowardIterator first, DifferenceType count, std::true_type)
+	{
+		return (AssignRangeWithZero(first, first + count));
 	}
 
-		// FUNCTION TEMPLATE _Uninitialized_value_construct_n WITH ALLOCATOR
-template<class _FwdIt>
-	using _Use_memset_value_construct_t = std::_Conjunction_t<
-		std::is_pointer<_FwdIt>,
-		std::is_scalar<_Iter_value_t<_FwdIt>>,
-		std::negation<std::is_volatile<_Iter_value_t<_FwdIt>>>,
-		std::negation<std::is_member_pointer<_Iter_value_t<_FwdIt>>>>;
+	template<class FowardIterator, class DifferenceType>
+	FORCEINLINE FowardIterator UninitializedConstruct(FowardIterator first, DifferenceType count)
+	{	
+		return (UninitializedConstructImpl(first, count, UseMemsetValue_t<FowardIterator>()));
+	};
+}
 
-template<class _FwdIt,
-	class _Diff,
-	class _Alloc> inline
-	_FwdIt _Uninitialized_value_construct_n(_FwdIt _First, _Diff _Count, _Alloc& _Al)
-	{	// value-initialize _Count objects to raw _First, using _Al
-	return (_Uninitialized_value_construct_n1(_First, _Count, _Al,
-		std::_Conjunction_t<_Use_memset_value_construct_t<_FwdIt>,
-			std::_Uses_default_construct<_Alloc, decltype(_First)>>()));
-	}
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -1,5 +1,5 @@
 #pragma once
-#include "../type.h"
+#include "../Type.h"
 
 namespace y3dmath
 {

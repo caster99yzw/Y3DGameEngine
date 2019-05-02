@@ -1,7 +1,7 @@
 #pragma once
 #include <stdint.h>
-#include <xtr1common>
 #include <math.h>
+#include <xtr1common>
 
 #define FORCEINLINE __forceinline
 

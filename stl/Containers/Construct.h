@@ -46,16 +46,39 @@ FORCEINLINE void Construct(PointerType* Pointer, ValueType const& Value)
 	new(Pointer) PointerType(Value);
 }
 
+template<typename ClassType, typename... Types>
+void Construct(ClassType * const _Ptr, Types &&... _Args)
+{	
+	::new (const_cast<void *>(static_cast<const volatile void *>(_Ptr))) ClassType(std::forward<Types>(_Args)...);
+}
+
 template <typename ValueType>
 FORCEINLINE void Destroy(ValueType* Pointer)
 {
 	Destroy_Private::DestroyImpl(Pointer);
 }
 
+
 template <typename ForwardIterator>
-FORCEINLINE void Destroy(ForwardIterator FirstItor, ForwardIterator LastItor)
+FORCEINLINE void DestroyRangeImpl(ForwardIterator firstIter, ForwardIterator lastIter, std::false_type)
+{	
+	for (; firstIter != lastIter; ++firstIter)
+	{
+		Destroy_Private::DestroyImpl(firstIter, lastIter, value_type(firstIter));
+	}
+}
+
+template <typename ForwardIterator>
+FORCEINLINE void DestroyRangeImpl(ForwardIterator firstIter, ForwardIterator lastIter, std::true_type)
+{	
+	// nothing to do
+}
+
+template <typename ForwardIterator>
+FORCEINLINE void DestroyRange(ForwardIterator firstIter, ForwardIterator lastIter)
 {
-	Destroy_Private::DestroyImpl(FirstItor, LastItor, value_type(FirstItor));
+	using ValueType = typename iterator_traits<ForwardIterator>::value_type*;
+	DestroyRangeImpl(firstIter, lastIter, std::is_trivially_destructible<ValueType>());
 }
 
 FORCEINLINE void Destroy(char*, char*) {}
@@ -66,45 +89,9 @@ FORCEINLINE void Destroy(float*, float*) {}
 FORCEINLINE void Destroy(double*, double*) {}
 
 
-template<class _Alloc>
+template<typename AllocType>
 	struct allocator_traits
-		: std::conditional_t<std::_Is_default_allocator<_Alloc>::value,
-			std::_Default_allocator_traits<_Alloc>, std::_Normal_allocator_traits<_Alloc>>
+		: std::conditional_t<std::_Is_default_allocator<AllocType>::value,
+			std::_Default_allocator_traits<AllocType>, std::_Normal_allocator_traits<AllocType>>
 	{	// defines traits for allocators
 	};
-
-		// FUNCTION TEMPLATE _Destroy_range WITH ALLOC
-template<class _Alloc> 
-inline void _Destroy_range1(
-		typename allocator_traits<_Alloc>::pointer _First,
-		typename allocator_traits<_Alloc>::pointer _Last,
-		_Alloc& _Al, std::false_type)
-	{	// destroy [_First, _Last), no special optimization
-	for (; _First != _Last; ++_First)
-		{
-		allocator_traits<_Alloc>::destroy(_Al, _Unfancy(_First));
-		}
-	}
-
-template<class _Alloc> inline
-	void _Destroy_range1(
-		typename allocator_traits<_Alloc>::pointer,
-		typename allocator_traits<_Alloc>::pointer,
-		_Alloc&, std::true_type)
-	{	// destroy [_First, _Last), trivially destructible and default destroy
-		// nothing to do
-	}
-
-template<class _Alloc> inline
-	void _Destroy_range(
-		typename allocator_traits<_Alloc>::pointer _First,
-		typename allocator_traits<_Alloc>::pointer _Last,
-		_Alloc& _Al)
-	{	// destroy [_First, _Last), choose optimization
-		// note that this is an optimization for debug mode codegen;
-		// in release mode the BE removes all of this
-	using _Val = typename _Alloc::value_type;
-	_Destroy_range1(_First, _Last, _Al, std::_Conjunction_t <
-		std::is_trivially_destructible<_Val>,
-		std::_Uses_default_destroy<_Alloc, _Val *>>());
-	}

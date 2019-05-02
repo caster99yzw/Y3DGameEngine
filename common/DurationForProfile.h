@@ -32,7 +32,7 @@ namespace y3dcommon
 		double Duration_Nanoseconds() const
 		{
 			return std::chrono::duration<double, std::chrono::nanoseconds::period>(endTime - startTime).count();
-		}
+		}	
 
 		// Returns the elapsed time in microseconds since the profiler was started.
 		double Duration_Microseconds() const
@@ -44,7 +44,7 @@ namespace y3dcommon
 		double Duration_Milliseconds() const
 		{
 			return std::chrono::duration<double, std::chrono::milliseconds::period>(endTime - startTime).count();
-		}
+		}	
 
 		// Returns the elapsed time in seconds since the profiler was started.
 		double Duration_Seconds() const
