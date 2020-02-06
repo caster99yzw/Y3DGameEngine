@@ -3,4 +3,5 @@ project (Y3DGameEngine)
 
 add_subdirectory (stl)
 add_subdirectory (common)
-add_subdirectory (test)
+add_subdirectory (reflection)
+add_subdirectory (console)

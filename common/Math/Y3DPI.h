@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/Type.h"
+#include "common/Types.h"
 
 
 // The constexpr declaration and definition must be together

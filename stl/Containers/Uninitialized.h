@@ -155,7 +155,7 @@ namespace y3dcommon
 	//////////////////////////////////////////////////////////////////////////
 
 	template<class FowardIterator>
-	using UseMemsetValue_t = std::_Conjunction_t<
+	using UseMemsetValue_t = std::conjunction<
 		std::is_pointer<FowardIterator>,
 		std::is_scalar<_Iter_value_t<FowardIterator>>,
 		std::negation<std::is_volatile<_Iter_value_t<FowardIterator>>>,

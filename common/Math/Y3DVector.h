@@ -1,6 +1,6 @@
 #pragma once
 #include "common/Math/Y3DMathFunc.h"
-#include "common/Type.h"
+#include "common/Types.h"
 #include <xtr1common>
 #include <assert.h>
 

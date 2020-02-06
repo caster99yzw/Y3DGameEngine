@@ -50,7 +50,7 @@ set (STL_TEMPLATE
 		Template/UniquePtr.h
 	)
 
-source_group ("algorithms" files ${STL_ALGORITHMS})
+source_group ("algorithms" FILES ${STL_ALGORITHMS})
 source_group ("Containers" FILES ${STL_CONTAINERS})
 source_group ("Template" FILES ${STL_TEMPLATE})
 
