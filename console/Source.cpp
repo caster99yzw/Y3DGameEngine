@@ -17,6 +17,8 @@
 #include "common/DurationForProfile.h"
 #include "common/BitContainer.h"
 
+#include "reflection/registration/registration.h"
+
 int compare(int a)
 {
 	return a;
@@ -69,6 +71,55 @@ void TestBitAndDuration()
 	std::cout << bits.ResetCount() << std::endl;
 }
 
+template <std::size_t... Ns>
+void func(common::IndexSequence<Ns...>)
+{
+	std::cout << "Hellp" << std::endl;
+}
+
+struct TestForClass
+{
+	int a = 10;
+	const int aa = 10000;
+	float b = 3.f;
+	bool c = true;
+
+	TestForClass() = default;
+
+
+	TestForClass(int ina, float inb, bool inc)
+		: a(ina), b(inb), c(inc) {}
+
+	TestForClass(int ina, float inb)
+		: a(ina), b(inb) {}
+
+	bool Check() const
+	{
+		return (a != 0 && b != 0.f && c == false);
+	}
+	void Inc()
+	{
+		++a;
+		b += 1.f;
+		c = true;
+	}
+
+	void HaHa(int in, int inn) const
+	{
+		std::cout << a << " "
+			<< b << " "
+			<< c << " "
+			<< in << " "
+			<< inn << std::endl;
+	}
+	void HaHa() const
+	{
+		std::cout << a << " "
+			<< b << " "
+			<< c << std::endl;
+	}
+
+};
 
 int main()
 {
@@ -92,7 +143,31 @@ int main()
 
 	TestBitAndDuration();
 
-	system("pause");
+	func(common::MakeIndexSequence<10>());
 
+	reflection::Registation::CustomClasss<TestForClass>("myclass")
+		.Constructor()
+		.Constructor<int, float, bool>()
+		.Constructor<int, float>()
+		.Method("mymethod", &TestForClass::Check)
+		.Method("mymethod1", &TestForClass::Inc)
+		.Method("mymethod2", static_cast<void(TestForClass::*)(int,int) const>(&TestForClass::HaHa))
+		.Method("mymethod2", static_cast<void(TestForClass::*)() const>(&TestForClass::HaHa))
+		.Property("myproperty", &TestForClass::a);
+
+	reflection::Class cls = reflection::Class::Get("myclass");
+	reflection::Variant obj = cls.Create({ reflection::Argument(500), reflection::Argument(5.f) });
+	cls.Invoke("mymethod2", obj);
+	cls.Invoke("mymethod1", obj);
+	cls.Invoke("mymethod2", obj, { reflection::Argument(333), reflection::Argument(666) });
+
+	reflection::Property p = cls.GetProperty("myproperty");
+	p.SetValue(obj, reflection::Argument(100));
+	cls.Invoke("mymethod2", obj);
+	reflection::Variant b = p.Value(obj);
+	int value = b.Value<int>();
+	assert(value == 100);
+
+	system("pause");
 	return 0;
 }

@@ -1,0 +1,101 @@
+#pragma once
+#include <memory>
+#include <vector>
+#include <array>
+#include <functional>
+#include <unordered_map>
+#include <algorithm>
+#include <assert.h>
+#include <string.h>
+#include <xtr1common>
+#include <tuple>
+
+namespace common
+{
+
+template<typename T>
+struct move_wrapper
+{
+	move_wrapper(T&& value) : value(std::move(value)) { }
+
+	move_wrapper(const move_wrapper& other) : value(std::move(other.value)) { }
+
+	move_wrapper(move_wrapper&& other) : value(std::move(other.value)) { }
+
+	move_wrapper& operator=(const move_wrapper& other)
+	{
+		value = std::move(other.value);
+		return *this;
+	}
+
+	move_wrapper& operator=(move_wrapper&& other)
+	{
+		value = std::move(other.value);
+		return *this;
+	}
+
+	mutable T value;
+};
+
+template<typename T>
+static move_wrapper<T> make_rref(T&& value)
+{
+	return { std::move(value) };
+}
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+template<typename T>
+static std::shared_ptr<T> create_if_empty(const std::shared_ptr<T>& obj)
+{
+	return (obj.get() ? obj : std::make_shared<T>());
+}
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+template <typename T, T... Ns>
+struct IntegerSequence 
+{
+	template <T N>
+	using Append = IntegerSequence<T, Ns..., N>;
+
+	using Type = T;
+	using Next = Append<sizeof...(Ns)>;
+};
+
+template <typename T, T index, std::size_t N>
+struct GenerateSequence
+{
+	using Type = typename GenerateSequence<T, index - 1, N - 1>::Type::Next;
+};
+
+template <typename T, T index>
+struct GenerateSequence<T, index, 0ul>
+{
+	using Type = IntegerSequence<T>;
+};
+
+template <std::size_t N>
+using MakeIndexSequence = typename GenerateSequence<std::size_t, N, N>::Type;
+
+template <std::size_t... Ns>
+using IndexSequence = IntegerSequence<std::size_t, Ns...>;
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+template <typename... T>
+struct TypeList {};
+
+template <typename lhsT, typename rhsT>
+struct IsSameListSize;
+
+template <typename... lhsT, typename... rhsT>
+struct IsSameListSize<TypeList<lhsT...>, TypeList<rhsT...>>
+	: std::integral_constant<bool, sizeof...(lhsT) == sizeof...(rhsT)>
+{};
+
+}
+

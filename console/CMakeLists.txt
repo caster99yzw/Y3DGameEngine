@@ -8,7 +8,7 @@ include_directories (
 	)
 
 add_executable (console Source.cpp)
-target_link_libraries (console common stl)
+target_link_libraries (console common stl reflection)
 
 message (STATUS "Configuring console succeed!")
 	
