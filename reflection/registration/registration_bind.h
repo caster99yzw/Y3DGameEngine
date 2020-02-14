@@ -25,7 +25,7 @@ public:
 	{
 		constructor = MakeDefaultConstructor();
 
-		auto wrapper = common::make_rref(std::move(constructor));
+		auto wrapper = common::MakeRref(std::move(constructor));
 		auto callable = [wrapper]()
 		{
 			StoreItem(std::move(wrapper.value));
@@ -65,7 +65,7 @@ public:
 	{
 		auto method = MakeDefaultMethod();
 
-		auto wrapper = common::make_rref(std::move(method));
+		auto wrapper = common::MakeRref(std::move(method));
 		auto callable = [wrapper]()
 		{
 			StoreItem(std::move(wrapper.value));
@@ -102,7 +102,7 @@ public:
 	{
 		auto property = MakeDefaultProperty();
 
-		auto wrapper = common::make_rref(std::move(property));
+		auto wrapper = common::MakeRref(std::move(property));
 		auto callable = [wrapper]()
 		{
 			StoreItem(std::move(wrapper.value));

@@ -14,21 +14,19 @@ namespace common
 {
 
 template<typename T>
-struct move_wrapper
+struct MoveWrapper
 {
-	move_wrapper(T&& value) : value(std::move(value)) { }
+	MoveWrapper(T &&value) : value(std::move(value)) {}
 
-	move_wrapper(const move_wrapper& other) : value(std::move(other.value)) { }
-
-	move_wrapper(move_wrapper&& other) : value(std::move(other.value)) { }
-
-	move_wrapper& operator=(const move_wrapper& other)
+	MoveWrapper(MoveWrapper const &other) : value(std::move(other.value)) {}
+	MoveWrapper &operator=(MoveWrapper const &other)
 	{
 		value = std::move(other.value);
 		return *this;
 	}
 
-	move_wrapper& operator=(move_wrapper&& other)
+	MoveWrapper(MoveWrapper &&other) : value(std::move(other.value)) {}
+	MoveWrapper &operator=(MoveWrapper &&other)
 	{
 		value = std::move(other.value);
 		return *this;
@@ -38,7 +36,7 @@ struct move_wrapper
 };
 
 template<typename T>
-static move_wrapper<T> make_rref(T&& value)
+static MoveWrapper<T> MakeRref(T&& value)
 {
 	return { std::move(value) };
 }
@@ -47,7 +45,7 @@ static move_wrapper<T> make_rref(T&& value)
 //////////////////////////////////////////////////////////////////////////
 
 template<typename T>
-static std::shared_ptr<T> create_if_empty(const std::shared_ptr<T>& obj)
+static std::shared_ptr<T> CreateIfEmpty(const std::shared_ptr<T>& obj)
 {
 	return (obj.get() ? obj : std::make_shared<T>());
 }
@@ -96,6 +94,9 @@ template <typename... lhsT, typename... rhsT>
 struct IsSameListSize<TypeList<lhsT...>, TypeList<rhsT...>>
 	: std::integral_constant<bool, sizeof...(lhsT) == sizeof...(rhsT)>
 {};
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
 
 }
 
