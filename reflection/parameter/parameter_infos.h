@@ -40,7 +40,7 @@ struct GenerateParameterInfosImpl<NamePolicy, common::TypeList<ParamTs...>, comm
 template <typename NamePolicy, typename FuncType, std::size_t... Index>
 struct GenerateParameterInfosImpl<NamePolicy, FuncType, common::IndexSequence<Index...>>
 {
-using Type = ParameterInfos<ParameterWrapper<NamePolicy, FuncParameterType<FuncType, Index>, Index>...>;
+using Type = ParameterInfos<ParameterWrapper<NamePolicy, FuncParameterTypeImpl<FuncType, Index>, Index>...>;
 };
 
 
