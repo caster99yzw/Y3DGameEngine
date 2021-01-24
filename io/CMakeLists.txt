@@ -5,9 +5,11 @@ message (STATUS "Configuring io start!")
 set (STREAM
 	stream/stream.cpp
 	stream/stream.h
+	stream/file_stream.cpp
+	stream/file_stream.h
 	)
 
-source_group ("" FILES ${STREAM})
+source_group ("stream" FILES ${STREAM})
 
 set (SOURCE_FILES
 	${STREAM}
