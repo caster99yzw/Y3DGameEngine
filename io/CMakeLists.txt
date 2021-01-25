@@ -9,6 +9,10 @@ set (STREAM
 	stream/stream.h
 	stream/file_stream.cpp
 	stream/file_stream.h
+	stream/stream_reader.cpp
+	stream/stream_reader.h
+	stream/stream_writer.cpp
+	stream/stream_writer.h
 	)
 
 source_group ("stream" FILES ${STREAM})
