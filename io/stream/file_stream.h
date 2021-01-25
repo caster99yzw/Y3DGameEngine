@@ -1,6 +1,7 @@
 ﻿#pragma once
-#include "stream.h"
 #include <cstdio>
+#include <vector>
+#include "stream.h"
 
 namespace io {
 
@@ -21,13 +22,18 @@ public:
     bool IsOpen() const;
     uint64_t Size() override;
     bool Create(const char* file_name, int flags = FileAccessFlag::Write);
-    bool Close();
+    bool Close() override;
     bool Flush();
-    int64_t Read(void* buffer, uint64_t buffer_size) override;
-    int64_t Write(const void* buffer, uint64_t buffer_size) override;
-    bool Seek(uint64_t offset, SeekMode seek_mode = SeekMode::SeekBegin) override;
+    uint64_t Read(void* buffer, uint64_t buffer_size) override;
+    uint64_t Write(const void* buffer, uint64_t buffer_size) override;
+    uint64_t Seek(uint64_t offset, SeekMode seek_mode = SeekMode::SeekBegin) override;
     uint64_t Position() const override;
     uint64_t RemaingPosition() override;
+
+public:
+    static bool Exist(const char* file_name);
+    static bool Load(const char* file_name, std::vector<uint8_t>* data);
+    static bool Write(const char* file_name, const std::vector<uint8_t>& data);
 
 private:
     FILE* m_file = nullptr;

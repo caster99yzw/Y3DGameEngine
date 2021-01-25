@@ -3,6 +3,8 @@ message (STATUS "Configuring io start!")
 
 # all source files 
 set (STREAM
+	stream/binary_stream.cpp
+	stream/binary_stream.h
 	stream/stream.cpp
 	stream/stream.h
 	stream/file_stream.cpp

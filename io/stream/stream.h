@@ -21,10 +21,11 @@ public:
     virtual ~Stream() = default;
 
     virtual void Init() = 0;
+    virtual bool Close() = 0;
     virtual uint64_t Size() = 0;
-    virtual int64_t Read(void* buffer, uint64_t buffer_size) = 0;
-    virtual int64_t Write(const void* buffer, uint64_t buffer_size) = 0;
-    virtual bool Seek(uint64_t offset, SeekMode seek_mode = SeekMode::SeekBegin) = 0;
+    virtual uint64_t Read(void* buffer, uint64_t buffer_size) = 0;
+    virtual uint64_t Write(const void* buffer, uint64_t buffer_size) = 0;
+    virtual uint64_t Seek(uint64_t offset, SeekMode seek_mode = SeekMode::SeekBegin) = 0;
     virtual uint64_t Position() const = 0;
     virtual uint64_t RemaingPosition() = 0;
 
