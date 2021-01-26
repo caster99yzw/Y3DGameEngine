@@ -15,10 +15,19 @@ set (STREAM
 	stream/stream_writer.h
 	)
 
+set (SERIALIZE
+	serialize/double-conversion.cc
+	serialize/double-conversion.h
+	serialize/ujson.cpp
+	serialize/ujson.h
+	)
+
 source_group ("stream" FILES ${STREAM})
+source_group ("serialize" FILES ${SERIALIZE})
 
 set (SOURCE_FILES
 	${STREAM}
+	${SERIALIZE}
 	)
 
 # include floders 
