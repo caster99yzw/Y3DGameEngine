@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <cstdio>
 #include <vector>
+#include <string>
 #include "stream.h"
 
 namespace io {
@@ -33,7 +34,9 @@ public:
 public:
     static bool Exist(const char* file_name);
     static bool Load(const char* file_name, std::vector<uint8_t>* data);
+    static bool Load(const char* file_name, std::string* data);
     static bool Write(const char* file_name, const std::vector<uint8_t>& data);
+    static bool Write(const char* file_name, const std::string& data);
 
 private:
     FILE* m_file = nullptr;

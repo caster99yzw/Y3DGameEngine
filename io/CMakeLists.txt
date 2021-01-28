@@ -18,6 +18,8 @@ set (STREAM
 set (SERIALIZE
 	serialize/double-conversion.cc
 	serialize/double-conversion.h
+	serialize/json_data.cpp
+	serialize/json_data.h
 	serialize/ujson.cpp
 	serialize/ujson.h
 	)

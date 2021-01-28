@@ -172,7 +172,30 @@ bool FileStream::Load(const char* file_name, std::vector<uint8_t>* data)
     return true;
 }
 
+bool FileStream::Load(const char* file_name, std::string* data)
+{
+    FileStream stream;
+    if (!stream.Open(file_name))
+        return false;
+
+    const auto size = stream.Size();
+    data->resize(size);
+    stream.Read(const_cast<char*>(data->data()), size);
+    return true;
+}
+
 bool FileStream::Write(const char* file_name, const std::vector<uint8_t>& data)
+{
+    FileStream stream;
+    if (!stream.Create(file_name))
+        return false;
+
+    const auto size = data.size();
+    stream.Write(data.data(), size);
+    return true;
+}
+
+bool FileStream::Write(const char* file_name, const std::string& data)
 {
     FileStream stream;
     if (!stream.Create(file_name))
