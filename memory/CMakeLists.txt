@@ -3,6 +3,10 @@ message (STATUS "Configuring memory start!")
 
 # all source files 
 set (SOURCE
+	allocator.cpp
+	allocator.h
+	freelist_allocator.cpp
+	freelist_allocator.h
 	memory_utility.cpp
 	memory_utility.h
 	)

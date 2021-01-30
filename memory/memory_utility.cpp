@@ -54,6 +54,11 @@ void Format::Align()
 	m_size = Impl::Align(m_size, m_alignment);
 }
 
+uint32_t Format::AlignedSize() const
+{
+	return Impl::Align(m_size, m_alignment);
+}
+
 bool Format::operator==(const Format& other) const
 {
 	return (m_size == other.m_size) &&
@@ -157,6 +162,11 @@ bool Resource::Contains(const uint8_t* data) const
 		if (data >= m_buffer)
 			return true;
 	return false;
+}
+
+uint8_t* Resource::Data() const
+{
+	return m_buffer;
 }
 
 } // namespace memory

@@ -50,6 +50,7 @@ public:
 	void Align();
 	uint32_t Alignment() const { return m_alignment; }
 	uint32_t Size() const { return m_size; }
+	uint32_t AlignedSize() const;
 	bool operator==(const Format& other) const;
 	bool operator!=(const Format& other) const;
 	Format& operator+=(const Format& other);
@@ -83,6 +84,7 @@ public:
 	uint8_t* Align(uint32_t align);
 	uint8_t* AlignAndIncrement(const Format& align);
 	bool Contains(const uint8_t* data) const;
+	uint8_t* Data() const;
 
 private:
 	uint8_t* m_buffer;
