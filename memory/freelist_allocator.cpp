@@ -20,7 +20,7 @@ struct ContinuousChunk
 	}
 };
 
-struct FreeListAllocator::FastFreeList
+struct FastFreeList
 {
 	FastFreeList()
 		: NextFreeList(nullptr)
@@ -29,7 +29,7 @@ struct FreeListAllocator::FastFreeList
 		, Chunks(nullptr)
 		, EntryCountPerChunk(0)
 		, CachedChunks(nullptr) {}
-	
+
 	Format GetChunkFormat() const;
 
 	static FastFreeList* CreateFreeList(
@@ -54,7 +54,7 @@ struct FreeListAllocator::FastFreeList
 	ContinuousChunk* CachedChunks;
 };
 
-Format FreeListAllocator::FastFreeList::GetChunkFormat() const
+Format FastFreeList::GetChunkFormat() const
 {
 	Format result = Format(sizeof(ContinuousChunk), alignof(ContinuousChunk));;
 	result += Format(EntryCountPerChunk * sizeof(uint8_t*), alignof(uint8_t*));
@@ -62,7 +62,7 @@ Format FreeListAllocator::FastFreeList::GetChunkFormat() const
 	return result;
 }
 
-FreeListAllocator::FastFreeList* FreeListAllocator::FastFreeList::CreateFreeList(
+FastFreeList* FastFreeList::CreateFreeList(
 	Format entry_format,
 	uint32_t entry_count,
 	MemoryAllocator* allocator)
@@ -78,7 +78,7 @@ FreeListAllocator::FastFreeList* FreeListAllocator::FastFreeList::CreateFreeList
 	return result;
 }
 
-ContinuousChunk* FreeListAllocator::FastFreeList::AllocateChunk()
+ContinuousChunk* FastFreeList::AllocateChunk()
 {
 	ContinuousChunk* new_chunk = nullptr;
 	if (CachedChunks)
@@ -110,8 +110,8 @@ ContinuousChunk* FreeListAllocator::FastFreeList::AllocateChunk()
 
 	// 设置好chunk里所有的freelist入口
 	for (uint32_t i = 0; i < EntryCountPerChunk; ++i)
-		new_chunk->Entries[i] = 
-			new_chunk->DataBegin + EntryFormat.AlignedSize() * i;
+		new_chunk->Entries[i] =
+		new_chunk->DataBegin + EntryFormat.AlignedSize() * i;
 
 	if (Chunks)
 	{
@@ -125,11 +125,11 @@ ContinuousChunk* FreeListAllocator::FastFreeList::AllocateChunk()
 		Chunks = new_chunk;
 	}
 
-	 EntryCount += EntryCountPerChunk;
-	 return new_chunk;
+	EntryCount += EntryCountPerChunk;
+	return new_chunk;
 }
 
-void FreeListAllocator::FastFreeList::DeallocateChunk(ContinuousChunk* chunk)
+void FastFreeList::DeallocateChunk(ContinuousChunk* chunk)
 {
 	assert(Chunks);
 	if (CachedChunks)
@@ -152,7 +152,7 @@ void FreeListAllocator::FastFreeList::DeallocateChunk(ContinuousChunk* chunk)
 	}
 }
 
-void* FreeListAllocator::FastFreeList::AllocateEntry()
+void* FastFreeList::AllocateEntry()
 {
 	ContinuousChunk* chunk = Chunks;
 	while (chunk)
@@ -171,7 +171,7 @@ void* FreeListAllocator::FastFreeList::AllocateEntry()
 	return chunk->Entries[current];
 }
 
-void FreeListAllocator::FastFreeList::DeallocateEntry(void* ptr)
+void FastFreeList::DeallocateEntry(void* ptr)
 {
 	assert(Chunks);
 	ContinuousChunk* chunk_end = Chunks;
@@ -192,7 +192,7 @@ void FreeListAllocator::FastFreeList::DeallocateEntry(void* ptr)
 	}
 }
 
-bool FreeListAllocator::FastFreeList::Contains(void* ptr) const
+bool FastFreeList::Contains(void* ptr) const
 {
 	auto* chunk = Chunks;
 	while (chunk)
@@ -207,7 +207,7 @@ bool FreeListAllocator::FastFreeList::Contains(void* ptr) const
 void* FreeListAllocator::MemAlloc(MemSize size, uint32_t alignment)
 {
 	const Format need_to_alloc(size, alignment);
-	
+
 	FastFreeList** freelist = &m_freelists;
 	while (freelist)
 	{
@@ -246,6 +246,85 @@ void FreeListAllocator::MemFree(void* ptr)
 	}
 }
 
+FreeListBucketAllocator::FreeListBucketAllocator()
+	: m_freelist_buckets{}
+	, m_default_chunk_size(NaturalChunkSize)
+{
+	::memset(m_freelist_buckets, 0, sizeof(void*)* BucketCount);
+}
 
+FreeListBucketAllocator::FreeListBucketAllocator(MemSize chunk_size)
+	: m_freelist_buckets{}
+	, m_default_chunk_size(chunk_size)
+{
+	::memset(m_freelist_buckets, 0, sizeof(void*)* BucketCount);
+}
+
+void* FreeListBucketAllocator::MemAlloc(MemSize size, uint32_t alignment)
+{
+	constexpr auto MaxEntrySizeForBucket = 2 << BucketCount;
+	constexpr auto MinEntrySizeForBucket = 2;
+
+	int32_t bucket_index = -1;
+	assert(alignment <= 64);
+	MemSize entry_size = MinEntrySizeForBucket;
+	MemSize shift_size = (size - 1) >> 1;
+	if (shift_size)
+	{
+		while (shift_size)
+		{
+			shift_size >>= 1;
+			entry_size <<= 1;
+			++bucket_index;
+		}
+		if (entry_size < MaxEntrySizeForBucket)
+		{
+			size = entry_size;
+		}
+		else
+		{
+			// 超过最大的bucket容量，分配失败
+			return nullptr;
+		}
+	}
+
+	if (bucket_index >= 0)
+	{
+		alignment = 16;
+		if (m_freelist_buckets[bucket_index])
+		{
+			void* ptr = m_freelist_buckets[bucket_index]->AllocateEntry();
+			return ptr;
+		}
+	}
+
+	const Format need_to_alloc(size, alignment);
+
+	auto entry_count = m_default_chunk_size / need_to_alloc.AlignedSize();
+	if (entry_count == 0) entry_count = 1;
+
+	auto* new_free_list = FastFreeList::CreateFreeList(
+		need_to_alloc, static_cast<uint32_t>(entry_count), &m_heap_allocator
+	);
+
+	void* ptr = new_free_list->AllocateEntry();
+	assert(ptr);
+	m_freelist_buckets[bucket_index] = new_free_list;
+	return ptr;
+}
+
+void FreeListBucketAllocator::MemFree(void* ptr)
+{
+	uint32_t bucket_index = BucketCount;
+	while (bucket_index--)
+	{
+		FastFreeList* freelist = m_freelist_buckets[bucket_index];
+		if (freelist && freelist->Contains(ptr))
+		{
+			freelist->DeallocateEntry(ptr);
+			return;
+		}
+	}
+}
 
 } // namespace memory
