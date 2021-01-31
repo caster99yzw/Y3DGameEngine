@@ -9,11 +9,10 @@ using MemSize = uint64_t;
 
 namespace Impl
 {
-template <typename T>
-FORCEINLINE T Align(T value, uint32_t alignment)
+FORCEINLINE uint64_t Align(uint64_t value, uint64_t alignment)
 {
 	assert(alignment != 0);
-	return (T)(value + (alignment - 1)) & ~(alignment - 1);
+	return (value + (alignment - 1)) & ~(alignment - 1);
 }
 }
 
@@ -86,6 +85,7 @@ public:
 	uint8_t* AlignAndIncrement(const Format& align);
 	bool Contains(const uint8_t* data) const;
 	uint8_t* Data() const;
+	MemSize FreeSize() const;
 
 private:
 	uint8_t* m_buffer;

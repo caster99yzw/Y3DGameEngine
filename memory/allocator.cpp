@@ -43,7 +43,8 @@ void* AlignedMallocAllocator::MemAlloc(MemSize size, uint32_t alignment)
 	const auto real_size = info_size + size + alignment;
 	LogAlloc(real_size);
 	auto* unaligned = static_cast<uint8_t*>(malloc(real_size));
-	auto* aligned = reinterpret_cast<uint8_t*>(Impl::Align(unaligned + info_size, alignment));
+	auto* aligned = reinterpret_cast<uint8_t*>(
+		Impl::Align(reinterpret_cast<uint64_t>(unaligned) + info_size, alignment));
 	{
 		Impl::AllocationSizeInfo* p = reinterpret_cast<Impl::AllocationSizeInfo*>(aligned) - 1;
 		p->allocator = this;

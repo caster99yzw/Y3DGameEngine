@@ -144,7 +144,8 @@ void Resource::Decrement(MemSize size)
 
 uint8_t* Resource::Align(uint32_t align)
 {
-	uint8_t* aligned_buffer = Impl::Align(m_buffer, align);
+	const auto* aligned_buffer = reinterpret_cast<uint8_t*>(
+		Impl::Align(reinterpret_cast<uint64_t>(m_buffer), align));
 	Increment(static_cast<uint32_t>(aligned_buffer - m_buffer));
 	return m_buffer;
 }
@@ -167,6 +168,11 @@ bool Resource::Contains(const uint8_t* data) const
 uint8_t* Resource::Data() const
 {
 	return m_buffer;
+}
+
+MemSize Resource::FreeSize() const
+{
+	return m_size;
 }
 
 } // namespace memory

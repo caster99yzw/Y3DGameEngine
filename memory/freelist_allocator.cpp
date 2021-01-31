@@ -2,201 +2,248 @@
 
 namespace memory {
 
-struct ContinuousFreeList
+struct ContinuousChunk
 {
-	ContinuousFreeList()
-		: m_entry_count(0)
-		, m_active_entry_count(0)
-		, m_allocator(nullptr)
-		, m_chunks(nullptr) {}
-	
-	struct FreeListChunk
-	{
-		FreeListChunk* m_next;
-		uint8_t** free_entries;
-		uint32_t free_entries_count;
-		uint8_t* buffer;
-		uint8_t* buffer_end;
-	};
+	ContinuousChunk* NextChunk = nullptr;
+	uint8_t** Entries = nullptr;
+	uint32_t FreeCount = 0;
+	uint8_t* DataBegin = nullptr;
+	uint8_t* DataEnd = nullptr;
 
-	static ContinuousFreeList* CreateFreeList(Resource block, Format entry_format,
+	void Reset()
+	{
+		NextChunk = nullptr;
+		Entries = nullptr;
+		FreeCount = 0;
+		DataBegin = nullptr;
+		DataEnd = nullptr;
+	}
+};
+
+struct FreeListAllocator::FastFreeList
+{
+	FastFreeList()
+		: NextFreeList(nullptr)
+		, EntryCount(0)
+		, HeapAllocator(nullptr)
+		, Chunks(nullptr)
+		, EntryCountPerChunk(0)
+		, CachedChunks(nullptr) {}
+	
+	Format GetChunkFormat() const;
+
+	static FastFreeList* CreateFreeList(
+		Format entry_format,
 		uint32_t entry_count,
 		MemoryAllocator* allocator);
 
-	FreeListChunk* AddChunk();
+	ContinuousChunk* AllocateChunk();
+	void DeallocateChunk(ContinuousChunk* chunk);
 	void* AllocateEntry();
-	void DeallocateEntry(void* ptr) const;
+	void DeallocateEntry(void* ptr);
 	bool Contains(void* ptr) const;
 
-	Format m_entry_format;
-	uint32_t m_entry_count;
-	Format m_chunk_format;
-	uint32_t m_active_entry_count;
-	MemoryAllocator* m_allocator;
-	FreeListChunk* m_chunks;
+	FastFreeList* NextFreeList;
+	Format EntryFormat;
+	uint32_t EntryCount;
+	MemoryAllocator* HeapAllocator;
+	ContinuousChunk* Chunks;
+	Format ChunkFormat;
+	uint32_t EntryCountPerChunk;
+	// 避免在chunk边缘反复创建销毁
+	ContinuousChunk* CachedChunks;
 };
 
-ContinuousFreeList* ContinuousFreeList::CreateFreeList(Resource block, Format entry_format,
-	uint32_t entry_count,
-	MemoryAllocator* allocator)
+Format FreeListAllocator::FastFreeList::GetChunkFormat() const
 {
-	auto* result = reinterpret_cast<ContinuousFreeList*>(block.Data());
-	result->m_entry_format = entry_format;
-	result->m_entry_count = entry_count;
-	result->m_chunk_format = Format(sizeof(FreeListChunk), alignof(FreeListChunk));;
-	result->m_chunk_format += Format(
-		entry_count * sizeof(uint8_t*), alignof(uint8_t*));
-	result->m_chunk_format += Format(
-		entry_count * entry_format.AlignedSize(), entry_format.Alignment());
-	result->m_active_entry_count = 0;
-	result->m_chunks = 0;
-	block.Increment(sizeof(ContinuousFreeList));
-	result->m_allocator = allocator;
+	Format result = Format(sizeof(ContinuousChunk), alignof(ContinuousChunk));;
+	result += Format(EntryCountPerChunk * sizeof(uint8_t*), alignof(uint8_t*));
+	result += Format(EntryCountPerChunk * EntryFormat.AlignedSize(), EntryFormat.Alignment());
 	return result;
 }
 
-ContinuousFreeList::FreeListChunk* ContinuousFreeList::AddChunk()
+FreeListAllocator::FastFreeList* FreeListAllocator::FastFreeList::CreateFreeList(
+	Format entry_format,
+	uint32_t entry_count,
+	MemoryAllocator* allocator)
 {
-	auto* new_chunk = m_allocator->Alloc<FreeListChunk>(1);
-	Resource block(reinterpret_cast<uint8_t*>(new_chunk), m_chunk_format.Size());
-	block.Increment(sizeof(FreeListChunk));
+	auto* result = allocator->Alloc<FastFreeList>(1);
+	result->NextFreeList = nullptr;
+	result->EntryFormat = entry_format;
+	result->EntryCount = 0;
+	result->HeapAllocator = allocator;
+	result->Chunks = nullptr;
+	result->EntryCountPerChunk = entry_count;
+	result->EntryFormat = result->GetChunkFormat();
+	return result;
+}
 
-	const Format entry_fmt(m_entry_count * sizeof(uint8_t*), alignof(uint8_t*));
-	block.Align(entry_fmt.Alignment());
-	new_chunk->free_entries = reinterpret_cast<uint8_t**>(block.Data());
-	new_chunk->free_entries_count = m_entry_count;
-	block.Increment(entry_fmt.Size());
-
-	block.Align(m_entry_format.Alignment());
-	new_chunk->buffer = block.Data();
-	new_chunk->buffer_end = block.Data() + m_entry_format.AlignedSize() * m_entry_count;
-	new_chunk->m_next = nullptr;
-
-	for (uint32_t i = 0; i < m_entry_count; ++i)
-		new_chunk->free_entries[i] = new_chunk->buffer + m_entry_format.AlignedSize() * i;
-
-	if (!m_chunks)
+ContinuousChunk* FreeListAllocator::FastFreeList::AllocateChunk()
+{
+	ContinuousChunk* new_chunk = nullptr;
+	if (CachedChunks)
 	{
-		m_chunks = new_chunk;
+		new_chunk = CachedChunks;
+		CachedChunks = nullptr;
+		assert(new_chunk->NextChunk);
 	}
 	else
 	{
-		auto* chunk_end = m_chunks;
-		while (chunk_end->m_next != nullptr)
-			chunk_end = chunk_end->m_next;
-		chunk_end->m_next = new_chunk;
+		new_chunk = HeapAllocator->Alloc<ContinuousChunk>(1);
 	}
 
-	 m_active_entry_count += m_entry_count;
+	Resource block(reinterpret_cast<uint8_t*>(new_chunk), ChunkFormat.Size());
+	block.Increment(sizeof(ContinuousChunk));
+	block.Align(alignof(uint8_t*));
+
+	new_chunk->Entries = reinterpret_cast<uint8_t**>(block.Data());
+	new_chunk->FreeCount = EntryCountPerChunk;
+	block.Increment(EntryCountPerChunk * sizeof(uint8_t*));
+	block.Align(EntryFormat.Alignment());
+
+	const auto entry_data_size = EntryCountPerChunk * EntryFormat.AlignedSize();
+	new_chunk->DataBegin = block.Data();
+	new_chunk->DataEnd = block.Data() + entry_data_size;
+	new_chunk->NextChunk = nullptr;
+	block.Increment(entry_data_size);
+	assert(block.FreeSize() == 0);
+
+	// 设置好chunk里所有的freelist入口
+	for (uint32_t i = 0; i < EntryCountPerChunk; ++i)
+		new_chunk->Entries[i] = 
+			new_chunk->DataBegin + EntryFormat.AlignedSize() * i;
+
+	if (Chunks)
+	{
+		auto* chunk_end = Chunks;
+		while (chunk_end->NextChunk != nullptr)
+			chunk_end = chunk_end->NextChunk;
+		chunk_end->NextChunk = new_chunk;
+	}
+	else
+	{
+		Chunks = new_chunk;
+	}
+
+	 EntryCount += EntryCountPerChunk;
 	 return new_chunk;
 }
 
-void* ContinuousFreeList::AllocateEntry()
+void FreeListAllocator::FastFreeList::DeallocateChunk(ContinuousChunk* chunk)
 {
-	auto* chunk = m_chunks;
-	while (chunk)
+	assert(Chunks);
+	if (CachedChunks)
 	{
-		if (chunk->free_entries_count != 0)
-		{
-			uint32_t lc = chunk->free_entries_count--;
-			return chunk->free_entries[lc - 1];
-		}
-		chunk = chunk->m_next;
+		HeapAllocator->Dealloc(chunk);
+		CachedChunks = nullptr;
 	}
 
-	chunk = AddChunk();
-	assert(chunk);
-	uint32_t lc = chunk->free_entries_count--;
-	return chunk->free_entries[lc - 1];
-}
-
-void ContinuousFreeList::DeallocateEntry(void* ptr) const
-{
-	assert(m_chunks);
-	auto* chunk = m_chunks;
-	while (chunk)
+	ContinuousChunk* chunk_end = Chunks;
+	while (chunk_end->NextChunk != nullptr)
 	{
-		if ((ptr >= chunk->buffer) && (ptr < chunk->buffer_end))
+		if (chunk_end == chunk)
 		{
-			// Yes it was. Deallocate it.
-			assert(chunk->free_entries_count < m_entry_count);
-			chunk->free_entries[chunk->free_entries_count] = static_cast<uint8_t*>(ptr);
-			++chunk->free_entries_count;
+			chunk_end->NextChunk = chunk->NextChunk;
+			CachedChunks = chunk;
+			CachedChunks->Reset();
 			break;
 		}
-		else
-		{
-			chunk = chunk->m_next;
-		}
+		chunk_end = chunk_end->NextChunk;
 	}
 }
 
-bool ContinuousFreeList::Contains(void* ptr) const
+void* FreeListAllocator::FastFreeList::AllocateEntry()
 {
-	auto* chunk = m_chunks;
+	ContinuousChunk* chunk = Chunks;
 	while (chunk)
 	{
-		if ((ptr >= chunk->buffer) && (ptr < chunk->buffer_end))
+		if (chunk->FreeCount != 0)
 		{
-			return true;
+			const uint32_t current = --chunk->FreeCount;
+			return chunk->Entries[current];
 		}
-		chunk = chunk->m_next;
+		chunk = chunk->NextChunk;
+	}
+
+	chunk = AllocateChunk();
+	assert(chunk);
+	const uint32_t current = --chunk->FreeCount;
+	return chunk->Entries[current];
+}
+
+void FreeListAllocator::FastFreeList::DeallocateEntry(void* ptr)
+{
+	assert(Chunks);
+	ContinuousChunk* chunk_end = Chunks;
+	while (chunk_end)
+	{
+		if ((ptr >= chunk_end->DataBegin) && (ptr < chunk_end->DataEnd))
+		{
+			// Yes it was. Deallocate it.
+			assert(chunk_end->FreeCount < EntryCountPerChunk);
+			chunk_end->Entries[chunk_end->FreeCount] = static_cast<uint8_t*>(ptr);
+			++chunk_end->FreeCount;
+
+			if (chunk_end->FreeCount == EntryCountPerChunk)
+				DeallocateChunk(chunk_end);
+			break;
+		}
+		chunk_end = chunk_end->NextChunk;
+	}
+}
+
+bool FreeListAllocator::FastFreeList::Contains(void* ptr) const
+{
+	auto* chunk = Chunks;
+	while (chunk)
+	{
+		if ((ptr >= chunk->DataBegin) && (ptr < chunk->DataEnd))
+			return true;
+		chunk = chunk->NextChunk;
 	}
 	return false;
 }
 
-struct FreeListAllocator::FreeList
-{
-	ContinuousFreeList* free_list;
-	FreeList* next;
-	
-};
-
 void* FreeListAllocator::MemAlloc(MemSize size, uint32_t alignment)
 {
-	Format need_to_alloc(size, alignment);
+	const Format need_to_alloc(size, alignment);
 	
-	FreeList** freelist = &m_freelists;
+	FastFreeList** freelist = &m_freelists;
 	while (freelist)
 	{
-		if ((*freelist)->free_list->m_entry_format == need_to_alloc)
+		if ((*freelist)->EntryFormat == need_to_alloc)
 		{
-			void* ptr = (*freelist)->free_list->AllocateEntry();
+			void* ptr = (*freelist)->AllocateEntry();
 			return ptr;
 		}
-		(*freelist) = (*freelist)->next;
+		(*freelist) = (*freelist)->NextFreeList;
 	}
 
-	uint32_t entry_count = m_default_chunk_size / need_to_alloc.AlignedSize();
-	if (entry_count == 0)
-		entry_count = 1;
+	auto entry_count = m_default_chunk_size / need_to_alloc.AlignedSize();
+	if (entry_count == 0) entry_count = 1;
 
-	ContinuousFreeList* new_free_list = ContinuousFreeList::CreateFreeList(
-		need_to_alloc, entry_count, &m_heap_allocator
+	auto* new_free_list = FastFreeList::CreateFreeList(
+		need_to_alloc, static_cast<uint32_t>(entry_count), &m_heap_allocator
 	);
 
-	FreeList* newlink;
-	newlink->next = nullptr;
-	newlink->free_list = new_free_list;
-	(*freelist) = newlink;
-	
 	void* ptr = new_free_list->AllocateEntry();
+	assert(ptr);
+	(*freelist)->NextFreeList = new_free_list;
 	return ptr;
 }
 
 void FreeListAllocator::MemFree(void* ptr)
 {
-	FreeList* freelist = m_freelists;
+	FastFreeList* freelist = m_freelists;
 	while (freelist)
 	{
-		if (freelist->free_list->Contains(ptr))
+		if (freelist->Contains(ptr))
 		{
-			freelist->free_list->DeallocateEntry(ptr);
+			freelist->DeallocateEntry(ptr);
 			return;
 		}
-		freelist = freelist->next;
+		freelist = freelist->NextFreeList;
 	}
-
 }
 
 
