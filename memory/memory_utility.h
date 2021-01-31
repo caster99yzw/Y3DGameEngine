@@ -5,6 +5,7 @@
 namespace memory {
 
 constexpr uint32_t NaturalTypeAlignment = 4;
+using MemSize = uint64_t;
 
 namespace Impl
 {
@@ -19,19 +20,19 @@ FORCEINLINE T Align(T value, uint32_t alignment)
 class Stats
 {
 public:
-	void LogAlloc(uint32_t size);
-	void LogFree(uint32_t size);
+	void LogAlloc(MemSize size);
+	void LogFree(MemSize size);
 	void Reset();
 
-	uint32_t GetAllocBytes() const;
+	MemSize GetAllocBytes() const;
 	uint32_t GetAllocCount() const;
-	uint32_t GetFreeBytes() const;
+	MemSize GetFreeBytes() const;
 	uint32_t GetFreeCount() const;
 	
 private:
-	uint32_t m_allocated_bytes = 0;
+	MemSize m_allocated_bytes = 0;
 	uint32_t m_allocated_count = 0;
-	uint32_t m_free_btyes = 0;
+	MemSize m_free_btyes = 0;
 	uint32_t m_free_count = 0;
 };
 	
@@ -42,28 +43,28 @@ public:
 		: m_size(0)
 		, m_alignment(NaturalTypeAlignment) {}
 
-	Format(uint32_t size, uint32_t align)
+	Format(MemSize size, uint32_t align)
 		: m_size(size)
 		, m_alignment(align) {}
 
-	void Set(uint32_t size, uint32_t align);
+	void Set(MemSize size, uint32_t align);
 	void Align();
 	uint32_t Alignment() const { return m_alignment; }
-	uint32_t Size() const { return m_size; }
-	uint32_t AlignedSize() const;
+	MemSize Size() const { return m_size; }
+	MemSize AlignedSize() const;
 	bool operator==(const Format& other) const;
 	bool operator!=(const Format& other) const;
 	Format& operator+=(const Format& other);
 	Format operator+(const Format& other) const;
 	Format& operator*=(uint32_t n);
 	Format operator*(uint32_t n) const;
-	Format& operator+=(uint32_t size);
-	Format operator+(uint32_t size) const;
-	Format& operator-=(uint32_t size);
-	Format operator-(uint32_t size) const;
+	Format& operator+=(MemSize size);
+	Format operator+(MemSize size) const;
+	Format& operator-=(MemSize size);
+	Format operator-(MemSize size) const;
 
 private:
-	uint32_t m_size;
+	MemSize m_size;
 	uint32_t m_alignment;
 };
 
@@ -74,13 +75,13 @@ public:
 		: m_buffer(nullptr)
 		, m_size(0) {}
 
-	Resource(uint8_t* buffer, uint32_t size)
+	Resource(uint8_t* buffer, MemSize size)
 		: m_buffer(buffer)
 		, m_size(size) {}
 
-	void Set(uint8_t* buffer, uint32_t size);
-	void Increment(uint32_t size);
-	void Decrement(uint32_t size);
+	void Set(uint8_t* buffer, MemSize size);
+	void Increment(MemSize size);
+	void Decrement(MemSize size);
 	uint8_t* Align(uint32_t align);
 	uint8_t* AlignAndIncrement(const Format& align);
 	bool Contains(const uint8_t* data) const;
@@ -88,7 +89,7 @@ public:
 
 private:
 	uint8_t* m_buffer;
-	uint32_t m_size;
+	MemSize m_size;
 };
 
 } // namespace memory

@@ -3,13 +3,13 @@
 
 namespace memory {
 
-void Stats::LogAlloc(uint32_t size)
+void Stats::LogAlloc(MemSize size)
 {
 	m_allocated_bytes += size;
 	++m_allocated_count;
 }
 
-void Stats::LogFree(uint32_t size)
+void Stats::LogFree(MemSize size)
 {
 	m_free_btyes += size;
 	++m_free_count;
@@ -23,7 +23,7 @@ void Stats::Reset()
 	m_free_count = 0;
 }
 
-uint32_t Stats::GetAllocBytes() const
+MemSize Stats::GetAllocBytes() const
 {
 	return m_allocated_bytes;
 }
@@ -33,7 +33,7 @@ uint32_t Stats::GetAllocCount() const
 	return m_allocated_count;
 }
 
-uint32_t Stats::GetFreeBytes() const
+MemSize Stats::GetFreeBytes() const
 {
 	return m_free_btyes;
 }
@@ -43,7 +43,7 @@ uint32_t Stats::GetFreeCount() const
 	return m_free_count;
 }
 
-void Format::Set(uint32_t size, uint32_t align)
+void Format::Set(MemSize size, uint32_t align)
 {
 	m_size = size;
 	m_alignment = align;
@@ -54,7 +54,7 @@ void Format::Align()
 	m_size = Impl::Align(m_size, m_alignment);
 }
 
-uint32_t Format::AlignedSize() const
+MemSize Format::AlignedSize() const
 {
 	return Impl::Align(m_size, m_alignment);
 }
@@ -100,43 +100,43 @@ Format Format::operator*(uint32_t n) const
 	return result *= n;
 }
 
-Format& Format::operator+=(uint32_t size)
+Format& Format::operator+=(MemSize size)
 {
 	m_size += size;
 	return *this;
 }
 
-Format Format::operator+(uint32_t size) const
+Format Format::operator+(MemSize size) const
 {
 	Format result(*this);
 	return result += size;
 }
 
-Format& Format::operator-=(uint32_t size)
+Format& Format::operator-=(MemSize size)
 {
 	m_size -= size;
 	return *this;
 }
 
-Format Format::operator-(uint32_t size) const
+Format Format::operator-(MemSize size) const
 {
 	Format result(*this);
 	return result -= size;
 }
 
-void Resource::Set(uint8_t* buffer, uint32_t size)
+void Resource::Set(uint8_t* buffer, MemSize size)
 {
 	m_buffer = buffer;
 	m_size = size;
 }
 
-void Resource::Increment(uint32_t size)
+void Resource::Increment(MemSize size)
 {
 	m_buffer = m_buffer + size;
 	m_size -= size;
 }
 
-void Resource::Decrement(uint32_t size)
+void Resource::Decrement(MemSize size)
 {
 	m_buffer = m_buffer - size;
 	m_size += size;

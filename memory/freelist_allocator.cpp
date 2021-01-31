@@ -2,9 +2,8 @@
 
 namespace memory {
 
-class ContinuousFreeList
+struct ContinuousFreeList
 {
-public:
 	ContinuousFreeList()
 		: m_entry_count(0)
 		, m_active_entry_count(0)
@@ -27,8 +26,8 @@ public:
 	FreeListChunk* AddChunk();
 	void* AllocateEntry();
 	void DeallocateEntry(void* ptr) const;
+	bool Contains(void* ptr) const;
 
-private:
 	Format m_entry_format;
 	uint32_t m_entry_count;
 	Format m_chunk_format;
@@ -132,12 +131,72 @@ void ContinuousFreeList::DeallocateEntry(void* ptr) const
 	}
 }
 
-void* FreeListAllocator::MemAlloc(uint32_t size, uint32_t alignment)
+bool ContinuousFreeList::Contains(void* ptr) const
 {
+	auto* chunk = m_chunks;
+	while (chunk)
+	{
+		if ((ptr >= chunk->buffer) && (ptr < chunk->buffer_end))
+		{
+			return true;
+		}
+		chunk = chunk->m_next;
+	}
+	return false;
+}
+
+struct FreeListAllocator::FreeList
+{
+	ContinuousFreeList* free_list;
+	FreeList* next;
+	
+};
+
+void* FreeListAllocator::MemAlloc(MemSize size, uint32_t alignment)
+{
+	Format need_to_alloc(size, alignment);
+	
+	FreeList** freelist = &m_freelists;
+	while (freelist)
+	{
+		if ((*freelist)->free_list->m_entry_format == need_to_alloc)
+		{
+			void* ptr = (*freelist)->free_list->AllocateEntry();
+			return ptr;
+		}
+		(*freelist) = (*freelist)->next;
+	}
+
+	uint32_t entry_count = m_default_chunk_size / need_to_alloc.AlignedSize();
+	if (entry_count == 0)
+		entry_count = 1;
+
+	ContinuousFreeList* new_free_list = ContinuousFreeList::CreateFreeList(
+		need_to_alloc, entry_count, &m_heap_allocator
+	);
+
+	FreeList* newlink;
+	newlink->next = nullptr;
+	newlink->free_list = new_free_list;
+	(*freelist) = newlink;
+	
+	void* ptr = new_free_list->AllocateEntry();
+	return ptr;
 }
 
 void FreeListAllocator::MemFree(void* ptr)
 {
+	FreeList* freelist = m_freelists;
+	while (freelist)
+	{
+		if (freelist->free_list->Contains(ptr))
+		{
+			freelist->free_list->DeallocateEntry(ptr);
+			return;
+		}
+		freelist = freelist->next;
+	}
+
 }
 
 
