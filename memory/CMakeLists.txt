@@ -9,6 +9,8 @@ set (SOURCE
 	freelist_allocator.h
 	memory_utility.cpp
 	memory_utility.h
+	stack_allocator.cpp
+	stack_allocator.h
 	)
 
 source_group ("" FILES ${SOURCE})

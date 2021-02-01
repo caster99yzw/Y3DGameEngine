@@ -22,11 +22,8 @@ public:
 			MemAlloc(sizeof(ElementType) * element_count, alignof(ElementType)));
 	}
 
-	template <typename ElementType>
-	void Dealloc(ElementType *ptr)
-	{
-		MemFree(ptr);
-	}
+	void* Alloc(MemSize size, uint32_t alignment) { return MemAlloc(size, alignment); }
+	void Dealloc(void* ptr) { return MemFree(ptr); }
 
 protected:
 	virtual void* MemAlloc(MemSize size, uint32_t alignment) = 0;

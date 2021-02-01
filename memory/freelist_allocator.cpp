@@ -30,6 +30,24 @@ struct FastFreeList
 		, EntryCountPerChunk(0)
 		, CachedChunks(nullptr) {}
 
+	void Release()
+	{
+		if (CachedChunks)
+		{
+			HeapAllocator->Dealloc(CachedChunks);
+			CachedChunks = nullptr;
+		}
+
+		auto* chunk = Chunks;
+		while (chunk)
+		{
+			auto* temp = chunk->NextChunk;
+			HeapAllocator->Dealloc(chunk);
+			chunk = temp;
+		}
+		Chunks = nullptr;
+	}
+
 	Format GetChunkFormat() const;
 
 	static FastFreeList* CreateFreeList(
@@ -204,6 +222,19 @@ bool FastFreeList::Contains(void* ptr) const
 	return false;
 }
 
+FreeListAllocator::~FreeListAllocator()
+{
+	auto* freelist = m_freelists;
+	while (freelist)
+	{
+		auto* temp = freelist->NextFreeList;
+		freelist->Release();
+		m_heap_allocator.Dealloc(freelist);
+		freelist = temp;
+	}
+	m_freelists = nullptr;
+}
+
 void* FreeListAllocator::MemAlloc(MemSize size, uint32_t alignment)
 {
 	const Format need_to_alloc(size, alignment);
@@ -260,6 +291,16 @@ FreeListBucketAllocator::FreeListBucketAllocator(MemSize chunk_size)
 	::memset(m_freelist_buckets, 0, sizeof(void*)* BucketCount);
 }
 
+FreeListBucketAllocator::~FreeListBucketAllocator()
+{
+	for (auto& m_freelist_bucket : m_freelist_buckets)
+	{
+		m_freelist_bucket->Release();
+		m_heap_allocator.Dealloc(m_freelist_bucket);
+		m_freelist_bucket = nullptr;
+	}
+}
+
 void* FreeListBucketAllocator::MemAlloc(MemSize size, uint32_t alignment)
 {
 	constexpr auto MaxEntrySizeForBucket = 2 << BucketCount;
@@ -296,21 +337,21 @@ void* FreeListBucketAllocator::MemAlloc(MemSize size, uint32_t alignment)
 			void* ptr = m_freelist_buckets[bucket_index]->AllocateEntry();
 			return ptr;
 		}
+		const Format need_to_alloc(size, alignment);
+
+		auto entry_count = m_default_chunk_size / need_to_alloc.AlignedSize();
+		if (entry_count == 0) entry_count = 1;
+
+		auto* new_free_list = FastFreeList::CreateFreeList(
+			need_to_alloc, static_cast<uint32_t>(entry_count), &m_heap_allocator
+		);
+
+		void* ptr = new_free_list->AllocateEntry();
+		assert(ptr);
+		m_freelist_buckets[bucket_index] = new_free_list;
+		return ptr;
 	}
-
-	const Format need_to_alloc(size, alignment);
-
-	auto entry_count = m_default_chunk_size / need_to_alloc.AlignedSize();
-	if (entry_count == 0) entry_count = 1;
-
-	auto* new_free_list = FastFreeList::CreateFreeList(
-		need_to_alloc, static_cast<uint32_t>(entry_count), &m_heap_allocator
-	);
-
-	void* ptr = new_free_list->AllocateEntry();
-	assert(ptr);
-	m_freelist_buckets[bucket_index] = new_free_list;
-	return ptr;
+	return nullptr;
 }
 
 void FreeListBucketAllocator::MemFree(void* ptr)
