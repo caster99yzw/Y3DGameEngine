@@ -48,6 +48,7 @@ struct StackAllocator::StackInternalData
 StackAllocator::~StackAllocator()
 {
 	m_internal_data->Release();
+	m_start_in_slab = nullptr;
 }
 
 void* StackAllocator::MemAlloc(MemSize size, uint32_t alignment)
@@ -113,8 +114,8 @@ void StackAllocator::MemFree(void* ptr)
 {
 	auto check_position_valid = [this](void* ptr)
 	{
-		auto node = m_internal_data->FreeList.rbegin();
-		while (node != m_internal_data->FreeList.rend())
+		auto node = m_internal_data->FreeList.begin();
+		while (node != m_internal_data->FreeList.end())
 		{
 			if (node->End <= static_cast<uint8_t*>(ptr))
 				break;
@@ -128,12 +129,125 @@ void StackAllocator::MemFree(void* ptr)
 	assert(check_position_valid(ptr));
 	const auto real_size = *static_cast<uint32_t*>(ptr);
 	uint8_t* current = m_start_in_slab + m_current_in_slab.Size();
-	if (real_size < m_default_slab_size 
+	if (real_size < m_default_slab_size
 		&& static_cast<uint8_t*>(ptr) + real_size == current
 		&& m_internal_data->EndInFreeList != ptr)
 	{
 		m_current_in_slab -= real_size;
+		return;
+	}
+
+	if (real_size > m_default_slab_size)
+	{
+		--m_internal_data->SlabCount;
+		m_heap_allocator.Dealloc(ptr);
+	}
+	else
+	{
+		if (static_cast<uint8_t*>(ptr) + real_size == current)
+			MemFreeSlabAndBlock(ptr);
+		else
+			MemFreeNotInStackTop(ptr, real_size);
 	}
 }
 
+void StackAllocator::MemFreeNotInStackTop(void* start, MemSize size) const
+{
+	assert(m_internal_data->FreeList.size() < 100);
+	auto* start_free = static_cast<uint8_t*>(start);
+
+	auto slab_index = m_internal_data->SlabList.size() - 1;
+	for (; slab_index != static_cast<uint32_t>(-1); --slab_index)
+	{
+		auto* slab_start = static_cast<uint8_t*>(m_internal_data->SlabList[slab_index]);
+		if ((start_free - slab_start) < m_default_slab_size)
+		{
+			break;
+		}
+	}
+
+	assert(slab_index == static_cast<uint32_t>(-1));
+	uint8_t* end_free = start_free + size;
+	auto node = m_internal_data->FreeList.begin();
+	while (node != m_internal_data->FreeList.end())
+	{
+		if (node->SlabIndex == slab_index)
+		{
+			if (start_free == node->End)
+			{
+				node->End = end_free;
+				m_internal_data->EndInFreeList = m_internal_data->FreeList.front().End;
+				return;
+			}
+			else if (end_free == node->Start)
+			{
+				node->Start = start_free;
+				m_internal_data->EndInFreeList = m_internal_data->FreeList.front().End;
+				return;
+			}
+			if (start_free < node->Start)
+			{
+				++node;
+			}
+			break;
+		}
+		if (node->SlabIndex < slab_index)
+		{
+			break;
+		}
+		++node;
+	}
+
+	StackInternalData::FreeListNode free{ start_free, end_free, slab_index };
+	m_internal_data->FreeList.emplace(node, free);
+
+	if (!m_internal_data->FreeList.empty())
+		m_internal_data->EndInFreeList = m_internal_data->FreeList.front().End;
+
+}
+
+void StackAllocator::MemFreeSlabAndBlock(void* ptr)
+{
+	auto* current = static_cast<uint8_t*>(ptr);
+
+	auto node = m_internal_data->FreeList.begin();
+	while (node != m_internal_data->FreeList.end())
+	{
+		if (node->End == current)
+		{
+			current = node->Start;
+			node = m_internal_data->FreeList.erase(node);
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	while (!m_internal_data->SlabList.empty()
+		&& (current - static_cast<uint8_t*>(m_internal_data->SlabList.back()) > m_default_slab_size
+			|| current == static_cast<uint8_t*>(m_internal_data->SlabList.back())))
+	{
+		if (m_internal_data->CachedSlab)
+		{
+			m_heap_allocator.Dealloc(m_internal_data->CachedSlab);
+			--m_internal_data->SlabCount;
+		}
+		m_internal_data->CachedSlab = m_internal_data->SlabList.back();
+		m_internal_data->SlabList.pop_back();
+	}
+
+	m_internal_data->EndInFreeList = !m_internal_data->FreeList.empty()
+		? m_internal_data->FreeList.front().End
+		: nullptr;
+
+	m_start_in_slab = !m_internal_data->SlabList.empty()
+		? static_cast<uint8_t*>(m_internal_data->SlabList.back())
+		: nullptr;
+
+	m_current_in_slab.Set(current - m_start_in_slab, 16);
+}
+
 } // namespace memory
+
+

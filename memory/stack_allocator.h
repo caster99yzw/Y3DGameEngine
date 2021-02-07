@@ -28,6 +28,8 @@ protected:
 	void* MemAlloc(MemSize size, uint32_t alignment) override;
 	void* MemAllocForLargeBlockOrSlab(MemSize size);
 	void MemFree(void* ptr) override;
+	void MemFreeNotInStackTop(void* start, MemSize size) const;
+	void MemFreeSlabAndBlock(void* ptr);
 
 private:
 	struct StackInternalData;
