@@ -27,6 +27,7 @@ include_directories (
 
 # generate static lib 
 add_library (${PROJECT_NAME} STATIC ${SOURCE_FILES})
+set_property(TARGET memory PROPERTY FOLDER LIBRARY)
 
 message (STATUS "Configuring memory succeed!")
 	

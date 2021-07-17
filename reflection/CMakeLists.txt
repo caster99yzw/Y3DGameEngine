@@ -106,6 +106,7 @@ include_directories (
 
 # generate static lib 
 add_library (${PROJECT_NAME} STATIC ${SOURCE_FILES})
+set_property(TARGET reflection PROPERTY FOLDER LIBRARY)
 
 message (STATUS "Configuring reflection succeed!")
 	

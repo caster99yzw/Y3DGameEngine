@@ -8,6 +8,7 @@ include_directories (
 	)
 
 add_executable (console Source.cpp)
+set_property(TARGET console PROPERTY FOLDER EXECTUTE)
 target_link_libraries (console common stl reflection)
 
 message (STATUS "Configuring console succeed!")

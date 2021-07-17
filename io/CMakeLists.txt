@@ -40,6 +40,7 @@ include_directories (
 
 # generate static lib 
 add_library (${PROJECT_NAME} STATIC ${SOURCE_FILES})
+set_property(TARGET io PROPERTY FOLDER LIBRARY)
 
 message (STATUS "Configuring io succeed!")
 	

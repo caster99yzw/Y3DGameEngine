@@ -71,6 +71,7 @@ include_directories (
 
 # generate static lib 
 add_library (${PROJECT_NAME} STATIC ${SOURCE_FILES})
+set_property(TARGET stl PROPERTY FOLDER LIBRARY)
 
 message (STATUS "Configuring stl succeed!")
 	
