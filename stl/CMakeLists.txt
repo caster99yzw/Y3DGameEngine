@@ -47,7 +47,6 @@ set (STL_TEMPLATE
 		Template/Template.h
 		Template/TypeHash.h
 		Template/TypeTraits.h
-		Template/UniquePtr.h
 	)
 
 source_group ("algorithms" FILES ${STL_ALGORITHMS})
