@@ -1,5 +1,4 @@
 #include "stl/Template/IdentityFunctor.h"
-#include "stl/Template/UniquePtr.h"
 #include "stl/Template/Less.h"
 #include "stl/Template/IsTrivially.h"
 #include "stl/Template/Invoke.h"
@@ -18,6 +17,8 @@
 #include "common/BitContainer.h"
 
 #include "reflection/registration/registration.h"
+#include "common/unique_ptr.h"
+#include "common/shared_ptr.h"
 
 int compare(int a)
 {
@@ -121,6 +122,20 @@ struct TestForClass
 
 };
 
+
+struct Base
+{
+	~Base() = default;
+	common::unique_ptr<int> b;
+	common::shared_ptr<int> c;
+};
+
+struct Derived : public Base
+{
+	common::unique_ptr<int> d;
+	common::shared_ptr<int> e;
+};
+
 int main()
 {
 	Vector3 vvvvv;
@@ -168,6 +183,8 @@ int main()
 	int value = b.Value<int>();
 	assert(value == 100);
 
+	common::unique_ptr<Base> base;
+	common::unique_ptr<Derived> derived;
 	system("pause");
 	return 0;
 }
