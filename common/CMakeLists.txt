@@ -27,6 +27,7 @@ set (CORE
 	core/aligned_type.h
 	core/any.h
 	core/unique_ptr.h
+	core/type_traits.h
 	core/shared_ptr.h)
 
 source_group ("Math" FILES ${COMMON_MATH})

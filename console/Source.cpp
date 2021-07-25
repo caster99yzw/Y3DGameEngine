@@ -19,6 +19,7 @@
 #include "reflection/registration/registration.h"
 #include "common/core/unique_ptr.h"
 #include "common/core/shared_ptr.h"
+#include "common/core/type_traits.h"
 
 int compare(int a)
 {
@@ -185,6 +186,29 @@ int main()
 
 	common::unique_ptr<Base> base;
 	common::unique_ptr<Derived> derived;
+
+	using _12 = common::value_list<1, 2>;
+	using _34 = common::value_list<3, 4>;
+	using _1234 = common::value_list_cat_t<_12, _34>;
+	using _t12 = common::type_list<char, short>;
+	using _t34 = common::type_list<int, float>;
+	using _t1234 = common::type_list_cat_t<_t12, _t34>;
+
+	constexpr bool b1 = std::is_same_v<typename _12::type, _12>;
+	constexpr bool b2 = std::is_same_v<typename _34::type, _34>;
+	constexpr bool b3 = _12::size == 2;
+	constexpr bool b4 = _34::size == 2;
+	constexpr bool b5 = common::value_list_element_v<0,_12> == 1;
+	constexpr bool b6 = common::value_list_element_v<1,_12> == 2;
+	constexpr bool b7 = std::is_same_v<_1234, common::value_list<1,2,3,4>>;
+	constexpr bool tb1 = std::is_same_v<typename _t12::type, _t12>;
+	constexpr bool tb2 = std::is_same_v<typename _t34::type, _t34>;
+	constexpr bool tb3 = _t12::size == 2;
+	constexpr bool tb4 = _t34::size == 2;
+	constexpr bool tb5 = std::is_same_v<common::type_list_element_v<0,_t12>, char>;
+	constexpr bool tb6 = std::is_same_v<common::type_list_element_v<1,_t12>, short>;
+	constexpr bool tb7 = std::is_same_v<_t1234, common::type_list<char,short,int,float>>;
+	
 	system("pause");
 	return 0;
 }
