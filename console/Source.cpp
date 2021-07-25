@@ -17,8 +17,8 @@
 #include "common/BitContainer.h"
 
 #include "reflection/registration/registration.h"
-#include "common/unique_ptr.h"
-#include "common/shared_ptr.h"
+#include "common/core/unique_ptr.h"
+#include "common/core/shared_ptr.h"
 
 int compare(int a)
 {

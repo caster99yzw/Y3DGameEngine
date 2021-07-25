@@ -23,13 +23,17 @@ set (COMMON_CAMERA
 	Camera/Y3DCameraPerspective.cpp
 	Camera/Y3DCameraPerspective.h)
 
+set (CORE
+	core/aligned_type.h
+	core/any.h
+	core/unique_ptr.h
+	core/shared_ptr.h)
+
 source_group ("Math" FILES ${COMMON_MATH})
 source_group ("Camera" FILES ${COMMON_CAMERA})
+source_group ("core" FILES ${CORE})
 
 set (COMMON_TEMPRORY 
-	aligned_type.h
-	unique_ptr.h
-	shared_ptr.h
 	Y3DMacro.h
 	Types.h
 	BitContainer.h
@@ -39,7 +43,8 @@ set (COMMON_TEMPRORY
 set (SOURCE_FILES
 	${COMMON_MATH}
 	${COMMON_CAMERA}
-	${COMMON_TEMPRORY})
+	${COMMON_TEMPRORY}
+	${CORE})
 
 # include floders of stl project 
 include_directories (
