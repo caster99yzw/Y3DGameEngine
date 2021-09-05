@@ -24,8 +24,11 @@ set (COMMON_CAMERA
 	Camera/Y3DCameraPerspective.h)
 
 set (CORE
+	core/poly/poly.h
+	core/poly/poly_inl.h
 	core/aligned_type.h
 	core/any.h
+	core/overload.h
 	core/unique_ptr.h
 	core/type_traits.h
 	core/shared_ptr.h)

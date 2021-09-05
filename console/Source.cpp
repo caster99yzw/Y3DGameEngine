@@ -20,6 +20,7 @@
 #include "common/core/unique_ptr.h"
 #include "common/core/shared_ptr.h"
 #include "common/core/type_traits.h"
+#include "common/core/overload.h"
 
 int compare(int a)
 {
@@ -137,8 +138,38 @@ struct Derived : public Base
 	common::shared_ptr<int> e;
 };
 
+struct overload
+{
+	int prop(int, int) const { return 1; }
+	int prop(int, int) { return 2; }
+	int prop(int) const { return 3; }
+	int prop(int) { return 4; }
+	int prop() const { return 5; }
+	int prop() { return 6; }
+};
+
+	int prop(int, int) { return 10; }
+	int prop(int) { return 11; }
+	int prop() { return 12; }
+
+void test_overload()
+{
+	common::Signature<int(int, int) const>(&overload::prop);
+	common::Signature<int(int, int)>(&overload::prop);
+	common::Signature<int(int) const>(&overload::prop);
+	common::Signature<int(int)>(&overload::prop);
+	common::Signature<int() const>(&overload::prop);
+	common::Signature<int()>(&overload::prop);
+
+	std::cout << common::Signature<int(int, int)>(&prop)(1,1) << std::endl;
+	std::cout << common::Signature<int(int)>(&prop)(1) << std::endl;
+	std::cout << common::Signature<int()>(&prop)() << std::endl;
+}
+
+
 int main()
 {
+	test_overload();
 	Vector3 vvvvv;
 	
 	Vector2 xy = vvvvv.xy;
