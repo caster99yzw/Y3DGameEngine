@@ -1,6 +1,5 @@
 #pragma once
 #include "common/types.h"
-#include "portable.h"
 
 /**
  * Aligns a value to the nearest higher multiple of 'alignment', which must be a power of two.

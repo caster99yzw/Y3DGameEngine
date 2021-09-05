@@ -47,7 +47,7 @@ namespace UninitializedCopy_Private
 template <typename InputIterator, typename ForwardIterator>
 FORCEINLINE ForwardIterator UninitializedCopy(InputIterator First, InputIterator Last, ForwardIterator Result)
 {
-	 return UninitializedCopy_P	rivate::UninitializedCopyImpl(First, Last, Result, value_type(Result));
+	 return UninitializedCopy_Private::UninitializedCopyImpl(First, Last, Result, value_type(Result));
 }
 
 template <typename InputIterator, typename SizeType, typename ForwardIterator>

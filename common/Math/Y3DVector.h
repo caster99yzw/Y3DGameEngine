@@ -157,7 +157,7 @@ namespace Y3D
 	template <class T>
 	constexpr bool operator == (_Vector<T, 1> const& lhs, _Vector<T, 1> const& rhs)
 	{ 
-		return lhs.x == rhs.x
+		return lhs.x == rhs.x;
 	}
 
 	template <class T>

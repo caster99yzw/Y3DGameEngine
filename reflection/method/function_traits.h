@@ -12,7 +12,7 @@ struct FunctionTraits<RetT (ParamTs...)>
 {
 	constexpr static std::size_t ParameterCount = sizeof...(ParamTs);
 	using ReturnType = RetT;
-	using ParamterType = common::TypeList<ParamTs...>;
+	using ParamterType = common::type_list<ParamTs...>;
 };
 
 template <typename T>
@@ -64,7 +64,7 @@ template <typename ParamList, std::size_t Index>
 struct IndexedParameterType;
 
 template <typename... ParamTs, std::size_t Index>
-struct IndexedParameterType<common::TypeList<ParamTs...>, Index>
+struct IndexedParameterType<common::type_list<ParamTs...>, Index>
 {
 private:
 	template <typename Indices>

@@ -2,106 +2,197 @@
 
 namespace common {
 
-/// <summary>
-/// list of value
-/// </summary>
-template <auto... Value>
-struct value_list
+template <typename T>
+using _t = typename T::Type;
+
+template <typename Fn, typename... Ts>
+using MetaApply = typename Fn::template Apply<Ts...>;
+
+template <typename... Ts>
+struct TypeList
 {
-	using type = value_list;
-	static constexpr std::size_t size = sizeof...(Value);
+	static constexpr std::size_t Size = sizeof...(Ts);
+	using Type = TypeList;
+	template <typename Fn>
+	using Apply = MetaApply<Fn, Ts...>;
 };
 
-template <std::size_t Idx, typename List>
-struct value_list_element;
-
-template <std::size_t Idx, auto First, auto... Other>
-struct value_list_element<Idx, value_list<First, Other...>>
-	: value_list_element<Idx - 1, value_list<Other...>>
-{};
-
-template <auto First, auto... Other>
-struct value_list_element<0u, value_list<First, Other...>>
+namespace impl
 {
-	static constexpr auto value = First;
+template <bool B>
+struct IfImpl
+{
+	template <typename T, typename U>
+	using Apply = T;
 };
-
-template <std::size_t Idx, typename List>
-constexpr auto value_list_element_v = value_list_element<Idx, List>::value;
-
-template <typename...>
-struct value_list_cat;
-
+	
 template <>
-struct value_list_cat<>
+struct IfImpl<false>
 {
-	using type = value_list<>;
+	template <typename T, typename U>
+	using Apply = U;
+};
+} // namespace impl
+	
+template <typename P, typename Q>
+struct MetaCompose
+{
+	template <typename... Ts>
+	using Apply = MetaApply<P, MetaApply<Q, Ts...>>;
 };
 
-template <auto... Value>
-struct value_list_cat<value_list<Value...>>
+struct MetaIdentity
 {
-	using type = value_list<Value...>;
+	template <typename T>
+	using Apply = T;
 };
 
-template <auto... Lhs, auto... Rhs, typename... Lists>
-struct value_list_cat<value_list<Lhs...>, value_list<Rhs...>, Lists...>
+struct MetaQuote
 {
-	using type = typename value_list_cat<value_list<Lhs..., Rhs...>, Lists...>::type;
+	template <typename... Ts>
+	using Apply = TypeList<Ts...>;
 };
 
-template <typename... Lists>
-using value_list_cat_t = typename value_list_cat<Lists...>::type;
-
-/// <summary>
-/// list of type
-/// </summary>
-template <typename... T>
-struct type_list
+namespace impl {
+template <std::size_t N>
+struct MetaElementImpl
 {
-	using type = type_list;
-	static constexpr std::size_t size = sizeof...(T);
+	template <std::size_t N, typename ...Ts>
+	struct Lambda; 
+	template <std::size_t N, typename A, typename ...Ts>
+	struct Lambda<N, A, Ts...>
+	{
+		template <typename... Us>
+		using Apply = MetaApply<Lambda<N - 1, Ts...>>;
+	};
+	template <typename A, typename ...Ts>
+	struct Lambda<0, A, Ts...>
+	{
+		template <typename... Us>
+		using Apply = A;
+	};
+	template <typename... Ts>
+	using Apply = MetaApply<Lambda<N, Ts...>>;
+};
+} // namespace impl
+	
+template <std::size_t N>
+struct MetaElement
+{
+	template <typename... Ts>
+	using Apply = MetaApply<impl::MetaElementImpl<N>, Ts...>;
 };
 
-template <std::size_t Idx, typename List>
-struct type_list_element;
+template <typename List, std::size_t N>
+using TypeAt = MetaApply<List, MetaElement<N>>;
 
-template <std::size_t Idx, typename First, typename... Other>
-struct type_list_element<Idx, type_list<First, Other...>>
-	: type_list_element<Idx - 1, type_list<Other...>>
-{};
-
-template <typename First, typename... Other>
-struct type_list_element<0u, type_list<First, Other...>>
+template <typename Fn, typename... Ts>
+struct MetaBindFront
 {
-	using type = First;
+	template <typename... Us>
+	using Apply = MetaApply<Fn, Ts..., Us...>;
 };
 
-template <std::size_t Idx, typename List>
-using type_list_element_v = typename type_list_element<Idx, List>::type;
-
-template <typename...>
-struct type_list_cat;
-
-template <>
-struct type_list_cat<>
+template <typename Fn, typename... Ts>
+struct MetaBindBack
 {
-	using type = type_list<>;
+	template <typename... Us>
+	using Apply = MetaApply<Fn, Us..., Ts...>;
 };
 
-template <typename... Value>
-struct type_list_cat<type_list<Value...>>
+template <typename List, typename... Ts>
+using TypePushBack = MetaApply<List, MetaBindBack<MetaQuote, Ts...>>;
+
+template <typename List, typename... Ts>
+using TypePushFront = MetaApply<List, MetaBindFront<MetaQuote, Ts...>>;
+
+namespace impl {
+template <typename Fn>
+struct MetaTransformImpl
 {
-	using type = type_list<Value...>;
+	template <typename ...Ts>
+	struct Lambda; 
+	template <typename A, typename ...Ts>
+	struct Lambda<A, Ts...>
+	{
+		template <typename... Us>
+		using Apply = TypePushFront<MetaApply<Lambda<Ts...>>, MetaApply<Fn, A>>;
+	};
+	template <typename T>
+	struct Lambda<T>
+	{
+		template <typename... Us>
+		using Apply = TypePushFront<TypeList<>, MetaApply<Fn, T>>;
+	};
+	template <typename... Ts>
+	using Apply = MetaApply<Lambda<Ts...>>;
+};
+} // namespace impl
+
+template <typename List, typename Fn>
+using TypeTransform = MetaApply<List, impl::MetaTransformImpl<Fn>>;
+
+template <typename Fn>
+struct MetaFlip
+{
+	template <typename L, typename R>
+	using Apply = MetaApply<Fn, L, R>;
 };
 
-template <typename... Lhs, typename... Rhs, typename... Lists>
-struct type_list_cat<type_list<Lhs...>, type_list<Rhs...>, Lists...>
-{
-	using type = typename type_list_cat<type_list<Lhs..., Rhs...>, Lists...>::type;
+namespace impl {
+template <typename Fn>
+struct MetaFoldRImpl { template <typename ...Ts>
+	struct Lambda : MetaIdentity {};
+	template <typename A, typename ...Ts>
+	struct Lambda<A, Ts...>
+	{
+		template <typename State>
+		using Apply = MetaApply<Fn, A, MetaApply<Lambda<Ts...>, State>>;
+	};
+	template <typename... Ts>
+	using Apply = Lambda<Ts...>;
 };
 
-template <typename... Lists>
-using type_list_cat_t = typename type_list_cat<Lists...>::type;
+template <typename Fn>
+struct MetaFoldLImpl
+{
+	template <typename ...Ts>
+	struct Lambda : MetaIdentity {};
+	template <typename A, typename ...Ts>
+	struct Lambda<A, Ts...>
+	{
+		template <typename State>
+		using Apply = MetaApply<Lambda<Ts...>, MetaApply<Fn, State, A>>;
+	};
+	template <typename... Ts>
+	using Apply = Lambda<Ts...>;
+};
+} // namespace impl
+
+template <class List, class State, class Fn>
+using TypeFold = MetaApply<MetaApply<List, impl::MetaFoldRImpl<Fn>>, State>;
+	
+template <class List, class State, class Fn>
+using TypeReverseFold = MetaApply<MetaApply<List, impl::MetaFoldLImpl<Fn>>, State>;
+	
+namespace impl {
+struct MetaJoinImpl
+{
+	template <typename Fn>
+	struct Lambda
+	{
+		template <typename... Ts>
+		using Apply = MetaBindBack<Fn, Ts...>;
+	};
+	template <typename List, typename Fn>
+	using Apply = MetaApply<List, Lambda<Fn>>;
+};
+} // namespace impl
+
+template <class List>
+using TypeJoin = MetaApply<TypeFold<List, MetaQuote, impl::MetaJoinImpl>>;
+
+template <class... Ts>
+using TypeConcat = TypeJoin<TypeList<Ts...>>;
 
 } // namespace common

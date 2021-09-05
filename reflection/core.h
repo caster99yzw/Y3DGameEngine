@@ -85,13 +85,13 @@ using IndexSequence = IntegerSequence<std::size_t, Ns...>;
 //////////////////////////////////////////////////////////////////////////
 
 template <typename... T>
-struct TypeList {};
+struct type_list {};
 
 template <typename lhsT, typename rhsT>
 struct IsSameListSize;
 
 template <typename... lhsT, typename... rhsT>
-struct IsSameListSize<TypeList<lhsT...>, TypeList<rhsT...>>
+struct IsSameListSize<type_list<lhsT...>, type_list<rhsT...>>
 	: std::integral_constant<bool, sizeof...(lhsT) == sizeof...(rhsT)>
 {};
 

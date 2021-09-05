@@ -43,7 +43,7 @@ class ConstructorWrapper;
 template <typename ClassType, typename ReturnPolicy, typename... ParamWrapperTs, typename... ParamTs>
 class ConstructorWrapper<ClassType, ReturnPolicy, ParameterInfos<ParamWrapperTs...>, ParamTs...> : public ConstructorWrapperBase
 {
-	static_assert(common::IsSameListSize<common::TypeList<ParamWrapperTs...>, common::TypeList<ParamTs...>>::value,
+	static_assert(common::IsSameListSize<common::type_list<ParamWrapperTs...>, common::type_list<ParamTs...>>::value,
 		"the number of wrappers must be same as the number of parameter types");
 
 	using Invoker = ConstructorInvoker<ClassType, ReturnPolicy, ParamTs...>;
@@ -99,14 +99,14 @@ public:
 
 private:
 	template <typename... ArgTs>
-	std::enable_if_t<common::IsSameListSize<common::TypeList<ArgTs...>, common::TypeList<ParamTs...>>::value, Variant> 
+	std::enable_if_t<common::IsSameListSize<common::type_list<ArgTs...>, common::type_list<ParamTs...>>::value, Variant> 
 	InvokeImpl(ArgTs const&... arguments) const
 	{
 		return Invoker::Invoke(arguments...);
 	}
 
 	template <typename... ArgTs>
-	std::enable_if_t<!common::IsSameListSize<common::TypeList<ArgTs...>, common::TypeList<ParamTs...>>::value, Variant> 
+	std::enable_if_t<!common::IsSameListSize<common::type_list<ArgTs...>, common::type_list<ParamTs...>>::value, Variant> 
 	InvokeImpl(ArgTs const&... arguments) const
 	{
 		return Variant();

@@ -32,7 +32,7 @@ template <typename NamePolicy, typename ParamList, typename Indices>
 struct GenerateParameterInfosImpl;
 
 template <typename NamePolicy, typename... ParamTs, std::size_t... Index>
-struct GenerateParameterInfosImpl<NamePolicy, common::TypeList<ParamTs...>, common::IndexSequence<Index...>>
+struct GenerateParameterInfosImpl<NamePolicy, common::type_list<ParamTs...>, common::IndexSequence<Index...>>
 {
 	using Type = ParameterInfos<ParameterWrapper<NamePolicy, ParamTs, Index>...>;
 };
@@ -52,10 +52,10 @@ struct GenerateParameterInfos
 };
 
 template <typename NamePolicy, typename... ParamTs>
-struct GenerateParameterInfos<common::TypeList<ParamTs...>, NamePolicy>
+struct GenerateParameterInfos<common::type_list<ParamTs...>, NamePolicy>
 {
 	using Type = typename GenerateParameterInfosImpl<NamePolicy, 
-		common::TypeList<ParamTs...>, 
+		common::type_list<ParamTs...>, 
 		common::MakeIndexSequence<sizeof...(ParamTs)>>::Type;
 };
 

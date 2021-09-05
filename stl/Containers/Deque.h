@@ -99,7 +99,7 @@ struct deque_iterator
 				: -difference_type((-offset - 1) / buffer_size()) - 1;
 			
 			set_node(Node + node_offset);
-			Cur = First + (offset - node_offset * difference_type(buffer_size()))
+			Cur = First + (offset - node_offset * difference_type(buffer_size()));
 		}
 		return *this;
 	}
