@@ -1,9 +1,8 @@
 #include <iostream>
 #include "reflection/registration/registration.h"
-#include "common/core/unique_ptr.h"
-#include "common/core/shared_ptr.h"
 #include "common/core/type_traits.h"
 #include "common/core/overload.h"
+#include "common/core/poly/poly.h"
 
 struct overload
 {
@@ -56,6 +55,26 @@ void test_type_list()
 	using list5 = common::TypeTransform<list4, MetaElementEx<0>>;
 	using list6 = common::TypeJoin<common::TypeList<list0, list1>>;
 	using list7 = common::TypeConcat<list0, list1>;
+}
+
+struct IJavaIterator
+{
+	template <typename Base>
+	struct Interface : Base
+	{
+		bool Done() const { return common::poly_call<0>(*this); }
+		uint32_t Current() const { return common::poly_call<1>(*this); }
+		void Next() { common::poly_call<2>(*this); }
+	};
+
+	template <typename T>
+	using Members = common::PolyMembers<&T::Done, &T::Current, &T::Next>;
+};
+
+using JavaIterator = common::Poly<IJavaIterator>;
+
+void test_poly()
+{
 }
 
 int main()

@@ -51,14 +51,6 @@ template <typename R, typename... As>
 struct Overload<R(As...)> : public Base<R, As...>
 {
 };
-
-template <typename R, typename A, typename... As>
-struct Overload<R(A&, As...)> : public Base<R, A&, As...>
-{
-	using CFun = R(A const&, As...);
-
-	constexpr CFun* operator()(CFun* t) const { return t; }
-};
 } // namespace imp
 
 template <class Sig>
