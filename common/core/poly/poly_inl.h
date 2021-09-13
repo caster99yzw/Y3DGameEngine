@@ -12,6 +12,20 @@ struct StaticConst
 	static constexpr T value{};
 };
 
+template <typename T>
+struct XRefImpl : MetaIdentity {};
+template <typename T>
+using XRef = XRefImpl<T>;
+template <typename T>
+struct XRefImpl<T&> : MetaCompose<MetaQuote<std::add_lvalue_reference_t>, XRef<T>> {};
+template <typename T>
+struct XRefImpl<T&&> : MetaCompose<MetaQuote<std::add_rvalue_reference_t>, XRef<T>> {};
+template <typename T>
+struct XRefImpl<T const> : MetaQuote<std::add_const_t> {};
+
+template <typename A, typename B>
+using AddCvrefOf = MetaApply<XRef<B>, A>;
+
 template <typename Fun>
 struct IsConstMember : std::false_type {};
 
@@ -59,7 +73,7 @@ struct VTable;
 
 using Exec = void* (*)(Op, Data*, void*);
 
-template <class I, class T>
+template <typename I, typename T>
 void* execInSitu(Op op, Data* from, void* to) {
 	switch (op) {
 	case Op::Nuke:
@@ -78,18 +92,18 @@ void* execInSitu(Op op, Data* from, void* to) {
 	return nullptr;
 }
 
-template <class I, class T>
+template <typename I, typename T>
 constexpr Exec getOps() noexcept {
 	return &execInSitu<I, T>;
 }
 
-template <class I, auto... Arch>
+template <typename I, auto... Arch>
 struct VTable<I, PolyMembers<Arch...>> : std::tuple<decltype(Arch)...>
 {
 private:
-	template <class T, auto... User>
+	template <typename T, auto... User>
 	constexpr VTable(T, PolyMembers<User...>)
-		: std::tuple<decltype(Arch)...> {}
+		: std::tuple<decltype(Arch)...>{}
 		, m_state{ State::InSitu }
 		, m_ops{ getOps<I, T>() } {}
 
@@ -139,26 +153,26 @@ struct PolyAccess
 			static_cast<As&&>(args)...);
 	}
 
-	template <class I>
+	template <typename I>
 	static const VTable<remove_cvref_t<I>>* vtable(const PolyRoot<I>& t)
 	{
 		return t.m_vptr;
 	}
 
-	template <class I>
+	template <typename I>
 	static Data* data(PolyRoot<I>& t)
 	{
 		return &t;
 	}
 
-	template <class I>
+	template <typename I>
 	static const Data* data(const PolyRoot<I>& t)
 	{
 		return &t;
 	}
 };
 
-template <class I>
+template <typename I>
 struct PolyNode : public PolyRoot<I> {
 	template <std::size_t K, typename... As>
 	decltype(auto) Call(As&&... as)
@@ -174,8 +188,31 @@ struct PolyNode : public PolyRoot<I> {
 	}
 };
 
-template <class I>
+template <typename I>
 using PolyImpl = InterfaceOf<I, PolyNode<I>>;
+
+template <typename T, typename I, typename = void>
+struct InterfaceMatchingImpl : std::false_type {};
+
+template <typename T, typename I>
+struct InterfaceMatchingImpl<
+	T, I,
+	std::void_t<
+	std::enable_if_t<
+	std::is_constructible_v<AddCvrefOf<std::decay_t<T>, I>, T>,
+	MembersOf<std::decay_t<I>, std::decay_t<T>>
+	>>> : std::true_type {};
+
+template <typename T, typename I, typename = void>
+struct InterfaceMatching : std::false_type {};
+
+template <class T, class I>
+struct InterfaceMatching<
+	T,
+	I,
+	std::enable_if_t<
+	!std::is_base_of_v<PolyBase, std::decay_t<T>>
+	>> : InterfaceMatchingImpl<T, I> {};
 
 } // namespace impl 
 } // namespace common

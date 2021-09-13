@@ -12,7 +12,7 @@ template <typename T>
 using remove_cvref_t = typename remove_cvref<T>::type;
 
 template <typename T>
-using _t = typename T::Type;
+using _t = typename T::type;
 
 template <typename Fn, typename... Ts>
 using MetaApply = typename Fn::template Apply<Ts...>;
@@ -21,7 +21,7 @@ template <typename... Ts>
 struct TypeList
 {
 	static constexpr std::size_t Size = sizeof...(Ts);
-	using Type = TypeList;
+	using type = TypeList;
 	template <typename Fn>
 	using Apply = MetaApply<Fn, Ts...>;
 };
@@ -56,7 +56,21 @@ struct MetaIdentity
 	using Apply = T;
 };
 
+template <template <class...> class C, typename ... Ts>
+struct MetaDefer
+{
+	using type = C<Ts...>;
+};
+
+template <template <class...> class C>
 struct MetaQuote
+{
+	template <typename... Ts>
+	using Apply = _t<MetaDefer<C, Ts...>>;
+};
+
+template <>
+struct MetaQuote<TypeList>
 {
 	template <typename... Ts>
 	using Apply = TypeList<Ts...>;
@@ -110,10 +124,10 @@ struct MetaBindBack
 };
 
 template <typename List, typename... Ts>
-using TypePushBack = MetaApply<List, MetaBindBack<MetaQuote, Ts...>>;
+using TypePushBack = MetaApply<List, MetaBindBack<MetaQuote<TypeList>, Ts...>>;
 
 template <typename List, typename... Ts>
-using TypePushFront = MetaApply<List, MetaBindFront<MetaQuote, Ts...>>;
+using TypePushFront = MetaApply<List, MetaBindFront<MetaQuote<TypeList>, Ts...>>;
 
 namespace impl {
 template <typename Fn>
@@ -199,7 +213,7 @@ struct MetaJoinImpl
 } // namespace impl
 
 template <class List>
-using TypeJoin = MetaApply<TypeFold<List, MetaQuote, impl::MetaJoinImpl>>;
+using TypeJoin = MetaApply<TypeFold<List, MetaQuote<TypeList>, impl::MetaJoinImpl>>;
 
 template <class... Ts>
 using TypeConcat = TypeJoin<TypeList<Ts...>>;

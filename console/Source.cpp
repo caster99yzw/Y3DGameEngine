@@ -41,7 +41,7 @@ struct MetaElementEx
 
 void test_type_list()
 {
-	using result0 = common::MetaQuote::Apply<int, double>;
+	using result0 = common::MetaQuote<common::TypeList>::Apply<int, double>;
 	using list0 = common::TypeList<int, short, long>;
 	using list1 = common::TypeList<float, double>;
 	using list2 = common::TypePushBack<list0, float, double>;
@@ -73,8 +73,29 @@ struct IJavaIterator
 
 using JavaIterator = common::Poly<IJavaIterator>;
 
+
+struct AAA
+{
+	bool Done() const {}
+	uint32_t Current() const {}
+	void Next() {}
+};
+
 void test_poly()
 {
+	using T0 = common::MetaQuote<std::add_const>::Apply<int>;
+	
+	using AddConst = common::MetaQuote<std::add_const_t>::Apply<int>;
+	using AddLRef = common::MetaQuote<std::add_lvalue_reference>::Apply<int>;
+	using AddRRef = common::MetaQuote<std::add_lvalue_reference>::Apply<int>;
+	
+
+	using ret = common::AddCvrefOf<int, const int&&>;
+	constexpr bool b0 = std::is_constructible_v<AAA, AAA>;
+	constexpr bool b1 = std::is_constructible_v<AAA, AAA&>;
+	constexpr bool b2 = std::is_constructible_v<AAA, AAA&&>;
+	constexpr bool b3 = std::is_constructible_v<AAA, const AAA&>;
+	constexpr bool b4 = common::impl::InterfaceMatching<AAA, IJavaIterator>::value;
 }
 
 int main()
