@@ -76,9 +76,15 @@ using JavaIterator = common::Poly<IJavaIterator>;
 
 struct AAA
 {
-	bool Done() const {}
-	uint32_t Current() const {}
-	void Next() {}
+	AAA()
+		: i(std::make_shared<uint32_t>(100)) {}
+
+	bool Done() const { return false; }
+	uint32_t Current() const { return *i; }
+	void Next() { std::cout << "ni ma!"; }
+
+private:
+	std::shared_ptr<uint32_t> i;
 };
 
 void test_poly()
@@ -96,12 +102,21 @@ void test_poly()
 	constexpr bool b2 = std::is_constructible_v<AAA, AAA&&>;
 	constexpr bool b3 = std::is_constructible_v<AAA, const AAA&>;
 	constexpr bool b4 = common::impl::InterfaceMatching<AAA, IJavaIterator>::value;
+
+	AAA local;
+
+	JavaIterator iter = local;
+	auto xxx = iter.Done();
+	auto yyy = iter.Current();
+	iter.Next();
+
 }
 
 int main()
 {
 	test_overload();
 	test_type_list();
+	test_poly();
 	system("pause");
 	return 0;
 }

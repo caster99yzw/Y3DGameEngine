@@ -25,7 +25,7 @@ set (COMMON_CAMERA
 
 set (CORE
 	core/poly/poly.h
-	core/poly/poly_inl.h
+	core/poly/poly_detail.h
 	core/aligned_type.h
 	core/any.h
 	core/overload.h
