@@ -3,11 +3,12 @@
 namespace common {
 
 template <typename T>
-struct remove_cvref {
+struct remove_cvref
+{
 	using type =
 		typename std::remove_cv<typename std::remove_reference<T>::type>::type;
 };
-	
+
 template <typename T>
 using remove_cvref_t = typename remove_cvref<T>::type;
 
@@ -16,6 +17,14 @@ using _t = typename T::type;
 
 template <typename Fn, typename... Ts>
 using MetaApply = typename Fn::template Apply<Ts...>;
+
+template <typename T>
+struct Type
+{
+	using type = T;
+	template <typename...>
+	using Apply = T;
+};
 
 template <typename... Ts>
 struct TypeList
@@ -26,15 +35,14 @@ struct TypeList
 	using Apply = MetaApply<Fn, Ts...>;
 };
 
-namespace impl
-{
+namespace impl {
 template <bool B>
 struct IfImpl
 {
 	template <typename T, typename U>
 	using Apply = T;
 };
-	
+
 template <>
 struct IfImpl<false>
 {
@@ -42,7 +50,10 @@ struct IfImpl<false>
 	using Apply = U;
 };
 } // namespace impl
-	
+
+template <bool Condition, class Then, class Else>
+using If = MetaApply<impl::IfImpl<Condition>, Then, Else>;
+
 template <typename P, typename Q>
 struct MetaCompose
 {
@@ -81,7 +92,7 @@ template <std::size_t N>
 struct MetaElementImpl
 {
 	template <std::size_t N, typename ...Ts>
-	struct Lambda; 
+	struct Lambda;
 	template <std::size_t N, typename A, typename ...Ts>
 	struct Lambda<N, A, Ts...>
 	{
@@ -98,7 +109,7 @@ struct MetaElementImpl
 	using Apply = MetaApply<Lambda<N, Ts...>>;
 };
 } // namespace impl
-	
+
 template <std::size_t N>
 struct MetaElement
 {
@@ -134,7 +145,7 @@ template <typename Fn>
 struct MetaTransformImpl
 {
 	template <typename ...Ts>
-	struct Lambda; 
+	struct Lambda;
 	template <typename A, typename ...Ts>
 	struct Lambda<A, Ts...>
 	{
@@ -164,7 +175,9 @@ struct MetaFlip
 
 namespace impl {
 template <typename Fn>
-struct MetaFoldRImpl { template <typename ...Ts>
+struct MetaFoldRImpl
+{
+	template <typename ...Ts>
 	struct Lambda : MetaIdentity {};
 	template <typename A, typename ...Ts>
 	struct Lambda<A, Ts...>
@@ -194,10 +207,10 @@ struct MetaFoldLImpl
 
 template <class List, class State, class Fn>
 using TypeFold = MetaApply<MetaApply<List, impl::MetaFoldRImpl<Fn>>, State>;
-	
+
 template <class List, class State, class Fn>
 using TypeReverseFold = MetaApply<MetaApply<List, impl::MetaFoldLImpl<Fn>>, State>;
-	
+
 namespace impl {
 struct MetaJoinImpl
 {
