@@ -3,6 +3,7 @@
 #include "common/core/type_traits.h"
 #include "common/core/overload.h"
 #include "common/core/poly/poly.h"
+#include "tiny_regex.h"
 
 struct overload
 {
@@ -172,11 +173,15 @@ void test_poly()
 	d_iter.Derived();
 }
 
-int main()
-{
-	test_overload();
-	test_type_list();
-	test_poly();
-	system("pause");
-	return 0;
-}
+// int main()
+// {
+// 	test_overload();
+// 	test_type_list();
+// 	test_poly();
+//
+// 	const auto x0 = re::re_match("^abc$", "abc");
+// 	const auto x3 = re::re_match("^abc$", "ac");
+//
+// 	system("pause");
+// 	return 0;
+// }
